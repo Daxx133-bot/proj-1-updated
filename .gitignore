@@ -1,0 +1,109 @@
+# ---------------------------------------------------------------------------
+# What is deliberately NOT ignored
+#
+# data/, analysis/, paper/, _audit/, _quarantine/ and the PREREGISTRATION files
+# are part of the research record and are committed in full. data/spans/ is
+# ~53 MB of gzipped raw traces and data/campaign/ is ~2 MB of run records; both
+# are intentionally tracked, because every number in the paper is regenerated
+# from them. Do not add rules that exclude those paths.
+# ---------------------------------------------------------------------------
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+.python-version
+
+# Pytest / Coverage / type checker caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Packaging / build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE local state
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------------
+# Secrets and credentials. Nothing of this kind is currently in the repository
+# (verified across the working tree and all 52 commits); these rules exist so
+# that nothing of this kind is added by accident.
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.ppk
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+.netrc
+_netrc
+.npmrc
+.pypirc
+credentials
+credentials.json
+secrets.json
+*.credentials
+*_secret*
+*_token*
+!**/tokeniz*
+
+# ---------------------------------------------------------------------------
+# Large regenerable or local-only experiment artifacts
+#
+# sdg/raw_traces/ is ~21 MB of raw Jaeger pulls used only to build the frozen
+# dependency graphs in data/graphs/, which ARE committed. The intermediate
+# output directories below hold pre-audit material that is superseded by
+# analysis/final/ and preserved in _quarantine/; nothing in the current
+# pipeline reads them.
+# ---------------------------------------------------------------------------
+sdg/raw_traces/
+measurement/results/*.json
+measurement/results/*.csv
+analysis/plots/*.png
+analysis/output/
+centrality/output/
+
+# Docker / container local state
+.docker/
+*.pid
+# Only a stray override at the repository root is ignored. The two in infra/ are
+# part of the share: they pin the Jaeger version and the port assignments for the
+# DeathStarBench stacks and are named in share_manifest.txt.
+/docker-compose.override.yml
+
+# Scratch and temporary files
+*.tmp
+*.temp
+*.log.gz
+nohup.out

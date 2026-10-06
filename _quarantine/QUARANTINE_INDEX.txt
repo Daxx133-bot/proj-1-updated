@@ -1,0 +1,85 @@
+QUARANTINE_INDEX.txt -- what the quarantine holds, without holding it
+
+The withdrawn material itself is NOT included in this copy. This is a one-line record
+per quarantined file, so that what was removed is inspectable from here while the files
+themselves stay in the archived original repository. QUARANTINE_LOG.md, which IS
+included, explains what each numbered item is and why it was withdrawn.
+
+74 files, 5.24 MB, none of them copied here.
+
+  size (bytes)  path (relative to _quarantine/ in the original repository)
+------------------------------------------------------------------------------
+         2,591  analysis/output/correlation_results.csv
+         2,876  analysis/output/cross_arch_correlation_comparison.csv
+         1,242  analysis/output/outlier_analysis.csv
+           876  analysis/output/outlier_analysis.md
+       339,350  analysis/plots/composite_vs_blast_radius.png
+       746,267  analysis/plots/correlation_heatmap.png
+       265,224  analysis/plots/cross_arch_correlation_bar.png
+       193,829  analysis/plots/scatter_composite_score_vs_error_rate_delta.png
+       210,206  analysis/plots/scatter_composite_score_vs_latency_p95_delta_ms.png
+       189,008  analysis/plots/scatter_composite_score_vs_recovery_time_s.png
+        83,432  analysis/plots/scatter_degree_vs_error_rate_delta.png
+        95,137  analysis/plots/scatter_degree_vs_latency_p95_delta_ms.png
+        95,730  analysis/plots/scatter_degree_vs_latency_p99_delta_ms.png
+       163,843  analysis/plots/scatter_degree_vs_recovery_time_s.png
+       162,275  analysis/plots/scatter_hybrid_criticality_vs_recovery_time_s.png
+        39,254  data/campaign/runs_leaked_netem/run_socialnetwork_compose-post-service_latency_1_2026-09-26T05-31-41.737771+00-00.json
+         9,977  data/campaign/runs_leaked_netem/run_socialnetwork_home-timeline-service_latency_1_2026-09-26T05-34-02.175663+00-00.json
+        13,896  data/campaign/runs_leaked_netem/run_socialnetwork_media-service_latency_1_2026-09-26T05-36-41.701210+00-00.json
+        11,750  data/campaign/runs_leaked_netem/run_socialnetwork_post-storage-service_latency_1_2026-09-26T05-39-11.654392+00-00.json
+        12,836  data/campaign/runs_leaked_netem/run_socialnetwork_social-graph-service_latency_1_2026-09-26T05-41-46.896514+00-00.json
+        12,531  data/campaign/runs_leaked_netem/run_socialnetwork_text-service_latency_1_2026-09-26T05-44-22.266994+00-00.json
+         7,301  data/campaign/runs_leaked_netem/run_socialnetwork_unique-id-service_latency_1_2026-09-26T05-46-31.694270+00-00.json
+        19,857  data/campaign/runs_leaked_netem/run_socialnetwork_url-shorten-service_latency_1_2026-09-26T05-49-51.389005+00-00.json
+         9,833  data/campaign/runs_leaked_netem/run_socialnetwork_user-mention-service_latency_1_2026-09-26T05-52-12.766335+00-00.json
+         9,541  data/campaign/runs_leaked_netem/run_socialnetwork_user-service_latency_1_2026-09-26T05-54-33.077877+00-00.json
+         9,509  data/campaign/runs_leaked_netem/run_socialnetwork_user-timeline-service_latency_1_2026-09-26T05-56-51.754062+00-00.json
+        37,606  data/campaign/runs_mistargeted/run_hotelreservation_reservation_kill_1_2026-09-26T06-12-43.299962+00-00.json
+         5,494  data/campaign/runs_mistargeted/run_hotelreservation_search_kill_1_2026-09-26T06-14-47.931817+00-00.json
+        30,756  data/campaign/runs_mistargeted/run_hotelreservation_user_kill_1_2026-09-26T06-19-12.319773+00-00.json
+        15,616  data/campaign/runs_pre_amendment1/run_socialnetwork_compose-post-service_kill_1_2026-09-26T04-22-41.035633+00-00.json
+        10,467  data/campaign/runs_pre_amendment1/run_socialnetwork_home-timeline-service_kill_1_2026-09-26T04-25-10.439641+00-00.json
+         9,113  data/campaign/runs_pre_amendment1/run_socialnetwork_media-service_kill_1_2026-09-26T04-28-24.403382+00-00.json
+         3,546  data/pilot_contaminated_concurrent/pilot_socialnetwork_compose-post-service_kill_rep1_2026-09-23T19-17-44.732151+00-00.json
+         1,967  data/pilot_contaminated_concurrent/pilot_socialnetwork_compose-post-service_kill_rep1_2026-09-23T19-17-57.595215+00-00.json
+         3,330  data/pilot_contaminated_concurrent/pilot_socialnetwork_compose-post-service_kill_rep2_2026-09-23T19-19-56.891017+00-00.json
+         5,504  data/pilot_invalid_blocking_pumba/pilot_hotelreservation_search_latency_rep1_2026-09-24T19-28-05.057803+00-00.json
+       119,450  data/spans_leaked_netem/spans_socialnetwork_compose-post-service_latency_rep1_20260926T052804Z_baseline_window.json.gz
+        33,613  data/spans_leaked_netem/spans_socialnetwork_compose-post-service_latency_rep1_20260926T052804Z_fault_window.json.gz
+        76,547  data/spans_leaked_netem/spans_socialnetwork_home-timeline-service_latency_rep1_20260926T053333Z_baseline_window.json.gz
+        28,733  data/spans_leaked_netem/spans_socialnetwork_home-timeline-service_latency_rep1_20260926T053333Z_fault_window.json.gz
+        66,307  data/spans_leaked_netem/spans_socialnetwork_media-service_latency_rep1_20260926T053554Z_baseline_window.json.gz
+        37,163  data/spans_leaked_netem/spans_socialnetwork_media-service_latency_rep1_20260926T053554Z_fault_window.json.gz
+        63,269  data/spans_leaked_netem/spans_socialnetwork_post-storage-service_latency_rep1_20260926T053833Z_baseline_window.json.gz
+        23,902  data/spans_leaked_netem/spans_socialnetwork_post-storage-service_latency_rep1_20260926T053833Z_fault_window.json.gz
+        68,562  data/spans_leaked_netem/spans_socialnetwork_social-graph-service_latency_rep1_20260926T054103Z_baseline_window.json.gz
+        30,703  data/spans_leaked_netem/spans_socialnetwork_social-graph-service_latency_rep1_20260926T054103Z_fault_window.json.gz
+        71,610  data/spans_leaked_netem/spans_socialnetwork_text-service_latency_rep1_20260926T054338Z_baseline_window.json.gz
+        29,975  data/spans_leaked_netem/spans_socialnetwork_text-service_latency_rep1_20260926T054338Z_fault_window.json.gz
+        73,689  data/spans_leaked_netem/spans_socialnetwork_unique-id-service_latency_rep1_20260926T054615Z_baseline_window.json.gz
+        27,063  data/spans_leaked_netem/spans_socialnetwork_unique-id-service_latency_rep1_20260926T054615Z_fault_window.json.gz
+        65,571  data/spans_leaked_netem/spans_socialnetwork_url-shorten-service_latency_rep1_20260926T054823Z_baseline_window.json.gz
+        29,795  data/spans_leaked_netem/spans_socialnetwork_url-shorten-service_latency_rep1_20260926T054823Z_fault_window.json.gz
+        75,545  data/spans_leaked_netem/spans_socialnetwork_user-mention-service_latency_rep1_20260926T055143Z_baseline_window.json.gz
+        30,679  data/spans_leaked_netem/spans_socialnetwork_user-mention-service_latency_rep1_20260926T055143Z_fault_window.json.gz
+        62,311  data/spans_leaked_netem/spans_socialnetwork_user-service_latency_rep1_20260926T055404Z_baseline_window.json.gz
+        26,593  data/spans_leaked_netem/spans_socialnetwork_user-service_latency_rep1_20260926T055404Z_fault_window.json.gz
+        59,564  data/spans_leaked_netem/spans_socialnetwork_user-timeline-service_latency_rep1_20260926T055625Z_baseline_window.json.gz
+        27,163  data/spans_leaked_netem/spans_socialnetwork_user-timeline-service_latency_rep1_20260926T055625Z_fault_window.json.gz
+       340,161  data/spans_mistargeted/spans_hotelreservation_reservation_kill_rep1_20260926T060936Z_baseline_window.json.gz
+       152,501  data/spans_mistargeted/spans_hotelreservation_reservation_kill_rep1_20260926T060936Z_fault_window.json.gz
+       187,718  data/spans_mistargeted/spans_hotelreservation_search_kill_rep1_20260926T061438Z_baseline_window.json.gz
+        91,560  data/spans_mistargeted/spans_hotelreservation_search_kill_rep1_20260926T061438Z_fault_window.json.gz
+       187,632  data/spans_mistargeted/spans_hotelreservation_user_kill_rep1_20260926T061642Z_baseline_window.json.gz
+       112,366  data/spans_mistargeted/spans_hotelreservation_user_kill_rep1_20260926T061642Z_fault_window.json.gz
+       122,387  data/spans_pre_amendment1/spans_socialnetwork_compose-post-service_kill_rep1_20260926T042137Z_baseline_window.json.gz
+        23,266  data/spans_pre_amendment1/spans_socialnetwork_compose-post-service_kill_rep1_20260926T042137Z_fault_window.json.gz
+       130,409  data/spans_pre_amendment1/spans_socialnetwork_home-timeline-service_kill_rep1_20260926T042436Z_baseline_window.json.gz
+        21,196  data/spans_pre_amendment1/spans_socialnetwork_home-timeline-service_kill_rep1_20260926T042436Z_fault_window.json.gz
+       113,027  data/spans_pre_amendment1/spans_socialnetwork_media-service_kill_rep1_20260926T042800Z_baseline_window.json.gz
+        22,279  data/spans_pre_amendment1/spans_socialnetwork_media-service_kill_rep1_20260926T042800Z_fault_window.json.gz
+        15,129  measurement/results/experiment_log.csv
+         8,268  q1_p1.py
+         2,896  scripts/generate_fig5.py
+         4,749  scripts/populate_results.py

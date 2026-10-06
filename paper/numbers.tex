@@ -1,0 +1,424 @@
+%% paper/numbers.tex -- AUTO-GENERATED from paper/numbers.csv. DO NOT EDIT.
+%% Regenerate: python paper/build_numbers.py && python paper/emit_macros.py
+% Generated at repository commit 8e319f2. 210 macros.
+
+% Total fault-injection runs in the final campaign (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignRunsTotal}{180}
+% Distinct architectures under test (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignArchitectures}{2}
+% Distinct (architecture, service, fault type) cells (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignCells}{36}
+% Repetitions per cell (balanced design) (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignRepsPerCell}{5}
+% Fault types injected (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignFaultTypes}{2}
+% Runs with telemetry failure (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignRunsFailed}{0}
+% Right-censored recovery observations (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignRunsCensored}{0}
+% Censoring rate (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignCensoringRatePct}{0.0}
+% Runs faulting a gateway service (excluded by design) (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignGatewayRuns}{0}
+% Runs on socialnetwork (analysis/final/run_level_data.csv)
+\newcommand{\NumSnRuns}{110}
+% Services in the socialnetwork analysis set (analysis/final/run_level_data.csv)
+\newcommand{\NumSnServices}{11}
+% Runs on hotelreservation (analysis/final/run_level_data.csv)
+\newcommand{\NumHrRuns}{70}
+% Services in the hotelreservation analysis set (analysis/final/run_level_data.csv)
+\newcommand{\NumHrServices}{7}
+% First run timestamp (UTC) (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignStartUtc}{2026-09-26 05:02}
+% Last run timestamp (UTC) (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignEndUtc}{2026-09-26 13:35}
+% Elapsed wall-clock time, first to last run (analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignDurationHours}{8.5}
+% Pre-analysis integrity checks run (analysis/final/integrity_checks.csv)
+\newcommand{\NumIntegrityChecksTotal}{10}
+% Pre-analysis integrity checks passed (analysis/final/integrity_checks.csv)
+\newcommand{\NumIntegrityChecksPassed}{10}
+% Primary test: Spearman rho, SN, ancestor_count vs ancestor_affected_count, kill faults (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryRho}{0.785}
+% Primary test: Spearman rho, full precision (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryRhoFull}{0.785119}
+% Primary test: 95% CI lower bound (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryCiLo}{0.000}
+% Primary test: 95% CI upper bound (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryCiHi}{1.000}
+% Primary test: CI method (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryCiMethod}{BCa}
+% Primary test: services correlated (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryNServices}{11}
+% Primary test: raw p as locked (10,000 Monte-Carlo permutations) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryPLocked}{0.0080}
+% Primary test: BH-adjusted p as locked (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryPBhLocked}{0.3451}
+% Primary test: significant after BH-FDR at q=0.05 (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimarySignificant}{no}
+% Primary test: raw p by exact enumeration (supplementary) (analysis/final/exact_p_supplement.csv)
+\newcommand{\NumPrimaryPExact}{0.006926}
+% Primary test: distinct arrangements enumerated (analysis/final/exact_p_supplement.csv)
+\newcommand{\NumPrimaryPExactArrangements}{9240}
+% Primary test: BH-adjusted p with exact p substituted (supplementary) (analysis/final/exact_p_supplement.csv)
+\newcommand{\NumPrimaryPBhExact}{0.3048}
+% Primary test: significant after BH-FDR using exact p (analysis/final/exact_p_supplement.csv)
+\newcommand{\NumPrimarySignificantExact}{no}
+% Confirmatory tests refined to an exact p (supplementary) (analysis/final/exact_p_supplement.csv)
+\newcommand{\NumExactTestsRefined}{43}
+% Tests in the confirmatory (kill) family (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumConfFamilySize}{44}
+% Tests with a defined p in the confirmatory (kill) family (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumConfFamilyDefined}{44}
+% Tests significant after BH-FDR, confirmatory (kill) family (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumConfFamilySignificant}{0}
+% Smallest raw p in the confirmatory (kill) family (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumConfBestRawP}{0.0080}
+% BH-adjusted p of the smallest-raw-p test, confirmatory (kill) family (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumConfBestBhP}{0.3451}
+% Predictor of the smallest-raw-p test, confirmatory (kill) family (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumConfBestPredictor}{ancestor\_count}
+% Tests in the replication (latency) family (analysis/final/replication_family_latency.csv)
+\newcommand{\NumReplFamilySize}{44}
+% Tests with a defined p in the replication (latency) family (analysis/final/replication_family_latency.csv)
+\newcommand{\NumReplFamilyDefined}{44}
+% Tests significant after BH-FDR, replication (latency) family (analysis/final/replication_family_latency.csv)
+\newcommand{\NumReplFamilySignificant}{0}
+% Smallest raw p in the replication (latency) family (analysis/final/replication_family_latency.csv)
+\newcommand{\NumReplBestRawP}{0.0076}
+% BH-adjusted p of the smallest-raw-p test, replication (latency) family (analysis/final/replication_family_latency.csv)
+\newcommand{\NumReplBestBhP}{0.1848}
+% Predictor of the smallest-raw-p test, replication (latency) family (analysis/final/replication_family_latency.csv)
+\newcommand{\NumReplBestPredictor}{ancestor\_count}
+% False discovery rate controlled at (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumFdrQ}{0.05}
+% Exploratory tests attempted (analysis/final/exploratory_family.csv)
+\newcommand{\NumExplAttempted}{154}
+% Exploratory tests with a defined p (analysis/final/exploratory_family.csv)
+\newcommand{\NumExplTestable}{66}
+% Exploratory tests undefined (outcome constant, not null) (analysis/final/exploratory_family.csv)
+\newcommand{\NumExplUndefined}{88}
+% Exploratory tests significant after their own BH-FDR (analysis/final/exploratory_family.csv)
+\newcommand{\NumExplSignificant}{2}
+% Exploratory: delta_p95_ms vs hybrid_criticality, latency, socialnetwork: rho (analysis/final/exploratory_family.csv)
+\newcommand{\NumExplSigHybridCriticalityRho}{0.949}
+% Exploratory: delta_p95_ms vs hybrid_criticality, latency, socialnetwork: BH-adjusted p (analysis/final/exploratory_family.csv)
+\newcommand{\NumExplSigHybridCriticalityBhP}{0.0033}
+% Exploratory: delta_p95_ms vs degree, latency, socialnetwork: rho (analysis/final/exploratory_family.csv)
+\newcommand{\NumExplSigDegreeRho}{0.953}
+% Exploratory: delta_p95_ms vs degree, latency, socialnetwork: BH-adjusted p (analysis/final/exploratory_family.csv)
+\newcommand{\NumExplSigDegreeBhP}{0.0033}
+% H1b hybrid_criticality vs ancestor_affected_count, Social Network, kill: rho (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnKillRho}{-0.144}
+% H1b Social Network kill: CI lower (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnKillCiLo}{-0.810}
+% H1b Social Network kill: CI upper (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnKillCiHi}{0.698}
+% H1b Social Network kill: raw p (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnKillP}{0.6688}
+% H1b Social Network kill: BH-adjusted p (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnKillBhP}{0.9925}
+% H1b hybrid_criticality vs ancestor_affected_count, Hotel Reservation, kill: rho (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrKillRho}{-0.258}
+% H1b Hotel Reservation kill: CI lower (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrKillCiLo}{-0.730}
+% H1b Hotel Reservation kill: CI upper (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrKillCiHi}{-0.167}
+% H1b Hotel Reservation kill: raw p (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrKillP}{1.0000}
+% H1b Hotel Reservation kill: BH-adjusted p (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrKillBhP}{1.0000}
+% H1b hybrid_criticality vs ancestor_affected_count, Social Network, latency: rho (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnLatencyRho}{-0.144}
+% H1b Social Network latency: CI lower (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnLatencyCiLo}{-0.805}
+% H1b Social Network latency: CI upper (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnLatencyCiHi}{0.713}
+% H1b Social Network latency: raw p (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnLatencyP}{0.6656}
+% H1b Social Network latency: BH-adjusted p (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebSnLatencyBhP}{0.9152}
+% H1b hybrid_criticality vs ancestor_affected_count, Hotel Reservation, latency: rho (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrLatencyRho}{-0.258}
+% H1b Hotel Reservation latency: CI lower (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrLatencyCiLo}{-0.750}
+% H1b Hotel Reservation latency: CI upper (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrLatencyCiHi}{-0.167}
+% H1b Hotel Reservation latency: raw p (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrLatencyP}{1.0000}
+% H1b Hotel Reservation latency: BH-adjusted p (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebHrLatencyBhP}{1.0000}
+% H1b: hybrid metric rho <= 0 in every architecture-by-fault cell (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebAllNegative}{yes}
+% H1b: any cell distinguishable from zero after FDR (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebAnyDistinguishable}{no}
+% H1b cells tested (2 architectures x 2 fault types) (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebCells}{4}
+% Ancestor saturation, Social Network, kill, run level (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationSnKillRun}{0.909}
+% Ancestor saturation, Social Network, kill, service level (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationSnKillService}{0.909}
+% Social Network kill: tautological at the analysis unit (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationSnKillTautological}{no}
+% Ancestor saturation, Social Network, latency, run level (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationSnLatencyRun}{0.891}
+% Ancestor saturation, Social Network, latency, service level (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationSnLatencyService}{0.909}
+% Social Network latency: tautological at the analysis unit (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationSnLatencyTautological}{no}
+% Ancestor saturation, Hotel Reservation, kill, run level (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationHrKillRun}{1.000}
+% Ancestor saturation, Hotel Reservation, kill, service level (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationHrKillService}{1.000}
+% Hotel Reservation kill: tautological at the analysis unit (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationHrKillTautological}{yes}
+% Ancestor saturation, Hotel Reservation, latency, run level (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationHrLatencyRun}{1.000}
+% Ancestor saturation, Hotel Reservation, latency, service level (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationHrLatencyService}{1.000}
+% Hotel Reservation latency: tautological at the analysis unit (analysis/final/ancestor_saturation.csv)
+\newcommand{\NumSaturationHrLatencyTautological}{yes}
+% compose-post-service measured ancestor_affected_count, mean over 5 kill reps (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostKillMean}{1.0}
+% compose-post-service ancestor_affected_count, min, kill (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostKillMin}{1}
+% compose-post-service ancestor_affected_count, max, kill (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostKillMax}{1}
+% compose-post-service repetitions, kill (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostKillReps}{5}
+% compose-post-service measured ancestor_affected_count, mean over 5 latency reps (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostLatencyMean}{1.0}
+% compose-post-service ancestor_affected_count, min, latency (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostLatencyMin}{1}
+% compose-post-service ancestor_affected_count, max, latency (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostLatencyMax}{1}
+% compose-post-service repetitions, latency (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostLatencyReps}{5}
+% compose-post-service rank by ancestor_count (1 = highest) among the 11 SN services (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostRankAncestorCount}{11}
+% compose-post-service rank by hybrid_criticality (1 = highest) among the 11 SN services (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostRankHybrid}{1}
+% Services in the SN analysis set used for ranking (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostSetSize}{11}
+% compose-post-service graph ancestor_count (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostAncestorCount}{1}
+% compose-post-service graph descendant count (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostDescendants}{10}
+% compose-post-service out-degree (direct callees) (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostOutDegree}{7}
+% compose-post-service hybrid_criticality score (analysis/final/compose_post_service.csv)
+\newcommand{\NumComposepostHybrid}{0.302}
+% Leave-one-out: minimum rho across the 11 exclusions (SN, kill) (analysis/final/leave_one_out.csv)
+\newcommand{\NumLooRhoMin}{0.696}
+% Leave-one-out: maximum rho across the 11 exclusions (SN, kill) (analysis/final/leave_one_out.csv)
+\newcommand{\NumLooRhoMax}{1.000}
+% Leave-one-out: recomputations performed per fault type (analysis/final/leave_one_out.csv)
+\newcommand{\NumLooNExclusions}{11}
+% Leave-one-out: rho with user-service excluded (analysis/final/leave_one_out.csv)
+\newcommand{\NumLooUserserviceRho}{1.000}
+% Leave-one-out: change in rho from excluding user-service (analysis/final/leave_one_out.csv)
+\newcommand{\NumLooUserserviceDelta}{+0.215}
+% Leave-one-out: service with the second largest swing (analysis/final/leave_one_out.csv)
+\newcommand{\NumLooSecondLargestService}{compose-post-service}
+% Leave-one-out: second largest change in rho (analysis/final/leave_one_out.csv)
+\newcommand{\NumLooSecondLargestDelta}{-0.089}
+% Leave-one-out: user-service swing divided by the next largest (analysis/final/leave_one_out.csv)
+\newcommand{\NumLooSwingRatio}{2.4}
+% user-service graph ancestor_count (analysis/final/run_level_data.csv)
+\newcommand{\NumUserserviceAncestorCount}{4}
+% user-service measured ancestor_affected_count (identical in every kill repetition) (analysis/final/run_level_data.csv)
+\newcommand{\NumUserserviceMeasured}{2}
+% user-service kill runs where measured < graph ancestors (analysis/final/run_level_data.csv)
+\newcommand{\NumUserserviceRunsDeparting}{5}
+% Social Network: services in the analysis set (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnN}{11}
+% Social Network: services preregistered (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnNPrereg}{11}
+% Social Network: n matches preregistration (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnNMatches}{yes}
+% Social Network: distinct ancestor_count levels (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnLevels}{4}
+% Social Network: levels match preregistration (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnLevelsMatch}{yes}
+% Social Network: best attainable rho, untied outcome (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnCeiling}{0.941}
+% Social Network: preregistered ceiling rho (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnCeilingPrereg}{0.941}
+% Social Network: ceiling reproduces the preregistered value (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnCeilingMatches}{yes}
+% Social Network: exact p at the ceiling (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnCeilingP}{0.0002}
+% Social Network: asymptotic p at the ceiling (NOT for inference) (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnCeilingPAsymptotic}{0.0000}
+% Hotel Reservation: services in the analysis set (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrN}{7}
+% Hotel Reservation: services preregistered (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrNPrereg}{7}
+% Hotel Reservation: n matches preregistration (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrNMatches}{yes}
+% Hotel Reservation: distinct ancestor_count levels (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrLevels}{2}
+% Hotel Reservation: levels match preregistration (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrLevelsMatch}{yes}
+% Hotel Reservation: best attainable rho, untied outcome (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrCeiling}{0.791}
+% Hotel Reservation: preregistered ceiling rho (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrCeilingPrereg}{0.791}
+% Hotel Reservation: ceiling reproduces the preregistered value (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrCeilingMatches}{yes}
+% Hotel Reservation: exact p at the ceiling (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrCeilingP}{0.0952}
+% Hotel Reservation: asymptotic p at the ceiling (NOT for inference) (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrCeilingPAsymptotic}{0.0343}
+% Preregistration section 7.2's stated Hotel Reservation ceiling p (the asymptotic value) (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrPreregStatedP}{0.034}
+% Predictor-architecture pairs that are degenerate (analysis/final/degenerate_predictors.csv)
+\newcommand{\NumDegeneratePairs}{2}
+% Predictor-architecture pairs that are testable (analysis/final/degenerate_predictors.csv)
+\newcommand{\NumTestablePairs}{22}
+% Predictor-architecture pairs considered (analysis/final/degenerate_predictors.csv)
+\newcommand{\NumTotalPredictorPairs}{24}
+% Degenerate predictor on socialnetwork (analysis/final/degenerate_predictors.csv)
+\newcommand{\NumDegenerateSnPredictor}{eigenvector}
+% Constant value of eigenvector on socialnetwork (analysis/final/degenerate_predictors.csv)
+\newcommand{\NumDegenerateSnValue}{0.000000}
+% Degenerate predictor on hotelreservation (analysis/final/degenerate_predictors.csv)
+\newcommand{\NumDegenerateHrPredictor}{in\_degree}
+% Constant value of in_degree on hotelreservation (analysis/final/degenerate_predictors.csv)
+\newcommand{\NumDegenerateHrValue}{0.142857}
+% Distinct service-median values of descendant_affected_count across all architectures and fault types (analysis/final/service_level_data.csv)
+\newcommand{\NumDescendantAffectedCountDistinctValues}{1}
+% Constant value of descendant_affected_count at the service level (analysis/final/service_level_data.csv)
+\newcommand{\NumDescendantAffectedCountConstantAt}{0}
+% Distinct service-median values of unrelated_affected_count across all architectures and fault types (analysis/final/service_level_data.csv)
+\newcommand{\NumUnrelatedAffectedCountDistinctValues}{1}
+% Constant value of unrelated_affected_count at the service level (analysis/final/service_level_data.csv)
+\newcommand{\NumUnrelatedAffectedCountConstantAt}{0}
+% Runs (of 180) in which at least one descendant service degraded (analysis/final/run_level_data.csv)
+\newcommand{\NumDescendantAffectedRunsNonzero}{1}
+% Runs (of 180) in which no descendant service degraded (analysis/final/run_level_data.csv)
+\newcommand{\NumDescendantAffectedRunsZero}{179}
+% Percentage of runs with no descendant service degraded (analysis/final/run_level_data.csv)
+\newcommand{\NumDescendantAffectedRunsZeroPct}{99.4}
+% Largest descendant_affected_count observed in any single run (analysis/final/run_level_data.csv)
+\newcommand{\NumDescendantAffectedMaxInAnyRun}{2}
+% The single run with a nonzero descendant_affected_count (analysis/final/run_level_data.csv)
+\newcommand{\NumDescendantAffectedExceptionRun}{socialnetwork/compose-post-service/kill/rep3}
+% Runs (of 180) in which at least one unrelated service degraded (analysis/final/run_level_data.csv)
+\newcommand{\NumUnrelatedAffectedRunsNonzero}{1}
+% Runs (of 180) in which no unrelated service degraded (analysis/final/run_level_data.csv)
+\newcommand{\NumUnrelatedAffectedRunsZero}{179}
+% Percentage of runs with no unrelated service degraded (analysis/final/run_level_data.csv)
+\newcommand{\NumUnrelatedAffectedRunsZeroPct}{99.4}
+% Largest unrelated_affected_count observed in any single run (analysis/final/run_level_data.csv)
+\newcommand{\NumUnrelatedAffectedMaxInAnyRun}{2}
+% The single run with a nonzero unrelated_affected_count (analysis/final/run_level_data.csv)
+\newcommand{\NumUnrelatedAffectedExceptionRun}{hotelreservation/profile/kill/rep4}
+% Deviations from the preregistration, total (analysis/final/deviations.csv)
+\newcommand{\NumDeviationsTotal}{9}
+% Campaign runs invalidated across all deviations (analysis/final/deviations.csv)
+\newcommand{\NumDeviationsRunsInvalidated}{17}
+% Deviations found before any campaign data existed (analysis/final/deviations.csv)
+\newcommand{\NumDeviationsPrecampaign}{1}
+% Numbered items in the quarantine log (_quarantine/QUARANTINE_LOG.md)
+\newcommand{\NumQuarantineItems}{13}
+% Median ancestor_affected_count identical between kill and latency in every architecture (analysis/final/service_level_data.csv)
+\newcommand{\NumReplicationPrimaryIdentical}{yes}
+% Spearman rho between kill and latency median T_rec across socialnetwork services (analysis/final/service_level_data.csv)
+\newcommand{\NumTrecRhoBetweenFaultsSn}{0.384}
+% socialnetwork services whose full set of five per-run ancestor_affected_count values is identical under kill and latency (analysis/final/run_level_data.csv)
+\newcommand{\NumFaultInvariantServicesSn}{10}
+% socialnetwork services compared (analysis/final/run_level_data.csv)
+\newcommand{\NumFaultInvariantServicesTotalSn}{11}
+% Spearman rho between kill and latency median T_rec across hotelreservation services (analysis/final/service_level_data.csv)
+\newcommand{\NumTrecRhoBetweenFaultsHr}{0.857}
+% hotelreservation services whose full set of five per-run ancestor_affected_count values is identical under kill and latency (analysis/final/run_level_data.csv)
+\newcommand{\NumFaultInvariantServicesHr}{7}
+% hotelreservation services compared (analysis/final/run_level_data.csv)
+\newcommand{\NumFaultInvariantServicesTotalHr}{7}
+% Services (both architectures) whose per-run ancestor_affected_count values are identical under both fault types (analysis/final/run_level_data.csv)
+\newcommand{\NumFaultInvariantServicesAll}{17}
+% Services compared across both architectures (analysis/final/run_level_data.csv)
+\newcommand{\NumFaultInvariantServicesAllTotal}{18}
+% Median recovery time across all 180 runs (analysis/final/run_level_data.csv)
+\newcommand{\NumTrecMedianS}{15.74}
+% Minimum recovery time observed (analysis/final/run_level_data.csv)
+\newcommand{\NumTrecMinS}{9.72}
+% Maximum recovery time observed (analysis/final/run_level_data.csv)
+\newcommand{\NumTrecMaxS}{156.27}
+% Services in the Social Network analysis set (analysis/final/sn_predictor_ranks.csv)
+\newcommand{\NumSnAnalysisSetSize}{11}
+% Injected network delay for latency faults (faultinjection/fault_config.py)
+\newcommand{\NumFaultLatencyDelayMs}{500}
+% Jitter around the injected delay (faultinjection/fault_config.py)
+\newcommand{\NumFaultLatencyJitterMs}{100}
+% Signal used for kill faults (faultinjection/fault_config.py)
+\newcommand{\NumFaultKillSignal}{SIGKILL}
+% Relative p95 threshold for flagging a service as latency-degraded (measurement/metrics_collector.py)
+\newcommand{\NumThresholdDegradationFactor}{2.0}
+% Absolute p95 rise required alongside the relative threshold (measurement/metrics_collector.py)
+\newcommand{\NumThresholdDegradationFloorMs}{1.0}
+% Absolute error-rate rise for flagging a service (measurement/metrics_collector.py)
+\newcommand{\NumThresholdErrorRateAbs}{0.05}
+% Hybrid metric weight on in-degree centrality (fixed a priori; never fitted to outcome data) (centrality/metric_constants.py)
+\newcommand{\NumHybridWIn}{0.4}
+% Hybrid metric weight on fan-out-scaled out-degree centrality (fixed a priori; never fitted to outcome data) (centrality/metric_constants.py)
+\newcommand{\NumHybridWOut}{0.4}
+% Hybrid metric weight on betweenness centrality (fixed a priori; never fitted to outcome data) (centrality/metric_constants.py)
+\newcommand{\NumHybridWBtw}{0.2}
+% Whether the hybrid metric's weights were tuned against outcome data (a weight lockfile exists) (centrality/output/tuned_weights.lock.json)
+\newcommand{\NumHybridWeightsTuned}{no}
+% Warm-up before the baseline window (tools/run_campaign.py)
+\newcommand{\NumProtocolWarmupS}{60}
+% Fault hold duration (tools/run_campaign.py)
+\newcommand{\NumProtocolFaultDurationS}{30}
+% Recovery probe cap, beyond which a run is censored (tools/run_campaign.py)
+\newcommand{\NumProtocolRecoveryCapS}{180}
+% Confirmation period a recovered state must hold (tools/run_campaign.py)
+\newcommand{\NumProtocolConfirmS}{5}
+% Lag applied to the probe window, to avoid partially written spans (tools/run_campaign.py)
+\newcommand{\NumProtocolProbeLagS}{5}
+% Minimum traces before a probe sample may vote for recovery (tools/run_campaign.py)
+\newcommand{\NumProtocolMinTraces}{20}
+% Concurrent load-generator users (tools/run_campaign.py)
+\newcommand{\NumProtocolLoadUsers}{25}
+% Cooldown after each run (tools/run_campaign.py)
+\newcommand{\NumProtocolCooldownS}{20}
+% Baseline measurement window, as actually recorded in every run (data/campaign/runs/*.json)
+\newcommand{\NumProtocolBaselineWindowS}{60}
+% Distinct baseline window lengths across the campaign (data/campaign/runs/*.json)
+\newcommand{\NumProtocolBaselineWindowDistinct}{1}
+% Services in the reconstructed socialnetwork dependency graph (data/graphs/sn_CANONICAL.json)
+\newcommand{\NumGraphSnNodes}{12}
+% Observed call edges in the socialnetwork dependency graph (data/graphs/sn_CANONICAL.json)
+\newcommand{\NumGraphSnEdges}{17}
+% Traces examined to reconstruct the socialnetwork graph (data/graphs/sn_CANONICAL.json)
+\newcommand{\NumGraphSnTracesExamined}{2449}
+% Spans examined to reconstruct the socialnetwork graph (data/graphs/sn_CANONICAL.json)
+\newcommand{\NumGraphSnSpansExamined}{32847}
+% Services in the reconstructed hotelreservation dependency graph (data/graphs/hr_CANONICAL.json)
+\newcommand{\NumGraphHrNodes}{8}
+% Observed call edges in the hotelreservation dependency graph (data/graphs/hr_CANONICAL.json)
+\newcommand{\NumGraphHrEdges}{7}
+% Traces examined to reconstruct the hotelreservation graph (data/graphs/hr_CANONICAL.json)
+\newcommand{\NumGraphHrTracesExamined}{3446}
+% Spans examined to reconstruct the hotelreservation graph (data/graphs/hr_CANONICAL.json)
+\newcommand{\NumGraphHrSpansExamined}{31155}
+% DeathStarBench commit the benchmarks were built from (data/graphs/hr_CANONICAL.json)
+\newcommand{\NumDsbCommit}{6ecb097}
+% Call edges the published Hotel Reservation architecture implies (sdg/hotel_expected_services.py)
+\newcommand{\NumHrManifestExpectedEdges}{8}
+% Manifest edges recovered by trace reconstruction (data/graphs/{hr,sn}_CANONICAL.json)
+\newcommand{\NumHrManifestEdgesRecovered}{6}
+% Manifest edges never observed under this workload (data/graphs/{hr,sn}_CANONICAL.json)
+\newcommand{\NumHrManifestEdgesMissed}{2}
+% Which manifest edges were never observed (data/graphs/{hr,sn}_CANONICAL.json)
+\newcommand{\NumHrManifestEdgesMissedNames}{reservation->user; search->profile}
+% Observed edges the manifest does not list (data/graphs/{hr,sn}_CANONICAL.json)
+\newcommand{\NumHrManifestEdgesExtra}{frontend->profile}
+% Services the published architecture lists (sdg/hotel_expected_services.py)
+\newcommand{\NumHrExpectedServicesManifest}{8}
+% Observed callers of the Hotel Reservation user service (data/graphs/{hr,sn}_CANONICAL.json)
+\newcommand{\NumHrUserObservedCallers}{frontend}
+% Number of observed callers of user (data/graphs/{hr,sn}_CANONICAL.json)
+\newcommand{\NumHrUserObservedCallerCount}{1}

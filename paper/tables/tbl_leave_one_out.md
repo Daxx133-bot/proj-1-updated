@@ -1,0 +1,26 @@
+| label | fault_type | service_excluded | n_services | rho | p_raw_nominal_uncorrected | delta_rho_vs_full_set | p_method |
+|---|---|---|---|---|---|---|---|
+| POST-HOC robustness check - NOT part of the preregistered family | kill | NONE (full set, reference) | 11 | 0.785119 | 0.006883 |  | 2,000,000 random permutations (seed 20260928) |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | compose-post-service | 10 | 0.696454 | 0.040476 | -0.088665 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | home-timeline-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | media-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | post-storage-service | 10 | 0.742746 | 0.016667 | -0.042373 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | social-graph-service | 10 | 0.791490 | 0.003175 | +0.006371 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | text-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | unique-id-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | url-shorten-service | 10 | 0.791490 | 0.003175 | +0.006371 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | user-mention-service | 10 | 0.791490 | 0.003175 | +0.006371 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | user-service | 10 | 1.000000 | 0.000198 | +0.214881 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | kill | user-timeline-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | NONE (full set, reference) | 11 | 0.785119 | 0.006883 |  | 2,000,000 random permutations (seed 20260928) |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | compose-post-service | 10 | 0.696454 | 0.040476 | -0.088665 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | home-timeline-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | media-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | post-storage-service | 10 | 0.742746 | 0.016667 | -0.042373 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | social-graph-service | 10 | 0.791490 | 0.003175 | +0.006371 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | text-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | unique-id-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | url-shorten-service | 10 | 0.791490 | 0.003175 | +0.006371 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | user-mention-service | 10 | 0.791490 | 0.003175 | +0.006371 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | user-service | 10 | 1.000000 | 0.000198 | +0.214881 | exact enumeration of 3,628,800 permutations |
+| POST-HOC robustness check - NOT part of the preregistered family | latency | user-timeline-service | 10 | 0.763252 | 0.016270 | -0.021867 | exact enumeration of 3,628,800 permutations |

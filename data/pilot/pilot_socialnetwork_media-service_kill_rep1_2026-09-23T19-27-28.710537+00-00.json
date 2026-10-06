@@ -1,0 +1,179 @@
+{
+  "app": "socialnetwork",
+  "service": "media-service",
+  "fault_type": "kill",
+  "repetition": 1,
+  "timestamp": "2026-09-23T19:27:28.710537+00:00",
+  "container": "socialnetwork-media-service-1",
+  "baseline_p95_ms": 56.36,
+  "baseline_p99_ms": 59.59,
+  "baseline_error_rate": 0.0,
+  "baseline_trace_count": 273,
+  "fault_p95_ms": 8923.13,
+  "fault_p99_ms": 10047.83,
+  "fault_error_rate": 0.1538,
+  "fault_trace_count": 52,
+  "telemetry_ok": true,
+  "downstream_affected_count": 7,
+  "downstream_affected_services": "compose-post-service,nginx-web-server,text-service,unique-id-service,url-shorten-service,user-mention-service,user-service",
+  "recovery_time_s": 48.35,
+  "recovery_censored": false,
+  "recovery_observed_until_s": 54.22,
+  "recovery_first_ok_at_s": 34.02,
+  "recovery_blocking_indicator": null,
+  "recovery_poll_interval_s": 1.0,
+  "container_restart_time_s": 0.7,
+  "wall_clock_s": 116.17,
+  "recovery_samples": [
+    {
+      "t_s": 34.02,
+      "trace_count": 3,
+      "p95_ms": 8.4,
+      "p99_ms": 8.43,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 35.41,
+      "trace_count": 16,
+      "p95_ms": 19.96,
+      "p99_ms": 45.98,
+      "error_rate": 0.0625,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 36.84,
+      "trace_count": 14,
+      "p95_ms": 24.3,
+      "p99_ms": 46.84,
+      "error_rate": 0.0714,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 38.26,
+      "trace_count": 13,
+      "p95_ms": 26.47,
+      "p99_ms": 47.28,
+      "error_rate": 0.0769,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 39.61,
+      "trace_count": 12,
+      "p95_ms": 28.64,
+      "p99_ms": 47.71,
+      "error_rate": 0.0833,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 41.06,
+      "trace_count": 11,
+      "p95_ms": 30.8,
+      "p99_ms": 48.14,
+      "error_rate": 0.0909,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 42.45,
+      "trace_count": 5,
+      "p95_ms": 43.4,
+      "p99_ms": 50.66,
+      "error_rate": 0.2,
+      "downstream_affected": 7,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 43.87,
+      "trace_count": 3,
+      "p95_ms": 47.81,
+      "p99_ms": 51.54,
+      "error_rate": 0.3333,
+      "downstream_affected": 7,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 45.29,
+      "trace_count": 45,
+      "p95_ms": 56.66,
+      "p99_ms": 60.79,
+      "error_rate": 0.0,
+      "downstream_affected": 4,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 46.8,
+      "trace_count": 40,
+      "p95_ms": 57.0,
+      "p99_ms": 60.95,
+      "error_rate": 0.0,
+      "downstream_affected": 4,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 48.35,
+      "trace_count": 33,
+      "p95_ms": 56.17,
+      "p99_ms": 61.18,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 49.87,
+      "trace_count": 22,
+      "p95_ms": 58.73,
+      "p99_ms": 61.54,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 51.37,
+      "trace_count": 15,
+      "p95_ms": 59.94,
+      "p99_ms": 61.77,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 52.84,
+      "trace_count": 8,
+      "p95_ms": 57.52,
+      "p99_ms": 61.28,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 54.22,
+      "trace_count": 4,
+      "p95_ms": 42.62,
+      "p99_ms": 47.55,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    }
+  ]
+}

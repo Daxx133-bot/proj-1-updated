@@ -1,0 +1,965 @@
+# Preregistration v3
+
+**Study:** Identifying Failure-Prone Microservices Using Graph Centrality Metrics
+**Version:** 3 (2026-09-25). Supersedes v2 (same day, archived at
+`_audit/preregistration_versions/PREREGISTRATION_v2.md`) and v1 (2026-09-23).
+**Status:** **LOCKED 2026-09-26.** All three v2 open questions are resolved and recorded
+in §11. §7.1 was approved as written. Frozen copy:
+`_audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md`.
+**Code and data state at lock: commit `eaadaf1`.**
+**Amendments after lock: 3, logged in §12. None was made after analysing campaign data;
+all three were forced by data-validity defects found by the pre-analysis gates.**
+**Supersedes:** every analysis in `_quarantine/` and every number in the current
+manuscript drafts.
+
+Changes from v2 are marked **[v3]**. All of them stem from measured pilot behaviour
+(`_audit/PILOT_FINDINGS.md`, `_audit/CAUSAL_DIRECTION.md`, `_audit/Q3_VALIDATION.txt`) or
+from decisions recorded in §11 — none from preference, and none from seeing a result the
+campaign has not produced yet.
+
+---
+
+## 0. Why this exists
+
+An audit (`_audit/AUDIT_REPORT.md`) found the prior results were produced by a dataset in
+which 48 of 107 rows came from `random.uniform()` keyed to each service's own centrality,
+by weights grid-searched against the outcome they were then validated on, and by an
+outcome variable that measured container restart rather than application recovery. The
+headline ρ = 0.897 was a maximum over a search on 49%-synthetic data; on the cleanest real
+dataset the same quantity is ρ = 0.0605, p = 0.85.
+
+---
+
+## 1. The hypothesis reversal, stated plainly **[v3 — expanded]**
+
+This section exists because the confirmatory campaign no longer tests the mechanism the
+project was designed around. That has to be on the record before any data is collected.
+
+### 1.1 What v1 predicted
+
+The fan-out-corrected hybrid metric weights **out-degree** (callees) and adds a fan-out
+multiplier φ. Its premise: **a service with many callees is critical, because its failure
+severs many downstream dependencies at once.** H1 predicted that hybrid criticality would
+correlate with measured blast radius, and H2 held up `compose-post-service` (out-degree 7,
+10 descendants) as the paper's central case — a service classical centrality allegedly
+"missed".
+
+### 1.2 The causal chain, re-derived
+
+Let `X → Y` mean "X calls Y". Kill Y:
+
+* **X (a caller, i.e. an ANCESTOR of Y)** issues an RPC to Y, receives connection-refused
+  or blocks until timeout, and therefore errors or slows. **X degrades.** X's own callers
+  then see X slow, so the effect climbs transitively through the whole ancestor set.
+* **Z (a callee, i.e. a DESCENDANT of Y)** is never called, because Y — the thing that
+  called Z — is dead. Z receives *less* traffic and goes **idle**. An idle service shows
+  no latency or error anomaly.
+
+Failure propagates **up** the call graph, toward callers. The size of the degraded set is
+governed by **|ancestors(Y)|**, a transitive *in-degree* property. Out-degree predicts how
+many services go **idle**, which is not an impact.
+
+### 1.3 What the pilot showed
+
+Across all 8 kill-fault pilot runs
+(`data/pilot/recomputed_pilot_outcomes.csv`, via `tools/recompute_pilot.py`):
+
+| | |
+|---|---|
+| `ancestor_affected_count == |ancestors|` | **8 / 8 runs** |
+| Descendants degraded, summed over all runs | **0** |
+| `compose-post-service` (out-degree 7, 10 descendants) | blast radius **1** |
+| `media-service` (out-degree 0, 2 ancestors) | blast radius **2** ancestors + 5 unrelated |
+
+Out-degree was **anti-predictive**: the out-degree-7 service degraded one other service;
+an out-degree-0 service degraded two.
+
+### 1.4 What the confirmatory campaign now tests
+
+**H1 [v3].** `ancestor_affected_count` is predicted by **`ancestor_count`** — the number
+of transitive callers — and **not** by out-degree, descendant count, or the
+fan-out-corrected hybrid metric.
+
+**H1b [v3, directional and preregistered].** The hybrid metric is **anti-predictive**:
+its Spearman ρ against `ancestor_affected_count` is **≤ 0**. This is stated as a
+hypothesis, not discovered afterwards, so that a negative ρ is a preregistered finding
+rather than a salvaged one. On the canonical graphs the hybrid metric's rank correlation
+with `ancestor_count` is already **−0.089 (SN)** and **−0.258 (HR)**
+(`_audit/PREDICTOR_TABLE.txt`), so a negative outcome correlation is the expected result
+if H1 holds.
+
+**H2 [v3 — status changed].** v1's H2 was "classical composite centrality demotes
+high-fan-out orchestrators relative to their measured impact." Under the corrected
+direction this is no longer a claim of a *false negative*:
+
+> `compose-post-service` ranks **11 of 11 — last — on `ancestor_count`**, while ranking
+> **1 of 11 — first — on the hybrid metric.** A complete inversion. The corrected
+> predictor says it is the *least* impactful service in the Social Network analysis set,
+> and the pilot measured exactly that (blast radius 1, the smallest observed).
+
+H2 is therefore retained only as a **structural, non-inferential observation**: classical
+composite ranking and the hybrid metric disagree about this service. Whether that
+disagreement is a *failure* of classical centrality is precisely what H1 tests, and the
+pilot evidence currently points the other way. **The paper must be prepared to report that
+its central example was ranked correctly by the metrics it set out to criticise.**
+
+**H0 for all of the above:** no monotone association beyond chance. **H0 is a publishable
+outcome.**
+
+### 1.5 A risk to H1 that must be stated before the campaign, not after **[v3]**
+
+In the pilot `ancestor_affected_count` equalled `|ancestors|` in **8 of 8** kill runs, and
+in **both** corrected latency runs (§6.1). If that identity also holds across the campaign,
+then `ancestor_count` correlates with the outcome at **rho = 1.0 by construction**, and H1
+is confirmed *tautologically* rather than empirically: the outcome would simply be a
+re-measurement of the predictor.
+
+That is a real possibility and it is declared here so that it cannot later be presented as
+a strong predictive result. The campaign's informative quantity is therefore **the rate at
+which the identity FAILS**, reported explicitly as a preregistered primary descriptive:
+
+* **`ancestor_saturation`** = fraction of runs in which
+  `ancestor_affected_count == |ancestors|`, per architecture and per fault type.
+
+Interpretation, fixed in advance:
+
+| `ancestor_saturation` | What the paper must say |
+|---|---|
+| **= 1.00** | The mechanism is deterministic: a service failing degrades *every* transitive caller. H1's rho = 1.0 is then **a restatement of the mechanism, not a predictive finding**, and the contribution is the mechanism plus the falsification of the fan-out premise — not a correlation. |
+| **< 1.00** | `ancestor_count` is a genuine upper bound that is only partly realised, and rho < 1 measures how well it predicts. This is the case in which H1 is a real test. |
+
+Either way the fan-out comparison (H1b) remains a genuine test, because the hybrid metric
+is **not** a re-measurement of the outcome.
+
+---
+
+## 2. The hybrid metric — exact formula (unchanged)
+
+$$
+\mathrm{Criticality}(v) = w_{in}C_{in}(v) + w_{out}C_{out}(v)\phi(v) + w_{btw}C_{btw}(v),
+\qquad \phi(v) = \frac{d^{+}(v)}{\max_u d^{+}(u)}
+$$
+
+| Term | Definition | NetworkX |
+|---|---|---|
+| $C_{in}$ | in-degree centrality, $d^-/(n-1)$ | `in_degree_centrality` |
+| $C_{out}$ | out-degree centrality, $d^+/(n-1)$ | `out_degree_centrality` |
+| $C_{btw}$ | betweenness, **directed** normalisation | `betweenness_centrality(normalized=True)` |
+| $\phi$ | fan-out weight, **linear** | — |
+
+Three corrections carried into the manuscript: φ is **linear** (the manuscript also states
+a quadratic form the code never implemented; they coincide only for the maximum-out-degree
+node); degree centrality divides by $(n-1)$, not $2(n-1)$; eigenvector centrality is
+**L2**-normalised.
+
+The metric is **retained in full** as a comparator. It is not being removed because it is
+expected to fail — a metric that fails a fair test is a result.
+
+---
+
+## 3. Weight protocol (unchanged: cross-arch)
+
+Tune $(w_{in}, w_{out}, w_{btw})$ on **Social Network only**, grid step 0.05 (231
+triplets); freeze to `centrality/output/tuned_weights.lock.json`; evaluate **once** on
+**Hotel Reservation**. The tuning-set ρ is not a result and is reported only as "maximum
+over 231 triplets". Enforced in code: `--protocol` is required, re-tuning over an existing
+lockfile is refused, and a second evaluation is refused.
+
+---
+
+## 4. Analysis set — gateway exclusion (unchanged from v2)
+
+Services with **in-degree 0 in the SDG** are excluded from all quantitative correlation
+analysis. Such a service receives traffic only from the external load generator, which is
+not a graph node, so it has **`ancestor_count` = 0 by construction** and cannot vary on
+the primary predictor. Killing it also takes the whole application down, leaving the
+outcome undefined.
+
+| Architecture | Excluded | Analysis n |
+|---|---|---:|
+| Social Network | `nginx-web-server` | **11** |
+| Hotel Reservation | `frontend` | **7** |
+
+Both remain in the paper as **qualitative examples, explicitly labelled**:
+*"excluded from correlation analysis — sole entry point; has no ancestors by construction,
+and its failure leaves the outcome measure undefined."*
+
+Implemented as `measurement/blast_radius.is_gateway`.
+
+> This costs Hotel Reservation its highest-fan-out service (`frontend`, out-degree 5).
+> That is a scope limitation to state, not a result.
+
+---
+
+## 5. Predictors **[v3 — primary changed]**
+
+`ancestor_count` is the **PRIMARY predictor**. All others are comparators. None may be
+dropped after seeing results.
+
+Implementation: `centrality/hybrid_weight_optimizer.ancestor_count(G)` is defined as
+`descendant_count(G.reverse(copy=False))` — the ancestors of *v* in *G* are exactly the
+descendants of *v* in reversed *G*, so there is a single traversal implementation rather
+than two. Verified against `nx.ancestors` in `tests/test_structural_metrics.py`.
+
+| # | Predictor | Role | Note |
+|---:|---|---|---|
+| 1 | **`ancestor_count`** | **PRIMARY** | transitive callers; the predictor the causal chain supports |
+| 2 | Hybrid criticality | comparator **under test** | §2; hypothesised anti-predictive (H1b) |
+| 3 | Degree | comparator | `degree_centrality` |
+| 4 | In-degree | comparator | direct callers |
+| 5 | Out-degree | comparator | fan-out; predicted *not* to work |
+| 6 | Betweenness | comparator | directed |
+| 7 | Closeness | comparator | — |
+| 8 | Eigenvector | comparator | L2 |
+| 9 | PageRank | comparator | α = 0.85 |
+| 10 | Composite | comparator | mean of 7 normalised ranks, ties `method="min"` |
+| 11 | Descendant count | comparator | reachable set |
+| 12 | Dominator subtree size | comparator | nodes disconnected on failure |
+
+### 5.1 Degenerate predictors, declared in advance **[v3]**
+
+A predictor that is **constant** across an architecture's analysis set has an undefined
+Spearman ρ. This is a degeneracy of the graph, **not a null result**, and such a pair is
+excluded from the test family so it does not dilute the FDR correction. Computed by
+`tools/compute_test_family.py` from `data/analysis/predictor_table.csv`:
+
+| Predictor | Architecture | Distinct levels | Status |
+|---|---|---:|---|
+| In-degree | Hotel Reservation | **1** (every non-gateway service has in-degree 1) | **undefined — excluded** |
+| Eigenvector | Social Network | **1** (all 0.0; the reconstructed SDG is a DAG) | **undefined — excluded** |
+
+Both are **reported in the paper as undefined, with the reason**, never as ρ = 0 and never
+silently omitted.
+
+### 5.2 Tie structure, declared in advance **[v3]**
+
+`ancestor_count` on the analysis sets (`_audit/PREDICTOR_TABLE.txt`):
+
+| Architecture | n | Values | Distinct levels |
+|---|---:|---|---:|
+| Social Network | 11 | 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4 | **4** |
+| Hotel Reservation | 7 | 1, 1, 1, 1, 1, 2, 2 | **2** |
+
+Ties cap the attainable ρ. See §7.2 for the consequence.
+
+---
+
+## 6. Outcomes
+
+### 6.1 Per-service metric semantics **[v3 — Q3 FIXED]**
+
+**This was a measurement bug and it is fixed at source.**
+
+Before: `compute_latency_percentiles` took **root-span** durations from whatever traces it
+was handed, and `get_traces_in_window(service=X)` returns every trace that *touches* X.
+"Service X's p95" was therefore the **end-to-end p95 of X's trace cohort**. Error rate had
+the identical defect: a trace counted as errored if *any* span errored, so a failure
+anywhere on a path marked every service on that path.
+
+After (`measurement/metrics_collector.select_spans`): a service's percentiles come from
+the **server spans emitted by that service**. Client spans are excluded — a client span
+emitted by X measures a *callee's* latency as observed by X, so counting it would
+re-attribute a downstream service's slowness to X. Error rate is attributed to the service
+whose own spans carry the error tag, with the denominator being the traces that service
+actually appears in. If a service's spans carry no `span.kind` tag at all, the code fails
+open to all of that service's spans and the sample count discloses it.
+
+End-to-end root-span percentiles are still used **for the gateway only**, where they are
+the correct quantity, and are labelled `scope = "end_to_end_root"` in the returned dict so
+the two can never be confused again.
+
+**Validation** (`tools/validate_per_service_p95.py`, output in `_audit/Q3_VALIDATION.txt`),
+on a real 1644-trace / 16 970-span Hotel Reservation corpus:
+
+| Service | OLD p95 (root-span) | NEW p95 (own spans) | Ratio |
+|---|---:|---:|---:|
+| geo | 15.90 | 0.55 | 28.9× |
+| rate | 15.90 | 2.61 | 6.1× |
+| reservation | 15.90 | 2.63 | 6.1× |
+| search | 15.90 | 6.17 | 2.6× |
+| profile | 15.24 | 1.75 | 8.7× |
+| recommendation | 4.39 | 0.14 | 31.4× |
+| frontend (gateway) | 14.66 | 14.66 | 1.0× |
+
+Four services reported the **identical number, 15.90 ms**, under the old rule. Their own
+spans differ by up to 4.8× among themselves and by 105× across the set.
+
+**Validation against the pilot's misclassification.** The old rule's flagged set is
+deterministic: it is the faulted service's *trace cohort*. In the HR workload the search
+path emits one trace containing exactly
+`{frontend, geo, profile, rate, reservation, search}`. The rule therefore predicts the
+flagged set `{frontend, geo, profile, rate, reservation}`. Both HR search latency pilot
+runs flagged **exactly that set — an exact match, in both runs** — including `profile` and
+`reservation`, which are **neither ancestors nor descendants of `search`** and were flagged
+purely for sharing a trace.
+
+**[LOCKED 2026-09-26] Direct measurement under a live fault.** The caveat that stood here
+in the draft — that the pilot's spans were never persisted, so the corrected per-service
+p95 could not be measured under an actual fault — has been discharged. Two fresh HR
+`search` latency runs were executed with the corrected code and with both windows' raw
+spans persisted, then replayed under **both** definitions from the same bytes
+(`tools/analyze_live_spans.py`, output `_audit/Q3_LIVE_VALIDATION.txt`).
+
+Per-service p95, baseline to fault (ms), rep 1 / rep 2:
+
+| Service | Relation to `search` | OLD (root-span) | **NEW (own server spans)** | NEW fold-change | Flagged OLD to NEW |
+|---|---|---|---|---:|---|
+| frontend | ancestor (gateway) | 14.50 to 1972.13 / 12.34 to 2046.80 | **14.50 to 1972.13 / 12.34 to 2046.80** | **136.0x / 165.9x** | YES to **YES** |
+| search | *faulted* | 16.43 to 2041.61 / 15.91 to 2275.87 | **6.50 to 1425.39 / 6.35 to 1594.33** | 219.3x / 251.1x | YES to YES |
+| geo | descendant | 16.43 to 2041.61 / 15.91 to 2275.87 | **0.52 to 0.53 / 0.58 to 0.53** | 1.02x / **0.91x** | YES to **no** |
+| rate | descendant | 16.43 to 2041.61 / 15.91 to 2275.87 | **2.61 to 3.00 / 2.68 to 3.27** | 1.15x / 1.22x | YES to **no** |
+| profile | unrelated | 16.14 to 2024.35 / 15.13 to 2209.83 | **1.58 to 1.76 / 1.39 to 1.73** | 1.11x / 1.24x | YES to **no** |
+| reservation | unrelated | 15.80 to 2018.45 / 14.67 to 2159.41 | **4.25 to 4.01 / 3.75 to 3.77** | **0.94x** / 1.01x | YES to **no** |
+| recommendation | unrelated | 5.70 to 4.66 / 4.19 to 5.02 | 0.18 to 0.13 / 0.12 to 0.10 | 0.72x / 0.83x | no to no |
+| user | unrelated | 7.49 to 7.94 / 6.86 to 6.48 | 0.05 to 0.04 / 0.04 to 0.05 | 0.80x / 1.25x | no to no |
+
+| | rep 1 | rep 2 |
+|---|---|---|
+| OLD flagged set | `[frontend, geo, profile, rate, reservation]` | `[frontend, geo, profile, rate, reservation]` |
+| **NEW flagged set** | **`[frontend]`** | **`[frontend]`** |
+| A/D/U | **1/2/2 to 1/0/0** | **1/2/2 to 1/0/0** |
+
+Three things follow, and all three are reported in the paper:
+
+1. **The OLD set reproduces the 2026-09-24 pilot's flagged set exactly, on fresh runs.**
+   The exact-set prediction made before these runs is confirmed empirically, not merely
+   structurally.
+2. **`profile` and `reservation` disappear.** They are **a measurement artifact, not
+   shared-resource contention.** The distinguishing evidence: under the corrected
+   definition their *own* spans move by 1.11x/1.24x and 0.94x/1.01x — `reservation` gets
+   *faster* in rep 1 — while the end-to-end number they had been inheriting moves ~128x.
+   Their error rates are **0.000 throughout**. A contention effect cannot leave a service's
+   own service-time flat, and cannot be negative.
+3. **Both descendants also disappear**, consistent with §1.2: `geo`'s own p95 moves 1.02x
+   and 0.91x. A `netem delay` on `search`'s container does not slow `geo`.
+
+Residual scope limit: the 14 pre-2026-09-26 pilot runs still cannot be recomputed, because
+their spans were never written. They are reclassified as **method development**, their
+A/D/U columns are not pooled with campaign data, and the two runs above supersede them for
+the latency condition. The kill-fault ancestor result (§1.3) is unaffected: under kill,
+descendants stop appearing in traces at all, so the affected set was driven by error rate
+on services still receiving traffic, not by inherited percentiles.
+
+### 6.2 Blast radius — three columns, never one
+
+**What counts as "degraded" [amendment 1, 2026-09-26].** A service is flagged for the
+fault window when **either**
+
+* **latency:** `p95_fault > 2.0 × p95_baseline` **AND**
+  `p95_fault − p95_baseline ≥ 1.0 ms` — both conditions required; or
+* **error rate:** `error_fault > error_baseline + 0.05` (absolute).
+
+Both branches are evaluated on that service's **own server spans** (§6.1) and on
+**full-precision** values. Percentiles are not rounded before the comparison; rounding to
+2 decimals put the quantisation step at 0.01 ms, which is comparable to the entire signal
+for a service whose own-span p95 is 0.02 ms. Rounding happens only for display.
+
+The single rule lives in `measurement.metrics_collector.latency_degraded` and is used by
+the runner, the recovery probe and the offline replay tool alike, so the three cannot
+drift apart. Rationale and evidence for the 1.0 ms floor: §12, amendment 1.
+
+For every service so flagged, classify its graph relation to the faulted node and store
+all three counts separately (`measurement/blast_radius.classify_affected`):
+
+| Column | Meaning |
+|---|---|
+| **`ancestor_affected_count`** | **PRIMARY OUTCOME.** Degraded services that are transitive callers of the faulted node. |
+| `descendant_affected_count` | Degraded transitive callees. Expected ≈ 0 for kill faults. |
+| `unrelated_affected_count` | Neither — shared-resource or synchronous-fan-out contention. |
+
+They are **never summed into a single total**.
+
+### 6.3 Recovery time $T_{rec}$ (unchanged from v2)
+
+> Elapsed seconds **from fault REMOVAL** — the restart command returning, or the netem
+> rule expiring — until Δp95, Δp99, Δerror-rate and downstream-affected-count are
+> **simultaneously** within **10%** of their pre-fault baseline and **hold** for a **5 s**
+> confirmation period.
+
+- Measured from removal, not injection: v1 measured from injection, which made $T_{rec}$ =
+  `fault_duration` + restart + convergence and floored it at ~34 s. Re-basing the 8 pilot
+  runs moved them from 42–56 s to **8.5–22.1 s**.
+- Tolerance is **one-sided**; an empty or thin window is "no signal", never "recovered";
+  a window never reaches back before the fault instant.
+- **Tolerance stays at 10%.** No exception is made for the censored runs; the cold-cache
+  hypothesis for one of them is a footnote in `_audit/PILOT_FINDINGS.md` §A4 and **is not
+  a rule exception**.
+
+**Censoring.** Not recovered within **180 s** ⇒ `recovery_time_s = None`,
+`recovery_censored = True`, `recovery_observed_until_s` records follow-up. **Never filled
+with a number.**
+
+**No clustering at the poll floor.** Measured over 14 pilot runs: kill $T_{rec}$ took 9
+distinct values spanning 13.84–56.47 s against an effective resolution of 1.44 s, with 0
+of 9 at or near the floor. Latency likewise. The measurement resolves genuine variation
+rather than quantising to the poll interval.
+
+### 6.4 Sampling (unchanged from v2)
+
+- **Lagged probe window:** query `[now − 15 s, now − 5 s]`, not `[now − 10 s, now]`.
+  Jaeger flushes spans in batches; a window ending at "now" samples a partially-written
+  interval.
+- **Minimum 20 traces** per sample before its percentiles may vote for recovery.
+- Nominal poll 1 s; **measured effective resolution 1.4–2.4 s** (each iteration issues
+  `1 + N_services` Jaeger queries). The paper reports the measured figure.
+
+Verified by 2 confirmation runs on the exact condition that exhibited the defect:
+
+| | median traces/sample | thin samples voting "recovered" | $T_{rec}$ |
+|---|---:|---:|---:|
+| before | 13, 18 | **6, 4** | 8.48, 9.84 |
+| after | **38, 34** | **0, 0** | 13.84, 16.47 |
+
+$T_{rec}$ is *larger* after the fix because the old values declared recovery early on
+1–17-trace windows.
+
+### 6.5 Which indicator is valid for which fault type
+
+**Δp95 is invalid as a severity measure for kill faults.** Every HR kill produced Δp95 of
+**−44 to −53 ms** while 51–56% of requests were failing: when a service dies its requests
+fail fast, so the surviving latency distribution is dominated by fast failures and p95
+*drops*. The sign is determined by the architecture, not by chance — across 10 kill runs
+it is perfectly split:
+
+| Application | n | Δp95 under kill |
+|---|---:|---|
+| Hotel Reservation | 4 | **all negative** (−44.0 to −53.4 ms) |
+| Social Network | 6 | **all positive** (+1716 to +8867 ms) |
+
+HR's Go services refuse the connection and return HTTP 500 in ~5 ms, so the tail *shrinks*;
+SN's Thrift clients block until timeout, so the tail *inflates*. **Δp95 must never be
+pooled across architectures for kill faults.**
+
+Conversely, error rate is **identically 0.000** in all latency runs — nothing fails, so it
+carries no signal.
+
+| Fault type | Primary indicator | Secondary | Not valid |
+|---|---|---|---|
+| **kill** | **error rate** (0.154–0.560, signal in 10/10) | $T_{rec}$ | **Δp95** — sign flips by architecture |
+| **latency** | **Δp95** (130–185× baseline, positive 2/2) | $T_{rec}$ | **error rate** — identically 0.000 |
+
+No single indicator is valid across both fault types. The analysis runs **per fault type
+with its own primary indicator**, and never pools indicators across fault types or (for
+kill Δp95) across architectures.
+
+---
+
+## 7. Statistical plan **[v3 — family recalculated]**
+
+**Primary test.** Spearman ρ between each predictor and each primary outcome, **per
+architecture** and **per fault type**, at the **service level** (n = 11 SN, n = 7 HR),
+aggregating repetitions by the **median**.
+
+**All p-values come from exact permutation tests** (exact enumeration where n! permits,
+otherwise 10 000 permutations), **never** the asymptotic Spearman approximation. With
+HR's 5/2 tie structure the asymptotic test has a measured false-positive rate of **0.097**
+against a nominal 0.05.
+
+**Censoring.** $T_{rec}$ is censored, so its confirmatory test is survival-based:
+Kaplan–Meier by predictor tercile, **log-rank**, and **Cox proportional hazards** with the
+predictor as a continuous covariate (hazard ratio + 95% CI) as the primary inferential
+result. Spearman ρ is reported alongside, computed on uncensored observations only and
+**labelled biased toward fast recoveries**. If under 10% of observations are censored,
+Spearman is promoted to primary — that threshold is fixed here, in advance.
+
+### 7.1 Multiple comparisons **[v3]**
+
+Family sizes are **computed, not asserted**, by `tools/compute_test_family.py`:
+
+| | |
+|---|---:|
+| Predictors | 12 |
+| Architectures | 2 |
+| Naive (predictor × architecture) pairs | 24 |
+| Dropped as constant (§5.1) | 2 |
+| **Testable pairs** | **22** |
+| Confirmatory outcomes (`ancestor_affected_count`, $T_{rec}$) | 2 |
+| **Confirmatory family — kill faults** | **44 tests** |
+| **Replication family — latency faults** | **44 tests, corrected separately** |
+
+Each family is corrected by **Benjamini–Hochberg FDR at q = 0.05** *within* the family.
+
+**[LOCKED 2026-09-26 — approved as written.] Do not pool into a single 88-test family.**
+
+**Why split rather than pool.** Pooling both fault types gives one family of 88 and
+roughly halves every per-test threshold. The hypothesis is about how a service *failing*
+propagates, and **kill is the canonical failure**; latency is a different failure mode with
+a different primary indicator (Δp95 rather than error rate), so it is a **preregistered
+replication** rather than 44 more tests of the same question. **This split is declared
+before any campaign data exists and may not be revised afterwards.** If the confirmatory
+and replication families disagree, both are reported and the disagreement is the finding.
+
+**Exploratory family.** Δp95, Δp99, Δerror, `descendant_affected_count`,
+`unrelated_affected_count` — corrected separately and **labelled exploratory** wherever
+they appear.
+
+**Effect size.** ρ with bootstrap BCa 95% CI (10 000 resamples); hazard ratio with 95% CI.
+A significant result whose CI crosses a negligible effect is reported as **inconclusive**,
+not as support.
+
+### 7.2 Power — stated, not hedged
+
+n = 11 and n = 7 services. **This study is underpowered at the service level and says so
+plainly.** Increasing repetitions does not help: the unit of analysis is the service, and
+there are only 11 and 7.
+
+| | n | `ancestor_count` levels | best attainable ρ | permutation FPR at α = 0.05 |
+|---|---:|---:|---:|---:|
+| Social Network | 11 | 4 | 0.941 (p < 0.0001) | 0.054 |
+| **Hotel Reservation** | **7** | **2** | **0.791 (p = 0.034)** | **0.097** |
+
+**Hotel Reservation is held-out and DIRECTIONAL ONLY [v3, decision Q1].** Even a *perfect*
+HR result is barely significant. HR is **never reported as confirmatory**, in any section,
+for any predictor. All HR inference uses exact permutation tests. This is a structural
+limit of two-benchmark designs and belongs in Limitations, not in a hedge.
+
+---
+
+## 8. Data collection plan **[v3 — CPU dropped]**
+
+**Campaign = kill + latency only. CPU stress is out of scope [decision Q2].**
+
+`pumba stress --cpu 2` produced only **1.86–2.03×** baseline p95 against latency's
+**130–185×**; its blast classification **flipped between two runs of the same condition**
+(A/D/U = 0/2/0 vs 1/0/0), i.e. noise-dominated at that effect size; and 1 of 2 runs
+censored. It would have consumed ~90 runs and 4–5 h for the weakest signal. The paper
+states CPU as out of scope **with these measured numbers**, not as an unexplained omission.
+
+**Target: 5 repetitions per (service × fault type), balanced.**
+
+| Architecture | Services faulted | Fault types | Reps | Runs |
+|---|---:|---:|---:|---:|
+| Social Network | 11 (gateway excluded) | 2 (kill, latency) | 5 | **110** |
+| Hotel Reservation | 7 (gateway excluded) | 2 (kill, latency) | 5 | **70** |
+| | | | | **180** |
+
+The total is unchanged from v2's recommended option — v2's 180 already assumed kill +
+latency. Dropping CPU removes the 270-run alternative, not runs from the plan.
+
+- **Balance is mandatory.** Prior batches were unbalanced precisely on the services
+  carrying the headline claims. A failed run is **re-run**, never topped up unevenly.
+- Faults: Pumba `kill --signal SIGKILL`; `netem delay --time 500 --jitter 100`.
+  netem is launched with `Popen` and the runner waits for that process before recording
+  the removal instant — running it synchronously let the rule expire before the fault
+  window began (`_quarantine/QUARANTINE_LOG.md` item 10).
+- Protocol per run: 60 s warm-up → baseline → 30 s fault → recovery probe to 180 s → 20 s
+  cooldown. **This is what will actually run**; the manuscript's stated protocol was never
+  what the code did.
+- **A run with `telemetry_ok = False` is discarded and re-run**, never analysed as zeros.
+- The runner holds a PID lockfile and refuses to start concurrently — the defect that
+  corrupted 3 SN pilot runs (`_quarantine/QUARANTINE_LOG.md` item 9).
+- **[v3] Raw spans are persisted per run** (§9) for **both** the baseline and the fault
+  window, so any future definitional change can be replayed instead of re-run. Measured
+  cost: **~0.55 MB per run** gzipped (2 HR runs produced 1.1 MB in total), so ~100-300 MB
+  for the campaign. An earlier 1-2 GB estimate was wrong by an order of magnitude.
+- **[v3] `baseline_per_service` is recorded for every service**, not just the gateway. The
+  blast-radius rule compares against it, so omitting it made the classification
+  unauditable after the fact.
+
+**Measured timing.** Median run 116 s, mean 133 s over 14 pilot runs (max 244 s, censored).
+
+| Scope | Runs | Estimated pure run time | Realistic with swaps / seeding / re-runs |
+|---|---:|---:|---:|
+| **kill + latency** | **180** | **~6.7 h** | **8–11 h** |
+
+One stack at a time is a hard constraint (`_audit/MEMORY_CEILING.md`).
+
+---
+
+## 9. Campaign execution requirements **[v3 — new]**
+
+The campaign runs unattended for 8–11 h, so these are preregistered properties of the
+runner, not implementation details:
+
+1. **Manifest-driven.** Every `(app, service, fault_type, repetition)` combination is
+   enumerated up front with a status of `pending` / `running` / `done` / `failed` /
+   `censored`. The manifest is the single source of truth for what has run.
+2. **Resumable.** A combination already marked `done` is never re-run. Re-launching after
+   an interruption continues rather than restarting.
+3. **Crash-isolated.** A failure in one run — exception, dead container, unresponsive
+   stack — is logged in full, marked `failed`, the stack is restored to a clean state, and
+   the campaign continues to the next combination. One bad run never aborts the campaign.
+4. **Single-stack enforcement.** `RunLock` guarantees one stack and one fault injection at
+   a time.
+5. **Append-only progress log**, readable without interrupting the process.
+6. **Raw spans persisted per run**, so a definitional change can be replayed offline.
+
+A failed combination is re-run to preserve balance (§8); a **censored** combination is a
+**legitimate observation**, not a failure, and is never re-run to obtain a number.
+
+---
+
+## 10. Reporting commitments
+
+1. **If the result is null, it is reported as null.** If the hybrid metric does not beat
+   in-degree on the held-out architecture after FDR correction, the paper says the fan-out
+   correction did not predict impact under this measurement setup. No predictor redefined,
+   no fault type dropped, no service excluded, no outcome swapped to improve it.
+2. **[v3] The hypothesis reversal is reported prominently**, in its own section, including:
+   that the corrected causal direction **contradicts the hybrid metric's premise**; that
+   `compose-post-service` — the paper's central "false negative" — has the **lowest
+   `ancestor_count` in its analysis set and ranks 11/11 on the primary predictor while
+   ranking 1/11 on the hybrid metric**; and that H1b predicts the hybrid metric is
+   anti-predictive.
+3. **Every number is produced by a script reading `data/raw/`, `data/pilot/` or
+   `data/campaign/`**, with script and commit recorded. No number is typed into the
+   manuscript by hand.
+4. **All 44 confirmatory and all 44 replication tests are reported**, significant or not,
+   with corrected p-values, plus the 2 excluded degenerate pairs and why.
+5. **Deviations from this document are listed** in a "Deviations from preregistration"
+   section with dates and reasons.
+6. **The audit is cited.** The paper states that an earlier analysis was withdrawn after
+   fabricated data was found, and what changed.
+7. **[v3] The measurement bugs are disclosed**, with the pilot runs affected: the
+   root-span per-service metric defect (§6.1), the blocking-`pumba` defect
+   (`_quarantine/QUARANTINE_LOG.md` item 10), and the concurrent-run contamination
+   (item 9).
+8. **The structural result stands on its own.** That classical composite ranking and the
+   fan-out hybrid disagree about high-fan-out orchestrators is reproducible from
+   `data/graphs/` alone and needs no fault-injection data. If H1 is null this becomes the
+   paper's main claim.
+
+---
+
+## 11. Decisions closed since v2 **[v3]**
+
+| Question | Decision | Where it lands |
+|---|---|---|
+| **Q1 — Hotel Reservation's role** | **Held-out, directional only.** Exact permutation tests throughout; the asymptotic Spearman p-value is never used (measured FPR 0.097 at n = 7). **HR is never reported as confirmatory.** | §3, §7.2 |
+| **Q2 — Fault types** | **Drop CPU entirely. Campaign = kill + latency.** | §8 |
+| **Q3 — Per-service metric semantics** | **Fixed at source**, for percentiles *and* error rate. Validated three ways: against a real 16 970-span corpus; by exact flagged-set prediction against the earlier latency runs; and **by direct measurement under a live fault on 2 fresh runs (2026-09-26), where the flagged set went `[frontend, geo, profile, rate, reservation]` to `[frontend]` in both reps.** `profile` and `reservation` were an artifact, not contention. The 14 earlier pilot runs become **method development** and are not pooled with campaign data. | §6.1 |
+| **Primary predictor** | **`ancestor_count`**, implemented by graph reversal reusing `descendant_count`. | §5 |
+| **Comparators** | Hybrid, degree, in-degree, out-degree, betweenness, closeness, eigenvector, PageRank, composite, descendant count, dominator subtree size — all retained, none droppable post hoc. | §5 |
+| **Gateways** | Excluded from quantitative correlation; retained as labelled qualitative examples. | §4 |
+| **$T_{rec}$** | From fault removal; 10% tolerance unchanged; min-trace floor and lagged window retained. | §6.3, §6.4 |
+| **FDR family** | **44 confirmatory (kill) + 44 replication (latency)**, corrected separately, derived by `tools/compute_test_family.py`. | §7.1 |
+
+### Record of the one decision that was escalated
+
+The **confirmatory / replication split** (§7.1) was flagged in the draft as a decision the
+document made rather than one it had been given, the alternative being a single pooled
+family of 88 tests. It was **put to the principal investigator and approved as written on
+2026-09-26**: two families of 44, each corrected separately by BH-FDR at q = 0.05,
+**not** pooled. It is now locked and may not be revised.
+
+---
+
+## 12. Amendment log (changes after lock)
+
+Every change made after the lock timestamp appears here, with what was found, the evidence,
+the fix, and when it was made relative to data collection. Nothing in this document is
+edited silently.
+
+### Amendment 1 — absolute floor on the latency-degradation threshold
+
+| | |
+|---|---|
+| **Date** | 2026-09-26 |
+| **Made before any campaign data existed or was analysed?** | **Yes.** Found during the pre-launch rehearsal (§9 verification sequence), before the campaign was launched. 3 rehearsal runs existed; all 3 were invalidated and reset to `pending` rather than kept (see below). No analysis had been run on any campaign data. |
+| **Sections affected** | §6.2 (definition of "degraded") |
+| **Approved by** | Principal investigator, 2026-09-26 |
+
+**What was found.** The blast-radius rule flagged a service on a purely multiplicative
+condition, `p95_fault > 2.0 × p95_baseline`, with no absolute floor. That was safe only for
+as long as "service X's p95" was in fact the **end-to-end** p95 of X's trace cohort — tens
+of milliseconds for every service, where sub-millisecond noise could never produce a 2×
+move. The Q3 fix (§6.1) made percentiles genuinely per-service, which is correct, and in
+doing so moved **8 of 20 services into the 0.02–0.58 ms range**, where a multiplicative
+threshold has no physical meaning. Percentiles were additionally rounded to 2 decimals
+before the comparison, putting the quantisation step at 0.01 ms — roughly half the entire
+baseline value for the smallest services.
+
+**Evidence** (`tools/check_threshold_floor.py`, over 5 fault-free baseline windows from
+persisted spans):
+
+> `socialnetwork url-shorten-service  0.02 → 0.06 ms  (3.00×)  with NO fault present`
+
+Baseline-to-baseline variation alone exceeded the threshold, so the rule reported
+"degraded" for a service nothing had happened to. `url-shorten-service` is precisely the
+service the rehearsal flagged as a degraded **descendant** of `compose-post-service` — the
+first descendant ever flagged in a kill run, and an artifact. Its own-span p95 moved
+0.019 → 0.073 ms: 3.84×, and **+0.054 ms**.
+
+This contaminated `ancestor_affected_count`, the **primary outcome**, and
+`descendant_affected_count`, whose interpretive weight rests entirely on being ≈ 0.
+
+**The fix.** A second, absolute condition is now required alongside the relative one:
+
+```
+p95_fault > 2.0 × p95_baseline          AND     p95_fault − p95_baseline ≥ 1.0 ms
+```
+
+Percentiles are no longer rounded before comparison. `1.0 ms` was chosen because it is
+~100× the microsecond granularity of a Jaeger span duration, exceeds every observed
+baseline-to-baseline drift, and sits far below the smallest genuine effect measured in any
+pilot run (+36.7 ms, CPU stress). The **error-rate branch of the same rule already carried
+an absolute floor** (+0.05 absolute); this is its latency counterpart, not a new kind of
+constraint. Implemented once, in `measurement.metrics_collector.latency_degraded`, and
+shared by the runner, the recovery probe and the offline replay tool. Covered by 8 tests in
+`tests/test_per_service_metrics.py`.
+
+**Effect on the 3 rehearsal runs.** Recomputed from persisted spans
+(`_audit/REHEARSAL_RECOMPUTED.txt`):
+
+| Run | A/D/U as recorded | A/D/U recomputed | Change |
+|---|---|---|---|
+| `socialnetwork \| compose-post-service \| kill \| 1` | **1/1/0** | **1/0/0** | `url-shorten-service` dropped |
+| `socialnetwork \| home-timeline-service \| kill \| 1` | 2/0/0 | 2/0/0 | none |
+| `socialnetwork \| media-service \| kill \| 1` | 2/0/0 | 2/0/0 | none |
+
+With the floor applied, **0 descendants are degraded in any of the 3 runs**, restoring the
+pattern seen in every earlier kill run.
+
+**Why those 3 runs were nevertheless discarded rather than corrected.** Blast radius is
+recomputable from persisted spans; **$T_{rec}$ is not.** The recovery probe re-evaluates
+the same degradation rule once per poll over its own short windows, and those windows were
+**not** persisted — only the baseline and fault windows are. Inspection of the recorded
+`recovery_samples` shows `downstream_affected` was **1–3 in the majority of samples (27/40,
+11/20, 9/15), and in every case in samples preceding the first all-clear**, so the
+contaminated count was actively gating the recovery decision. In
+`compose-post-service|kill|1` the first all-clear sample is at t = 13.85 s while $T_{rec}$
+was recorded as 54.39 s — a 40-second gap that sub-millisecond noise repeatedly breaking
+the 5 s confirmation hold would explain. The size of that inflation cannot be recovered
+from what is on disk.
+
+Since $T_{rec}$ is one of the two primary outcomes, the 3 runs were **reset to `pending`**
+and will be collected again by the campaign under the amended rule. Cost: ~8 minutes of an
+8–11 hour campaign. The benefit is that **every row in the final dataset was produced by
+one code path at one commit**, with no provenance asymmetry to document or defend.
+
+**Provenance note for the paper.** This amendment is disclosed under reporting commitment
+§10.5 (deviations) and §10.7 (measurement bugs disclosed). It is an instance of the
+pre-launch rehearsal doing its job: the defect was introduced by a *correct* fix, was
+invisible in aggregate outputs, and was caught only because the rehearsal produced a single
+anomalous descendant count that was then traced rather than accepted.
+
+---
+
+### Amendment 2 — fault targeting resolved by compose label, and stack completeness enforced
+
+| | |
+|---|---|
+| **Date** | 2026-09-26 |
+| **Made after analysing campaign data?** | **No.** Found by a run *failure* 79 minutes into the campaign, which was stopped immediately. No analysis had been run on any campaign output. |
+| **Sections affected** | §8 (fault targeting), §9 (execution requirements) |
+| **Campaign runs invalidated** | 3 of the 30 completed; quarantined as item 12 and reset to `pending` |
+
+**What was found — two defects, one silent.**
+
+*Defect A: the fault was injected into the wrong container.* `container_for()` resolved a
+compose service name to a container by **substring match on the container name**, taking the
+shortest match. The compose project is `hotelReservation`, so every container is prefixed
+`hotelreservation-`, which **contains the substring `reservation`**. For
+`service="reservation"` every container in the project matched and the shortest was selected:
+
+```
+container_for('reservation')  ->  hotelreservation-geo-1
+```
+
+So `reservation|kill|1` **SIGKILLed `geo`** and recorded the run as a `reservation` fault.
+Restoration then ran `docker compose up -d reservation`, restarting a service that had never
+been down and **leaving `geo` dead**.
+
+*Defect B: a partial stack passed the health check.* `stack_healthy()` verified only that
+Jaeger answered and that the gateway answered HTTP. Both remained true with `geo` dead — the
+gateway keeps serving. So the next two runs, `search|kill|1` and `user|kill|1`, executed
+against a stack missing `geo` (and with `rate` consequently receiving no traffic, since the
+HR path is `frontend → search → {geo, rate}` and fails at `geo`), and were marked **`done`**
+with `A/D/U = 0/0/0, T_rec = 0.0 s` and `T_rec = 140.08 s` respectively.
+
+`geo|latency|1` then failed with `no running container matches 'geo'`. **That failure was the
+symptom, three runs downstream of the cause.** Had `geo` not itself been due for a fault, the
+contamination would have continued silently.
+
+**The fixes.**
+
+1. `container_for()` resolves by the **`com.docker.compose.service` label**, an exact value;
+   it re-verifies the returned label, and **raises on zero matches or on an ambiguous match
+   rather than guessing**. Quietly faulting a service other than the one being recorded is
+   never preferable to stopping.
+2. `stack_healthy()` additionally requires that **every service in the canonical graph has a
+   running container**, and names any missing ones in the progress log.
+3. `tools/audit_run_topology.py` re-derives per-run topology completeness from each run's
+   **fault-free baseline spans**. This is a standing pre-analysis gate: it must be run over
+   the campaign output and report zero incomplete runs before any statistics are computed.
+4. 21 regression tests in `tests/test_container_resolution.py`, including the exact
+   `reservation` → `geo` case, the `user-service` / `user-timeline-service` confusion it
+   could have caused in Social Network, ambiguous-match refusal, and the partial-stack health
+   case. Full suite: 93 passing.
+
+**Scope of the damage — bounded, and verified rather than assumed.** The topology audit over
+all 30 completed runs found **2 with an incomplete baseline**; the third invalid run is the
+mis-targeted one, identified from its recorded `container` field. **All 22 Social Network runs
+were clean**, and the collision cannot occur there: no Social Network service name is a
+substring of the project name `socialnetwork`. The 5 surviving HR runs targeted their own
+containers and had complete baselines.
+
+**Why this is disclosed rather than quietly repaired.** Under §10.7 every measurement bug is
+reported with the runs affected. It also revises one claim made earlier in this document: §9
+asserted that crash isolation plus a health check made unattended running safe. It did not —
+the health check was too weak to notice a missing service, and the runner's own failure
+handling restored the *named* service rather than verifying the stack. Both are now addressed,
+but the general lesson belongs in Limitations: **an unattended fault-injection campaign needs
+to verify the topology it is measuring before every run, not only that the front door
+answers.**
+
+---
+
+### Amendment 3 — leaked `pumba netem` rule, and a baseline-sanity gate
+
+| | |
+|---|---|
+| **Date** | 2026-09-26 |
+| **Made after analysing campaign data?** | **No.** Found by the pre-analysis gates immediately after the 180th run completed, before any statistic was computed. |
+| **Sections affected** | §8 (fault removal), §9 (execution requirements) |
+| **Campaign runs invalidated** | 11, quarantined as item 13, reset and re-collected |
+
+**What was found.** `pumba netem delay --time 500 --jitter 100 --duration 30s` was applied to
+`compose-post-service` at 05:31:41. The pumba process exited normally and the runner recorded
+the removal instant from its exit. **The tc rule did not go away with it.** It stayed active
+for the whole remainder of the Social Network latency rep-1 block and was cleared only by the
+stack teardown 28 minutes later.
+
+Evidence, from the persisted **fault-free baseline** spans:
+
+| Window | `compose-post-service` own-span p95, in a baseline |
+|---|---:|
+| 05:31:41, the origin run itself | 8.87 ms |
+| 05:34:02 – 05:56:51, 10 runs | **2153 – 2486 ms** |
+| 07:29:54 onward, rep 2, after a teardown | **9.0 – 9.8 ms** |
+
+Gateway baseline p95 across those 10 runs was **3132 – 4046 ms against a campaign median of
+54.87 ms** — 57–74× the median, 8600–11100 MAD.
+
+**Why it was dangerous rather than merely noisy.** The distortion is **directional**. The rule
+asks whether fault p95 exceeds 2× baseline, so an inflated baseline makes the fault look
+*smaller*. The faulted services' ancestors — `nginx-web-server` and `compose-post-service` —
+were **already degraded in the baseline**, so they could not clear 2× their own inflated
+values and went uncounted. `ancestor_affected_count`, the **primary outcome**, came out low by
+exactly 2 in most of the ten:
+
+| Service | rep 1, contaminated | rep 2, clean |
+|---|---:|---:|
+| home-timeline, media, text, unique-id, user, user-timeline | **0** | 2 |
+| social-graph, url-shorten, user-mention | **1** | 3 |
+| post-storage | **2** | 4 |
+
+Every one of the ten is understated. Analysed as collected, this would have flattened the
+Social Network H1 correlation and been **indistinguishable from genuine measurement noise**.
+No individual run record looked anomalous; only the cross-run comparison exposed it.
+
+The origin run was invalid for a separate reason: it is recorded as censored on `p95`, but the
+fault was **still active throughout its recovery probe**, so its censoring carries no
+information about recovery speed. It was the campaign's only censored observation; the
+corrected dataset has **none**.
+
+**The fixes.**
+
+1. **`one_run` force-recreates the target container after every non-kill fault run**
+   (`docker compose up -d --force-recreate`). A fresh container cannot carry a residual qdisc.
+   It runs *after* the fault window and *after* the recovery probe, so it cannot influence the
+   run that just completed; its only purpose is to guarantee the next run starts clean. Kill
+   runs already received a fresh container by necessity. Recorded per run as `fault_cleanup`.
+2. **`tools/audit_baseline_sanity.py`** — a standing pre-analysis gate. It flags any run whose
+   baseline p95 is an outlier for its application, by median and MAD. This is the check that
+   caught the incident.
+
+**Pre-analysis gates, now mandatory.** Before any statistic is computed, both must report
+zero:
+
+| Gate | Question | Status on the final 180 |
+|---|---|---|
+| `tools/audit_run_topology.py` | Was every expected service present, per run? | **0 of 180 incomplete** |
+| `tools/audit_baseline_sanity.py` | Was each baseline a steady state? | **0 of 180 anomalous** |
+
+**A limitation this creates, stated rather than buried.** Fault removal is inferred from the
+pumba process exiting, and this incident proves that inference can be wrong. The container
+recreation now bounds the *consequence* to a single run, but the runner still cannot prove,
+from within a run, that the rule was gone when the recovery probe started. `T_rec` for latency
+faults therefore carries a residual assumption that the paper must state: **if a netem rule
+leaked within a run, that run's `T_rec` would be inflated and the baseline gate would not
+detect it**, because the run's own baseline precedes the fault. The cross-run baseline gate
+catches leaks that outlive a run, which is the case observed; a leak confined to one run
+remains undetectable with the current instrumentation. Detecting it would require querying
+the container's qdisc directly, which is outside this project's remaining scope and is listed
+as future work.
+
+### Deviation 9 — primary test's raw p superseded by exact enumeration
+
+**This is a deviation record, not an amendment.** Amendments 1–3 above changed the
+specification, and all three were made before any campaign data was analysed. This entry
+changes nothing in the specification and was made *after* the confirmatory analysis was
+complete, committed and reported. It is logged here so that §12 remains the single place
+where every post-lock departure is recorded, and it is reported in
+`analysis/final/deviations.csv` as deviation 9.
+
+| | |
+|---|---|
+| **Date** | 2026-09-28 |
+| **Made before any campaign data was analysed?** | **No.** Made after the full analysis was complete and its verdict known. See the safeguard note below. |
+| **Sections affected** | None. §3 and §7.2 already mandate the exact permutation test; this brings the computation into line with them. |
+| **Campaign runs invalidated** | 0 |
+
+**What was found.** §3 and §7.2 mandate exact permutation tests. The implementation
+enumerated exactly only when `n! ≤ 200,000`, so Hotel Reservation (7! = 5,040) was exact
+but Social Network (11! = 39,916,800) fell back to 10,000 Monte-Carlo permutations. The
+locked raw p for the primary test is therefore a Monte-Carlo estimate, **0.0080**, where
+§3 asks for an exact value.
+
+**Why the fallback was unnecessary.** The permutation null distribution of Spearman's ρ
+depends only on the two rank vectors. Permuting the vector carrying *more ties* generates
+the identical null distribution from far fewer **distinct arrangements**. The primary
+test's predictor has tie multiset {1×1, 2×6, 3×3, 4×1}, which reduces 39,916,800
+permutations to **9,240 distinct arrangements** — trivially enumerable. Choosing which
+vector to permute is a computational decision with no statistical content.
+
+**The exact value.**
+
+| quantity | value |
+|---|---:|
+| Spearman ρ | 0.785119 (unchanged) |
+| raw p, locked (10,000 Monte-Carlo) | 0.0080 |
+| raw p, **exact enumeration** | **64 / 9,240 = 0.00692641** |
+| BH-adjusted p, locked | 0.3451 |
+| BH-adjusted p, exact substituted | **0.3048** |
+| significant at q = 0.05 | **No → No** |
+
+A supplementary note issued earlier the same day (`analysis/final/blind_recompute.md`)
+quoted **0.006883** from 2,000,000 Monte-Carlo pairings and described it as
+high-resolution. That is also an estimate, not an exact value, and is superseded by
+0.00692641. The gap, 4.3 × 10⁻⁵, is within Monte-Carlo error at that resample count.
+
+**What changed, and what did not.** Nothing in the locked analysis. The exact p-values and
+a BH-FDR rerun using them are written to a *separate supplementary file*,
+`analysis/final/exact_p_supplement.csv` (and `.md`), which refines **43 of the 44**
+confirmatory tests — the 44th has an undefined p, its predictor being constant. No locked
+output was overwritten or regenerated. No ρ, confidence interval, effect size, outcome
+definition, service, predictor or verdict changed. **0 of 44 confirmatory tests are
+significant at q = 0.05, before and after.**
+
+**Safeguard, stated because this was done with the result already known.** A p-value
+refinement made after seeing a null result is exactly the shape of a rescue attempt, so
+the guards are recorded explicitly. The refinement was applied to **all 43 testable tests
+in the family, not to the primary test alone**, so it could not be targeted. It is a
+change of *computation*, not of hypothesis, test statistic, analysis unit, outcome or
+family membership — the same test on the same data, enumerated instead of sampled. It
+moves the primary test's adjusted p from 0.3451 to 0.3048, still roughly an order of
+magnitude above the threshold, and the direction of the change was not knowable in advance
+(the Monte-Carlo estimate could have been low as easily as high; an independent
+10,000-resample run with a different seed gave 0.0059, on the other side). Had it changed
+the verdict, that would itself have been reportable as a deviation and the locked result
+would still stand as the preregistered one.
+
+---
+
+---
+
+| | |
+|---|---|
+| **Locked by** | Principal investigator, 2026-09-26 (§7.1 approved as written; Q1/Q2/Q3 issued 2026-09-25) |
+| **Date** | 2026-09-26 |
+| **Code and data state at lock** | `eaadaf1` — the commit containing every script the campaign executes, the canonical graphs, and the Q3 live-validation runs |
+| **Frozen copy** | `_audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md` |
+| **Amendments after lock** | 3 (§12), all 2026-09-26, none after analysing campaign data |
+| **Deviations after analysis** | 1 (§12 deviation 9, 2026-09-28): the primary test's raw p refined from Monte-Carlo to exact enumeration, in a supplementary file only. Verdict unchanged. |
+| **Campaign collected** | 180/180 runs, 2026-09-26 04:19-13:35 UTC, 0 failed, 0 censored, perfectly balanced (36 cells x 5 reps). Both pre-analysis gates clean. |

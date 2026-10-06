@@ -1,0 +1,357 @@
+{
+  "app": "socialnetwork",
+  "service": "home-timeline-service",
+  "fault_type": "latency",
+  "repetition": 1,
+  "ancestor_affected_count": 2,
+  "descendant_affected_count": 0,
+  "unrelated_affected_count": 0,
+  "ancestor_affected_services": "compose-post-service,nginx-web-server",
+  "descendant_affected_services": "",
+  "unrelated_affected_services": "",
+  "n_ancestors": 2,
+  "n_descendants": 3,
+  "in_degree_raw": 2,
+  "out_degree_raw": 2,
+  "is_gateway": false,
+  "excluded_from_correlation": false,
+  "fault_removal_offset_s": 36.96,
+  "raw_spans": {
+    "baseline_window": {
+      "path": "data/spans/spans_socialnetwork_home-timeline-service_latency_rep1_20260926T131257Z_baseline_window.json.gz",
+      "trace_count": 306,
+      "bytes": 125247
+    },
+    "fault_window": {
+      "path": "data/spans/spans_socialnetwork_home-timeline-service_latency_rep1_20260926T131257Z_fault_window.json.gz",
+      "trace_count": 76,
+      "bytes": 37250
+    }
+  },
+  "fault_cleanup": {
+    "performed": true,
+    "returncode": 0,
+    "stderr_tail": "ntial confusion\"\n Container socialnetwork-jaeger-agent-1 Running \n Container socialnetwork-home-timeline-service-1 Recreate \n Container socialnetwork-home-timeline-service-1 Recreated \n Container socialnetwork-home-timeline-service-1 Starting \n Container socialnetwork-home-timeline-service-1 Started"
+  },
+  "baseline_window_us": [
+    1790428285157797,
+    1790428345157797
+  ],
+  "fault_window_us": [
+    1790428346729841,
+    1790428376791583
+  ],
+  "baseline_per_service": {
+    "compose-post-service": {
+      "p50_ms": 1.268,
+      "p95_ms": 7.944349999999997,
+      "p99_ms": 11.409269999999998,
+      "mean_ms": 2.0327407407407407,
+      "span_count": 648,
+      "trace_count": 81,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:compose-post-service"
+    },
+    "home-timeline-service": {
+      "p50_ms": 0.6605000000000001,
+      "p95_ms": 2.1413499999999996,
+      "p99_ms": 3.1843099999999938,
+      "mean_ms": 0.8130749999999999,
+      "span_count": 480,
+      "trace_count": 203,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:home-timeline-service"
+    },
+    "media-service": {
+      "p50_ms": 0.01,
+      "p95_ms": 0.019049999999999984,
+      "p99_ms": 0.03834999999999998,
+      "mean_ms": 0.011216216216216216,
+      "span_count": 74,
+      "trace_count": 74,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:media-service"
+    },
+    "nginx-web-server": {
+      "p50_ms": 2.987,
+      "p95_ms": 54.147,
+      "p99_ms": 56.71641,
+      "mean_ms": 12.73557622739018,
+      "span_count": 774,
+      "trace_count": 258,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:nginx-web-server"
+    },
+    "post-storage-service": {
+      "p50_ms": 0.481,
+      "p95_ms": 2.0098499999999984,
+      "p99_ms": 3.5215300000000007,
+      "mean_ms": 0.5808363636363636,
+      "span_count": 440,
+      "trace_count": 267,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:post-storage-service"
+    },
+    "social-graph-service": {
+      "p50_ms": 0.628,
+      "p95_ms": 1.6992999999999985,
+      "p99_ms": 2.029869999999999,
+      "mean_ms": 0.7325375,
+      "span_count": 240,
+      "trace_count": 80,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:social-graph-service"
+    },
+    "text-service": {
+      "p50_ms": 0.5605,
+      "p95_ms": 1.5907,
+      "p99_ms": 2.22301,
+      "mean_ms": 0.7527117117117116,
+      "span_count": 222,
+      "trace_count": 74,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:text-service"
+    },
+    "unique-id-service": {
+      "p50_ms": 0.023,
+      "p95_ms": 0.044699999999999955,
+      "p99_ms": 0.13634999999999978,
+      "mean_ms": 0.027537500000000003,
+      "span_count": 80,
+      "trace_count": 80,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:unique-id-service"
+    },
+    "url-shorten-service": {
+      "p50_ms": 0.01,
+      "p95_ms": 0.017049999999999982,
+      "p99_ms": 0.046059999999999685,
+      "mean_ms": 0.011486486486486487,
+      "span_count": 74,
+      "trace_count": 74,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:url-shorten-service"
+    },
+    "user-mention-service": {
+      "p50_ms": 0.01,
+      "p95_ms": 0.019,
+      "p99_ms": 0.04844999999999986,
+      "mean_ms": 0.011445945945945947,
+      "span_count": 74,
+      "trace_count": 74,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:user-mention-service"
+    },
+    "user-service": {
+      "p50_ms": 0.01,
+      "p95_ms": 0.019,
+      "p99_ms": 0.10025,
+      "mean_ms": 0.014513157894736842,
+      "span_count": 76,
+      "trace_count": 76,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:user-service"
+    },
+    "user-timeline-service": {
+      "p50_ms": 0.504,
+      "p95_ms": 4.350499999999998,
+      "p99_ms": 6.526639999999995,
+      "mean_ms": 1.0174373716632443,
+      "span_count": 487,
+      "trace_count": 148,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:user-timeline-service"
+    }
+  },
+  "recovery_measured_from": "fault_removal",
+  "recovery_min_traces": 20,
+  "recovery_lag_s": 5.0,
+  "timestamp": "2026-09-26T13:13:29.613856+00:00",
+  "container": "socialnetwork-home-timeline-service-1",
+  "baseline_p95_ms": 54.147,
+  "baseline_p99_ms": 56.71641,
+  "baseline_error_rate": 0.0,
+  "baseline_trace_count": 258,
+  "fault_p95_ms": 2753.2299999999987,
+  "fault_p99_ms": 3195.6314000000007,
+  "fault_error_rate": 0.0,
+  "fault_trace_count": 73,
+  "telemetry_ok": true,
+  "downstream_affected_count": 2,
+  "downstream_affected_services": "compose-post-service,nginx-web-server",
+  "recovery_time_s": 14.86,
+  "recovery_censored": false,
+  "recovery_observed_until_s": 21.27,
+  "recovery_first_ok_at_s": 14.86,
+  "recovery_blocking_indicator": null,
+  "recovery_poll_interval_s": 1.0,
+  "container_restart_time_s": 3.37,
+  "wall_clock_s": 124.46,
+  "recovery_samples": [
+    {
+      "t_s": 0.0,
+      "t_since_fault_start_s": 36.96,
+      "trace_count": 12,
+      "p95_ms": 1697.2171999999998,
+      "p99_ms": 1862.9018400000002,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": false
+    },
+    {
+      "t_s": 1.4,
+      "t_since_fault_start_s": 38.36,
+      "trace_count": 11,
+      "p95_ms": 1716.045,
+      "p99_ms": 1866.6674000000003,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": false
+    },
+    {
+      "t_s": 2.83,
+      "t_since_fault_start_s": 39.79,
+      "trace_count": 21,
+      "p95_ms": 1921.587,
+      "p99_ms": 2085.5182000000004,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 4.28,
+      "t_since_fault_start_s": 41.24,
+      "trace_count": 23,
+      "p95_ms": 1986.2681999999998,
+      "p99_ms": 2097.23088,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 5.68,
+      "t_since_fault_start_s": 42.64,
+      "trace_count": 25,
+      "p95_ms": 1979.0813999999998,
+      "p99_ms": 2094.56996,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 7.16,
+      "t_since_fault_start_s": 44.12,
+      "trace_count": 29,
+      "p95_ms": 1964.7078,
+      "p99_ms": 2089.24812,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 8.63,
+      "t_since_fault_start_s": 45.59,
+      "trace_count": 28,
+      "p95_ms": 1897.8199,
+      "p99_ms": 1974.05064,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 10.15,
+      "t_since_fault_start_s": 47.11,
+      "trace_count": 25,
+      "p95_ms": 1908.0058,
+      "p99_ms": 1976.2066799999998,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 11.66,
+      "t_since_fault_start_s": 48.62,
+      "trace_count": 23,
+      "p95_ms": 1834.6993999999997,
+      "p99_ms": 1962.7047200000002,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 13.29,
+      "t_since_fault_start_s": 50.25,
+      "trace_count": 41,
+      "p95_ms": 1193.38,
+      "p99_ms": 1937.5454000000002,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 14.86,
+      "t_since_fault_start_s": 51.82,
+      "trace_count": 42,
+      "p95_ms": 54.681599999999996,
+      "p99_ms": 56.36807999999999,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 16.44,
+      "t_since_fault_start_s": 53.4,
+      "trace_count": 46,
+      "p95_ms": 54.79425,
+      "p99_ms": 56.55835,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 18.13,
+      "t_since_fault_start_s": 55.09,
+      "trace_count": 39,
+      "p95_ms": 54.5154,
+      "p99_ms": 56.586839999999995,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 19.7,
+      "t_since_fault_start_s": 56.66,
+      "trace_count": 31,
+      "p95_ms": 54.945,
+      "p99_ms": 56.7294,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 21.27,
+      "t_since_fault_start_s": 58.23,
+      "trace_count": 27,
+      "p95_ms": 55.1598,
+      "p99_ms": 56.80068,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    }
+  ]
+}

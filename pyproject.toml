@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "microservice-failure-analysis"
+version = "0.1.0"
+description = "Identifying failure-prone microservices using graph centrality metrics"
+requires-python = ">=3.11"
+dependencies = [
+    "networkx>=3.1",
+    "numpy>=1.26",
+    "pandas>=2.0",
+    "scipy>=1.11",
+    "statsmodels>=0.14",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+    "requests>=2.31",
+    "locust>=2.15",
+    "pytest>=7.4",
+    "docker>=6.1",
+    "pyyaml>=6.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: marks tests that require the live Docker stack",
+    "slow: marks tests that take a long time to run",
+]

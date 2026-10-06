@@ -1,0 +1,11 @@
+check,passed,detail
+run count is 180,True,180
+no gateway runs,True,0 gateway runs
+telemetry_ok on every run,True,0 failures
+36 cells,True,36
+every cell has exactly 5 repetitions,True,cells not at 5: {}
+censoring recorded,True,0 of 180 censored (0.0%)
+socialnetwork: campaign services == analysis set,True,"campaign 11, analysis set 11"
+socialnetwork: service sets identical,True,"only in campaign [], only in analysis set []"
+hotelreservation: campaign services == analysis set,True,"campaign 7, analysis set 7"
+hotelreservation: service sets identical,True,"only in campaign [], only in analysis set []"

@@ -1,0 +1,25 @@
+analysis,architecture,fault_type,service_excluded,n_services,excluded_ancestor_count,excluded_median_ancestor_affected_count,rho,p_permutation_nominal_uncorrected,p_method,delta_rho_vs_full_set
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,"NONE (full set, reference)",11,,,0.785119,0.006883,"2,000,000 random permutations (seed 20260928)",
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,compose-post-service,10,1,1.0,0.696454,0.040476,"exact enumeration of 3,628,800 permutations",-0.088665
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,home-timeline-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,media-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,post-storage-service,10,4,4.0,0.742746,0.016667,"exact enumeration of 3,628,800 permutations",-0.042373
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,social-graph-service,10,3,3.0,0.79149,0.003175,"exact enumeration of 3,628,800 permutations",0.006371
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,text-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,unique-id-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,url-shorten-service,10,3,3.0,0.79149,0.003175,"exact enumeration of 3,628,800 permutations",0.006371
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,user-mention-service,10,3,3.0,0.79149,0.003175,"exact enumeration of 3,628,800 permutations",0.006371
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,user-service,10,4,2.0,1.0,0.000198,"exact enumeration of 3,628,800 permutations",0.214881
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,kill,user-timeline-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,"NONE (full set, reference)",11,,,0.785119,0.006883,"2,000,000 random permutations (seed 20260928)",
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,compose-post-service,10,1,1.0,0.696454,0.040476,"exact enumeration of 3,628,800 permutations",-0.088665
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,home-timeline-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,media-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,post-storage-service,10,4,4.0,0.742746,0.016667,"exact enumeration of 3,628,800 permutations",-0.042373
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,social-graph-service,10,3,3.0,0.79149,0.003175,"exact enumeration of 3,628,800 permutations",0.006371
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,text-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,unique-id-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,url-shorten-service,10,3,3.0,0.79149,0.003175,"exact enumeration of 3,628,800 permutations",0.006371
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,user-mention-service,10,3,3.0,0.79149,0.003175,"exact enumeration of 3,628,800 permutations",0.006371
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,user-service,10,4,2.0,1.0,0.000198,"exact enumeration of 3,628,800 permutations",0.214881
+"post-hoc robustness check, not part of the preregistered confirmatory family",socialnetwork,latency,user-timeline-service,10,2,2.0,0.763252,0.01627,"exact enumeration of 3,628,800 permutations",-0.021867

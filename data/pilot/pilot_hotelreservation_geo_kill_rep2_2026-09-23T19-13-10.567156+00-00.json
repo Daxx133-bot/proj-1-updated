@@ -1,0 +1,629 @@
+{
+  "app": "hotelreservation",
+  "service": "geo",
+  "fault_type": "kill",
+  "repetition": 2,
+  "timestamp": "2026-09-23T19:13:10.567156+00:00",
+  "container": "hotelreservation-geo-1",
+  "baseline_p95_ms": 49.9,
+  "baseline_p99_ms": 56.49,
+  "baseline_error_rate": 0.0,
+  "baseline_trace_count": 500,
+  "fault_p95_ms": 5.86,
+  "fault_p99_ms": 7.67,
+  "fault_error_rate": 0.514,
+  "fault_trace_count": 500,
+  "telemetry_ok": true,
+  "downstream_affected_count": 2,
+  "downstream_affected_services": "frontend,search",
+  "recovery_time_s": null,
+  "recovery_censored": true,
+  "recovery_observed_until_s": 181.33,
+  "recovery_first_ok_at_s": null,
+  "recovery_blocking_indicator": "p95",
+  "recovery_poll_interval_s": 1.0,
+  "container_restart_time_s": 1.22,
+  "wall_clock_s": 243.53,
+  "recovery_samples": [
+    {
+      "t_s": 35.22,
+      "trace_count": 226,
+      "p95_ms": 6.26,
+      "p99_ms": 7.74,
+      "error_rate": 0.531,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 36.76,
+      "trace_count": 237,
+      "p95_ms": 6.66,
+      "p99_ms": 40.73,
+      "error_rate": 0.5,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 38.48,
+      "trace_count": 222,
+      "p95_ms": 12.77,
+      "p99_ms": 85.47,
+      "error_rate": 0.4459,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 40.33,
+      "trace_count": 228,
+      "p95_ms": 79.51,
+      "p99_ms": 99.81,
+      "error_rate": 0.3158,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 42.22,
+      "trace_count": 228,
+      "p95_ms": 82.87,
+      "p99_ms": 99.81,
+      "error_rate": 0.2105,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 44.46,
+      "trace_count": 225,
+      "p95_ms": 90.59,
+      "p99_ms": 136.31,
+      "error_rate": 0.0889,
+      "downstream_affected": 4,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 47.01,
+      "trace_count": 227,
+      "p95_ms": 97.79,
+      "p99_ms": 136.03,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 49.5,
+      "trace_count": 210,
+      "p95_ms": 97.83,
+      "p99_ms": 138.36,
+      "error_rate": 0.0,
+      "downstream_affected": 1,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 52.41,
+      "trace_count": 218,
+      "p95_ms": 107.99,
+      "p99_ms": 137.26,
+      "error_rate": 0.0,
+      "downstream_affected": 7,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 55.42,
+      "trace_count": 216,
+      "p95_ms": 109.73,
+      "p99_ms": 205.51,
+      "error_rate": 0.0,
+      "downstream_affected": 7,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 58.04,
+      "trace_count": 223,
+      "p95_ms": 112.97,
+      "p99_ms": 204.49,
+      "error_rate": 0.0,
+      "downstream_affected": 7,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 60.13,
+      "trace_count": 225,
+      "p95_ms": 109.58,
+      "p99_ms": 204.21,
+      "error_rate": 0.0,
+      "downstream_affected": 7,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 62.56,
+      "trace_count": 239,
+      "p95_ms": 103.6,
+      "p99_ms": 202.18,
+      "error_rate": 0.0,
+      "downstream_affected": 7,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 64.92,
+      "trace_count": 231,
+      "p95_ms": 94.82,
+      "p99_ms": 119.75,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 67.46,
+      "trace_count": 224,
+      "p95_ms": 91.33,
+      "p99_ms": 132.02,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 69.75,
+      "trace_count": 241,
+      "p95_ms": 85.04,
+      "p99_ms": 130.25,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 72.13,
+      "trace_count": 223,
+      "p95_ms": 84.72,
+      "p99_ms": 132.12,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 74.54,
+      "trace_count": 244,
+      "p95_ms": 83.79,
+      "p99_ms": 122.55,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 76.95,
+      "trace_count": 233,
+      "p95_ms": 82.85,
+      "p99_ms": 109.28,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 79.42,
+      "trace_count": 214,
+      "p95_ms": 98.27,
+      "p99_ms": 139.29,
+      "error_rate": 0.0,
+      "downstream_affected": 5,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 82.02,
+      "trace_count": 227,
+      "p95_ms": 101.13,
+      "p99_ms": 137.34,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 84.13,
+      "trace_count": 224,
+      "p95_ms": 100.8,
+      "p99_ms": 137.79,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 86.3,
+      "trace_count": 212,
+      "p95_ms": 99.93,
+      "p99_ms": 139.59,
+      "error_rate": 0.0,
+      "downstream_affected": 1,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 88.8,
+      "trace_count": 228,
+      "p95_ms": 87.81,
+      "p99_ms": 105.99,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 91.16,
+      "trace_count": 218,
+      "p95_ms": 91.96,
+      "p99_ms": 121.95,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 93.51,
+      "trace_count": 211,
+      "p95_ms": 97.33,
+      "p99_ms": 122.04,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 95.8,
+      "trace_count": 238,
+      "p95_ms": 94.64,
+      "p99_ms": 121.69,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 98.18,
+      "trace_count": 230,
+      "p95_ms": 98.89,
+      "p99_ms": 127.77,
+      "error_rate": 0.0,
+      "downstream_affected": 5,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 100.76,
+      "trace_count": 237,
+      "p95_ms": 97.48,
+      "p99_ms": 125.16,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 103.05,
+      "trace_count": 234,
+      "p95_ms": 90.72,
+      "p99_ms": 125.18,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 105.28,
+      "trace_count": 219,
+      "p95_ms": 80.49,
+      "p99_ms": 125.29,
+      "error_rate": 0.0,
+      "downstream_affected": 1,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 107.71,
+      "trace_count": 234,
+      "p95_ms": 87.43,
+      "p99_ms": 108.0,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 110.06,
+      "trace_count": 225,
+      "p95_ms": 81.7,
+      "p99_ms": 94.98,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 112.56,
+      "trace_count": 233,
+      "p95_ms": 87.25,
+      "p99_ms": 108.86,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 114.87,
+      "trace_count": 234,
+      "p95_ms": 90.59,
+      "p99_ms": 108.8,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 117.12,
+      "trace_count": 225,
+      "p95_ms": 84.14,
+      "p99_ms": 108.6,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 119.69,
+      "trace_count": 238,
+      "p95_ms": 82.78,
+      "p99_ms": 107.42,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 122.09,
+      "trace_count": 232,
+      "p95_ms": 81.49,
+      "p99_ms": 98.49,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 124.78,
+      "trace_count": 236,
+      "p95_ms": 86.1,
+      "p99_ms": 128.89,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 126.99,
+      "trace_count": 229,
+      "p95_ms": 86.29,
+      "p99_ms": 129.24,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 129.52,
+      "trace_count": 236,
+      "p95_ms": 87.66,
+      "p99_ms": 128.89,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 132.03,
+      "trace_count": 227,
+      "p95_ms": 90.41,
+      "p99_ms": 129.34,
+      "error_rate": 0.0,
+      "downstream_affected": 5,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 134.67,
+      "trace_count": 239,
+      "p95_ms": 92.12,
+      "p99_ms": 122.1,
+      "error_rate": 0.0,
+      "downstream_affected": 3,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 137.51,
+      "trace_count": 242,
+      "p95_ms": 105.94,
+      "p99_ms": 166.88,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 139.79,
+      "trace_count": 233,
+      "p95_ms": 105.65,
+      "p99_ms": 170.37,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 142.48,
+      "trace_count": 218,
+      "p95_ms": 115.38,
+      "p99_ms": 177.36,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 145.21,
+      "trace_count": 220,
+      "p95_ms": 117.7,
+      "p99_ms": 181.91,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 147.39,
+      "trace_count": 215,
+      "p95_ms": 117.72,
+      "p99_ms": 138.25,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 150.0,
+      "trace_count": 227,
+      "p95_ms": 117.19,
+      "p99_ms": 138.24,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 152.4,
+      "trace_count": 213,
+      "p95_ms": 109.0,
+      "p99_ms": 126.93,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 154.83,
+      "trace_count": 235,
+      "p95_ms": 91.94,
+      "p99_ms": 121.11,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 157.24,
+      "trace_count": 226,
+      "p95_ms": 92.31,
+      "p99_ms": 106.55,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 160.52,
+      "trace_count": 240,
+      "p95_ms": 109.47,
+      "p99_ms": 147.26,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 163.63,
+      "trace_count": 230,
+      "p95_ms": 117.56,
+      "p99_ms": 147.38,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 166.38,
+      "trace_count": 217,
+      "p95_ms": 119.54,
+      "p99_ms": 147.53,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 168.72,
+      "trace_count": 236,
+      "p95_ms": 111.04,
+      "p99_ms": 133.73,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 171.35,
+      "trace_count": 223,
+      "p95_ms": 104.18,
+      "p99_ms": 125.43,
+      "error_rate": 0.0,
+      "downstream_affected": 6,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 174.02,
+      "trace_count": 231,
+      "p95_ms": 99.52,
+      "p99_ms": 124.98,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 176.35,
+      "trace_count": 220,
+      "p95_ms": 95.0,
+      "p99_ms": 125.6,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 179.04,
+      "trace_count": 230,
+      "p95_ms": 94.79,
+      "p99_ms": 125.03,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": false,
+      "have_signal": true
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "app": "hotelreservation",
+  "service": "rate",
+  "fault_type": "kill",
+  "repetition": 2,
+  "ancestor_affected_count": 2,
+  "descendant_affected_count": 0,
+  "unrelated_affected_count": 0,
+  "ancestor_affected_services": "frontend,search",
+  "descendant_affected_services": "",
+  "unrelated_affected_services": "",
+  "n_ancestors": 2,
+  "n_descendants": 0,
+  "in_degree_raw": 1,
+  "out_degree_raw": 0,
+  "is_gateway": false,
+  "excluded_from_correlation": false,
+  "fault_removal_offset_s": 39.62,
+  "raw_spans": {
+    "baseline_window": {
+      "path": "data/spans/spans_hotelreservation_rate_kill_rep2_20260926T080047Z_baseline_window.json.gz",
+      "trace_count": 1119,
+      "bytes": 337447
+    },
+    "fault_window": {
+      "path": "data/spans/spans_hotelreservation_rate_kill_rep2_20260926T080047Z_fault_window.json.gz",
+      "trace_count": 806,
+      "bytes": 180223
+    }
+  },
+  "baseline_window_us": [
+    1790409551210049,
+    1790409611210049
+  ],
+  "fault_window_us": [
+    1790409613502782,
+    1790409646295098
+  ],
+  "baseline_per_service": {
+    "frontend": {
+      "p50_ms": 5.5365,
+      "p95_ms": 12.953449999999998,
+      "p99_ms": 16.1562,
+      "mean_ms": 6.200802,
+      "span_count": 500,
+      "trace_count": 500,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:frontend"
+    },
+    "geo": {
+      "p50_ms": 0.071,
+      "p95_ms": 0.5030999999999999,
+      "p99_ms": 0.6511399999999989,
+      "mean_ms": 0.15355200000000002,
+      "span_count": 500,
+      "trace_count": 500,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:geo"
+    },
+    "profile": {
+      "p50_ms": 0.6305000000000001,
+      "p95_ms": 1.4006999999999992,
+      "p99_ms": 1.7680799999999999,
+      "mean_ms": 0.6169880000000001,
+      "span_count": 500,
+      "trace_count": 500,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:profile"
+    },
+    "rate": {
+      "p50_ms": 1.443,
+      "p95_ms": 2.6609999999999974,
+      "p99_ms": 3.7083899999999987,
+      "mean_ms": 1.140496,
+      "span_count": 500,
+      "trace_count": 500,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:rate"
+    },
+    "recommendation": {
+      "p50_ms": 0.021,
+      "p95_ms": 0.14979999999999996,
+      "p99_ms": 0.24973999999999996,
+      "mean_ms": 0.04942857142857143,
+      "span_count": 119,
+      "trace_count": 119,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:recommendation"
+    },
+    "reservation": {
+      "p50_ms": 1.831,
+      "p95_ms": 3.2784999999999997,
+      "p99_ms": 3.8151499999999996,
+      "mean_ms": 1.6216660000000003,
+      "span_count": 500,
+      "trace_count": 500,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:reservation"
+    },
+    "search": {
+      "p50_ms": 3.7359999999999998,
+      "p95_ms": 5.824899999999998,
+      "p99_ms": 7.046539999999999,
+      "mean_ms": 3.6816079999999998,
+      "span_count": 500,
+      "trace_count": 500,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:search"
+    },
+    "user": {
+      "p50_ms": 0.02,
+      "p95_ms": 0.035,
+      "p99_ms": 0.10608999999999992,
+      "mean_ms": 0.023408,
+      "span_count": 500,
+      "trace_count": 500,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:user"
+    }
+  },
+  "recovery_measured_from": "fault_removal",
+  "recovery_min_traces": 20,
+  "recovery_lag_s": 5.0,
+  "timestamp": "2026-09-26T08:01:19.724905+00:00",
+  "container": "hotelreservation-rate-1",
+  "baseline_p95_ms": 12.953449999999998,
+  "baseline_p99_ms": 16.1562,
+  "baseline_error_rate": 0.0,
+  "baseline_trace_count": 500,
+  "fault_p95_ms": 5.090249999999999,
+  "fault_p99_ms": 5.810339999999999,
+  "fault_error_rate": 0.592,
+  "fault_trace_count": 500,
+  "telemetry_ok": true,
+  "downstream_affected_count": 2,
+  "downstream_affected_services": "frontend,search",
+  "recovery_time_s": 19.7,
+  "recovery_censored": false,
+  "recovery_observed_until_s": 25.64,
+  "recovery_first_ok_at_s": 19.7,
+  "recovery_blocking_indicator": null,
+  "recovery_poll_interval_s": 1.0,
+  "container_restart_time_s": 0.71,
+  "wall_clock_s": 128.53,
+  "recovery_samples": [
+    {
+      "t_s": 0.0,
+      "t_since_fault_start_s": 39.62,
+      "trace_count": 243,
+      "p95_ms": 4.919399999999998,
+      "p99_ms": 5.7792799999999955,
+      "error_rate": 0.572,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 1.59,
+      "t_since_fault_start_s": 41.21,
+      "trace_count": 246,
+      "p95_ms": 4.79025,
+      "p99_ms": 5.710100000000004,
+      "error_rate": 0.5569,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 3.17,
+      "t_since_fault_start_s": 42.79,
+      "trace_count": 245,
+      "p95_ms": 4.7509999999999994,
+      "p99_ms": 5.48328,
+      "error_rate": 0.5592,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 4.74,
+      "t_since_fault_start_s": 44.36,
+      "trace_count": 251,
+      "p95_ms": 4.547499999999999,
+      "p99_ms": 5.4825,
+      "error_rate": 0.5657,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 6.22,
+      "t_since_fault_start_s": 45.84,
+      "trace_count": 254,
+      "p95_ms": 4.35905,
+      "p99_ms": 5.803589999999999,
+      "error_rate": 0.5394,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 7.78,
+      "t_since_fault_start_s": 47.4,
+      "trace_count": 256,
+      "p95_ms": 4.45425,
+      "p99_ms": 6.195499999999999,
+      "error_rate": 0.5156,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 9.35,
+      "t_since_fault_start_s": 48.97,
+      "trace_count": 253,
+      "p95_ms": 4.4688,
+      "p99_ms": 5.497799999999997,
+      "error_rate": 0.5138,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 10.85,
+      "t_since_fault_start_s": 50.47,
+      "trace_count": 252,
+      "p95_ms": 6.261249999999999,
+      "p99_ms": 12.230670000000003,
+      "error_rate": 0.4365,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 12.49,
+      "t_since_fault_start_s": 52.11,
+      "trace_count": 252,
+      "p95_ms": 10.536299999999995,
+      "p99_ms": 15.321290000000003,
+      "error_rate": 0.3532,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 14.14,
+      "t_since_fault_start_s": 53.76,
+      "trace_count": 248,
+      "p95_ms": 12.4507,
+      "p99_ms": 16.570990000000002,
+      "error_rate": 0.254,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 15.98,
+      "t_since_fault_start_s": 55.6,
+      "trace_count": 250,
+      "p95_ms": 13.160949999999998,
+      "p99_ms": 16.551329999999993,
+      "error_rate": 0.164,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 17.81,
+      "t_since_fault_start_s": 57.42,
+      "trace_count": 239,
+      "p95_ms": 13.455699999999998,
+      "p99_ms": 16.659460000000006,
+      "error_rate": 0.0753,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 19.7,
+      "t_since_fault_start_s": 59.32,
+      "trace_count": 239,
+      "p95_ms": 13.455699999999998,
+      "p99_ms": 16.659460000000006,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 21.65,
+      "t_since_fault_start_s": 61.27,
+      "trace_count": 238,
+      "p95_ms": 12.403649999999999,
+      "p99_ms": 15.030109999999997,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 23.65,
+      "t_since_fault_start_s": 63.27,
+      "trace_count": 247,
+      "p95_ms": 12.4427,
+      "p99_ms": 15.604139999999994,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 25.64,
+      "t_since_fault_start_s": 65.26,
+      "trace_count": 242,
+      "p95_ms": 12.040349999999998,
+      "p99_ms": 14.28696,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    }
+  ]
+}

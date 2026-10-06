@@ -1,0 +1,352 @@
+{
+  "app": "socialnetwork",
+  "service": "media-service",
+  "fault_type": "latency",
+  "repetition": 2,
+  "ancestor_affected_count": 2,
+  "descendant_affected_count": 0,
+  "unrelated_affected_count": 0,
+  "ancestor_affected_services": "compose-post-service,nginx-web-server",
+  "descendant_affected_services": "",
+  "unrelated_affected_services": "",
+  "n_ancestors": 2,
+  "n_descendants": 0,
+  "in_degree_raw": 1,
+  "out_degree_raw": 0,
+  "is_gateway": false,
+  "excluded_from_correlation": false,
+  "fault_removal_offset_s": 36.24,
+  "raw_spans": {
+    "baseline_window": {
+      "path": "data/spans/spans_socialnetwork_media-service_latency_rep2_20260926T073406Z_baseline_window.json.gz",
+      "trace_count": 293,
+      "bytes": 122461
+    },
+    "fault_window": {
+      "path": "data/spans/spans_socialnetwork_media-service_latency_rep2_20260926T073406Z_fault_window.json.gz",
+      "trace_count": 142,
+      "bytes": 56336
+    }
+  },
+  "baseline_window_us": [
+    1790407954926302,
+    1790408014926302
+  ],
+  "fault_window_us": [
+    1790408016177880,
+    1790408046195987
+  ],
+  "baseline_per_service": {
+    "compose-post-service": {
+      "p50_ms": 1.298,
+      "p95_ms": 8.8703,
+      "p99_ms": 10.884789999999988,
+      "mean_ms": 2.137263698630137,
+      "span_count": 584,
+      "trace_count": 73,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:compose-post-service"
+    },
+    "home-timeline-service": {
+      "p50_ms": 0.676,
+      "p95_ms": 1.9508499999999993,
+      "p99_ms": 2.3835399999999995,
+      "mean_ms": 0.7714529914529915,
+      "span_count": 468,
+      "trace_count": 198,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:home-timeline-service"
+    },
+    "media-service": {
+      "p50_ms": 0.012,
+      "p95_ms": 0.017,
+      "p99_ms": 0.019,
+      "mean_ms": 0.011708333333333333,
+      "span_count": 72,
+      "trace_count": 72,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:media-service"
+    },
+    "nginx-web-server": {
+      "p50_ms": 3.175,
+      "p95_ms": 54.3598,
+      "p99_ms": 56.33938,
+      "mean_ms": 12.635135231316728,
+      "span_count": 843,
+      "trace_count": 281,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:nginx-web-server"
+    },
+    "post-storage-service": {
+      "p50_ms": 0.609,
+      "p95_ms": 2.59115,
+      "p99_ms": 3.5951800000000005,
+      "mean_ms": 0.6871136363636363,
+      "span_count": 440,
+      "trace_count": 253,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:post-storage-service"
+    },
+    "social-graph-service": {
+      "p50_ms": 0.634,
+      "p95_ms": 1.4077999999999995,
+      "p99_ms": 1.82016,
+      "mean_ms": 0.691849765258216,
+      "span_count": 213,
+      "trace_count": 71,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:social-graph-service"
+    },
+    "text-service": {
+      "p50_ms": 0.7064999999999999,
+      "p95_ms": 2.0374499999999998,
+      "p99_ms": 2.8130399999999947,
+      "mean_ms": 0.9355341880341881,
+      "span_count": 234,
+      "trace_count": 78,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:text-service"
+    },
+    "unique-id-service": {
+      "p50_ms": 0.028,
+      "p95_ms": 0.04360000000000001,
+      "p99_ms": 0.11371999999999974,
+      "mean_ms": 0.03132467532467534,
+      "span_count": 77,
+      "trace_count": 77,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:unique-id-service"
+    },
+    "url-shorten-service": {
+      "p50_ms": 0.012,
+      "p95_ms": 0.022599999999999967,
+      "p99_ms": 0.11348000000000004,
+      "mean_ms": 0.015397260273972604,
+      "span_count": 73,
+      "trace_count": 73,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:url-shorten-service"
+    },
+    "user-mention-service": {
+      "p50_ms": 0.0115,
+      "p95_ms": 0.018,
+      "p99_ms": 0.082389999999999,
+      "mean_ms": 0.0142875,
+      "span_count": 80,
+      "trace_count": 80,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:user-mention-service"
+    },
+    "user-service": {
+      "p50_ms": 0.014,
+      "p95_ms": 0.018299999999999997,
+      "p99_ms": 0.03654000000000015,
+      "mean_ms": 0.01372,
+      "span_count": 75,
+      "trace_count": 75,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:user-service"
+    },
+    "user-timeline-service": {
+      "p50_ms": 0.608,
+      "p95_ms": 4.193999999999998,
+      "p99_ms": 6.0244800000000005,
+      "mean_ms": 1.1010096385542167,
+      "span_count": 415,
+      "trace_count": 136,
+      "error_rate": 0.0,
+      "scope": "service_server_spans:user-timeline-service"
+    }
+  },
+  "recovery_measured_from": "fault_removal",
+  "recovery_min_traces": 20,
+  "recovery_lag_s": 5.0,
+  "timestamp": "2026-09-26T07:34:34.222312+00:00",
+  "container": "socialnetwork-media-service-1",
+  "baseline_p95_ms": 54.3598,
+  "baseline_p99_ms": 56.33938,
+  "baseline_error_rate": 0.0,
+  "baseline_trace_count": 281,
+  "fault_p95_ms": 599.2878999999999,
+  "fault_p99_ms": 1023.6573399999995,
+  "fault_error_rate": 0.0,
+  "fault_trace_count": 124,
+  "telemetry_ok": true,
+  "downstream_affected_count": 2,
+  "downstream_affected_services": "compose-post-service,nginx-web-server",
+  "recovery_time_s": 15.28,
+  "recovery_censored": false,
+  "recovery_observed_until_s": 21.23,
+  "recovery_first_ok_at_s": 15.28,
+  "recovery_blocking_indicator": null,
+  "recovery_poll_interval_s": 1.0,
+  "container_restart_time_s": 3.21,
+  "wall_clock_s": 119.3,
+  "recovery_samples": [
+    {
+      "t_s": 0.0,
+      "t_since_fault_start_s": 36.24,
+      "trace_count": 24,
+      "p95_ms": 638.1424999999999,
+      "p99_ms": 645.00117,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 1.6,
+      "t_since_fault_start_s": 37.84,
+      "trace_count": 49,
+      "p95_ms": 614.0601999999999,
+      "p99_ms": 896.373759999998,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 3.18,
+      "t_since_fault_start_s": 39.42,
+      "trace_count": 47,
+      "p95_ms": 633.8417999999999,
+      "p99_ms": 1092.52902,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 4.73,
+      "t_since_fault_start_s": 40.97,
+      "trace_count": 46,
+      "p95_ms": 934.044,
+      "p99_ms": 1179.4951499999997,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 6.29,
+      "t_since_fault_start_s": 42.53,
+      "trace_count": 40,
+      "p95_ms": 1038.9411499999997,
+      "p99_ms": 1183.49433,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 7.86,
+      "t_since_fault_start_s": 44.1,
+      "trace_count": 34,
+      "p95_ms": 1071.7500499999996,
+      "p99_ms": 1187.4935100000002,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 9.36,
+      "t_since_fault_start_s": 45.6,
+      "trace_count": 26,
+      "p95_ms": 1115.49525,
+      "p99_ms": 1192.82575,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 10.86,
+      "t_since_fault_start_s": 47.1,
+      "trace_count": 37,
+      "p95_ms": 715.3001999999983,
+      "p99_ms": 1146.1232400000001,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 12.36,
+      "t_since_fault_start_s": 48.61,
+      "trace_count": 35,
+      "p95_ms": 572.9406999999999,
+      "p99_ms": 1006.280859999998,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 13.83,
+      "t_since_fault_start_s": 50.07,
+      "trace_count": 37,
+      "p95_ms": 158.21179999999788,
+      "p99_ms": 974.3334000000004,
+      "error_rate": 0.0,
+      "downstream_affected": 2,
+      "all_ok": false,
+      "have_signal": true
+    },
+    {
+      "t_s": 15.28,
+      "t_since_fault_start_s": 51.52,
+      "trace_count": 36,
+      "p95_ms": 55.26175,
+      "p99_ms": 57.566599999999994,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 16.74,
+      "t_since_fault_start_s": 52.98,
+      "trace_count": 33,
+      "p95_ms": 55.303599999999996,
+      "p99_ms": 57.66332,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 18.21,
+      "t_since_fault_start_s": 54.45,
+      "trace_count": 30,
+      "p95_ms": 55.34545,
+      "p99_ms": 57.760040000000004,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 19.68,
+      "t_since_fault_start_s": 55.93,
+      "trace_count": 26,
+      "p95_ms": 55.3335,
+      "p99_ms": 57.888999999999996,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    },
+    {
+      "t_s": 21.23,
+      "t_since_fault_start_s": 57.47,
+      "trace_count": 45,
+      "p95_ms": 55.28739999999999,
+      "p99_ms": 59.06068,
+      "error_rate": 0.0,
+      "downstream_affected": 0,
+      "all_ok": true,
+      "have_signal": true
+    }
+  ]
+}

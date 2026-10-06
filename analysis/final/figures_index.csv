@@ -1,0 +1,7 @@
+figure,shows,source_table
+fig_primary_kill.png,"ancestor_count vs median ancestor_affected_count, kill faults, both architectures",service_level_data.csv
+fig_primary_latency.png,"ancestor_count vs median ancestor_affected_count, latency faults, both architectures",service_level_data.csv
+fig_km_ancestor_count_kill.png,"KM curves by ancestor_count tercile, kill faults",run_level_data.csv
+fig_km_ancestor_count_latency.png,"KM curves by ancestor_count tercile, latency faults",run_level_data.csv
+fig_forest_confirmatory.png,rho with CI for every confirmatory test on ancestor_affected_count,confirmatory_family_kill.csv
+fig_forest_replication.png,rho with CI for every replication test on ancestor_affected_count,replication_family_latency.csv

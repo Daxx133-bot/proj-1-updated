@@ -1,0 +1,175 @@
+# ============================================================================
+# docker-compose.override.yml
+# ============================================================================
+# Place this file next to the DeathStarBench socialNetwork/docker-compose.yml.
+# Docker Compose automatically merges it, so our overrides (pinned Jaeger
+# version, exposed ports, Pumba labels) take effect without modifying the
+# upstream file.
+# ============================================================================
+
+services:
+  # ── Jaeger: pin to 1.62.0 (versions ≥1.63.0 break DSB tracing) ──────────
+  jaeger-agent:
+    image: jaegertracing/all-in-one:1.62.0
+    labels:
+      - "pumba.skip=true"          # Don't fault-inject the tracing infra
+
+  # ── Nginx gateway: ensure port 8080 is exposed ──────────────────────────
+  nginx-thrift:
+    ports:
+      - "8080:8080"
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  # ── Media frontend: expose port 8081 ─────────────────────────────────────
+  media-frontend:
+    ports:
+      - "8081:8080"
+    labels:
+      - "pumba.skip=true"          # Auxiliary service, not in experiment scope
+
+  # ── Application microservices: add Pumba target labels ───────────────────
+  compose-post-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  post-storage-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  user-timeline-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  home-timeline-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  social-graph-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  user-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  text-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  unique-id-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  url-shorten-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  user-mention-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  media-service:
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  # ── Storage backends: exclude from fault injection ───────────────────────
+  social-graph-mongodb:
+    labels:
+      - "pumba.skip=true"
+
+  social-graph-redis:
+    labels:
+      - "pumba.skip=true"
+
+  home-timeline-redis:
+    labels:
+      - "pumba.skip=true"
+
+  post-storage-mongodb:
+    labels:
+      - "pumba.skip=true"
+
+  post-storage-memcached:
+    labels:
+      - "pumba.skip=true"
+
+  user-timeline-mongodb:
+    labels:
+      - "pumba.skip=true"
+
+  user-timeline-redis:
+    labels:
+      - "pumba.skip=true"
+
+  user-mongodb:
+    labels:
+      - "pumba.skip=true"
+
+  user-memcached:
+    labels:
+      - "pumba.skip=true"
+
+  url-shorten-mongodb:
+    labels:
+      - "pumba.skip=true"
+
+  url-shorten-memcached:
+    labels:
+      - "pumba.skip=true"
+
+  media-mongodb:
+    labels:
+      - "pumba.skip=true"
+
+  media-memcached:
+    labels:
+      - "pumba.skip=true"

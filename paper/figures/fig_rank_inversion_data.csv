@@ -1,0 +1,12 @@
+service,ancestor_count,hybrid_criticality,rank_ancestor_count,rank_hybrid_criticality
+compose-post-service,1,0.301515,11,1
+post-storage-service,4,0.109091,1,2
+home-timeline-service,2,0.095931,6,3
+social-graph-service,3,0.080649,3,4
+user-timeline-service,2,0.078528,6,5
+user-service,4,0.072727,1,6
+text-service,2,0.064416,6,7
+media-service,2,0.036364,6,8
+url-shorten-service,3,0.036364,3,8
+unique-id-service,2,0.036364,6,8
+user-mention-service,3,0.036364,3,8

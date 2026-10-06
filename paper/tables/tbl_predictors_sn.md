@@ -1,0 +1,13 @@
+| service | ancestor_count | descendant_count | in_degree_raw | out_degree_raw | hybrid_criticality | betweenness | closeness | pagerank | eigenvector | measured_ancestor_affected_kill | measured_ancestor_affected_latency | T_rec_kill_s | T_rec_latency_s |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| post-storage-service | 4 | 0 | 3 | 0 | 0.109 | 0.000 | 0.291 | 0.157 | 0.000 | 4.0 | 4.0 | 15.31 | 15.45 |
+| user-service | 4 | 0 | 2 | 0 | 0.073 | 0.000 | 0.242 | 0.145 | 0.000 | 2.0 | 2.0 | 14.52 | 14.83 |
+| social-graph-service | 3 | 1 | 2 | 1 | 0.081 | 0.014 | 0.205 | 0.098 | 0.000 | 3.0 | 3.0 | 14.99 | 15.42 |
+| url-shorten-service | 3 | 0 | 1 | 0 | 0.036 | 0.000 | 0.136 | 0.080 | 0.000 | 3.0 | 3.0 | 16.05 | 15.23 |
+| user-mention-service | 3 | 0 | 1 | 0 | 0.036 | 0.000 | 0.136 | 0.080 | 0.000 | 3.0 | 3.0 | 14.51 | 14.45 |
+| home-timeline-service | 2 | 3 | 2 | 2 | 0.096 | 0.012 | 0.182 | 0.074 | 0.000 | 2.0 | 2.0 | 15.38 | 15.57 |
+| media-service | 2 | 0 | 1 | 0 | 0.036 | 0.000 | 0.121 | 0.061 | 0.000 | 2.0 | 2.0 | 16.06 | 14.83 |
+| text-service | 2 | 2 | 1 | 2 | 0.064 | 0.036 | 0.121 | 0.061 | 0.000 | 2.0 | 2.0 | 15.31 | 14.39 |
+| unique-id-service | 2 | 0 | 1 | 0 | 0.036 | 0.000 | 0.121 | 0.061 | 0.000 | 2.0 | 2.0 | 14.15 | 14.64 |
+| user-timeline-service | 2 | 1 | 2 | 1 | 0.079 | 0.003 | 0.182 | 0.066 | 0.000 | 2.0 | 2.0 | 15.73 | 14.88 |
+| compose-post-service | 1 | 10 | 1 | 7 | 0.302 | 0.053 | 0.091 | 0.062 | 0.000 | 1.0 | 1.0 | 15.55 | 15.56 |

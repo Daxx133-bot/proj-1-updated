@@ -1,0 +1,6 @@
+| family | fault_type | architecture | n_services | rho | ci_lo | ci_hi | p_raw | p_bh_adjusted | rho_le_zero_as_preregistered | distinguishable_from_zero_after_fdr | verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| confirmatory | kill | Social Network | 11 | -0.144 | -0.810 | 0.698 | 0.6688 | 0.9925 | yes | no | directionally anti-predictive but NOT distinguishable from zero after FDR |
+| confirmatory | kill | Hotel Reservation | 7 | -0.258 | -0.730 | -0.167 | 1.0000 | 1.0000 | yes | no | directionally anti-predictive but NOT distinguishable from zero after FDR |
+| replication | latency | Social Network | 11 | -0.144 | -0.805 | 0.713 | 0.6656 | 0.9152 | yes | no | directionally anti-predictive but NOT distinguishable from zero after FDR |
+| replication | latency | Hotel Reservation | 7 | -0.258 | -0.750 | -0.167 | 1.0000 | 1.0000 | yes | no | directionally anti-predictive but NOT distinguishable from zero after FDR |

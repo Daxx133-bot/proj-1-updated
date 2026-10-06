@@ -1,0 +1,123 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {
+    "application": "hotelreservation",
+    "captured_at": "2026-09-23T19:00:51.097180+00:00",
+    "jaeger_url": "http://localhost:16687",
+    "lookback": "1h",
+    "deathstarbench": {
+      "commit": "6ecb09706140f8730b5385c08f1386c654c3c526",
+      "short": "6ecb097",
+      "dirty": true,
+      "modified_files": []
+    },
+    "traces_examined": 3446,
+    "spans_examined": 31155,
+    "services_in_jaeger": [
+      "frontend",
+      "geo",
+      "jaeger-all-in-one",
+      "profile",
+      "rate",
+      "recommendation",
+      "reservation",
+      "search",
+      "user"
+    ],
+    "app_services": [
+      "frontend",
+      "geo",
+      "profile",
+      "rate",
+      "recommendation",
+      "reservation",
+      "search",
+      "user"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "frontend"
+    },
+    {
+      "id": "geo"
+    },
+    {
+      "id": "profile"
+    },
+    {
+      "id": "rate"
+    },
+    {
+      "id": "recommendation"
+    },
+    {
+      "id": "reservation"
+    },
+    {
+      "id": "search"
+    },
+    {
+      "id": "user"
+    }
+  ],
+  "edges": [
+    {
+      "source": "frontend",
+      "target": "profile",
+      "weight": 1946,
+      "call_count": 1946,
+      "avg_latency_us": 461.59,
+      "avg_latency_ms": 0.46
+    },
+    {
+      "source": "frontend",
+      "target": "recommendation",
+      "weight": 446,
+      "call_count": 446,
+      "avg_latency_us": 47.49,
+      "avg_latency_ms": 0.05
+    },
+    {
+      "source": "frontend",
+      "target": "reservation",
+      "weight": 2236,
+      "call_count": 2236,
+      "avg_latency_us": 5743.77,
+      "avg_latency_ms": 5.74
+    },
+    {
+      "source": "frontend",
+      "target": "search",
+      "weight": 1500,
+      "call_count": 1500,
+      "avg_latency_us": 17208.29,
+      "avg_latency_ms": 17.21
+    },
+    {
+      "source": "frontend",
+      "target": "user",
+      "weight": 1500,
+      "call_count": 1500,
+      "avg_latency_us": 23.32,
+      "avg_latency_ms": 0.02
+    },
+    {
+      "source": "search",
+      "target": "geo",
+      "weight": 1500,
+      "call_count": 1500,
+      "avg_latency_us": 156.96,
+      "avg_latency_ms": 0.16
+    },
+    {
+      "source": "search",
+      "target": "rate",
+      "weight": 1500,
+      "call_count": 1500,
+      "avg_latency_us": 12112.27,
+      "avg_latency_ms": 12.11
+    }
+  ]
+}

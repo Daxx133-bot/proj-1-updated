@@ -1,0 +1,12 @@
+service_excluded,n_services,rho,p_permutation_nominal_uncorrected
+compose-post-service,10,0.696454,0.040476
+post-storage-service,10,0.742746,0.016667
+home-timeline-service,10,0.763252,0.01627
+media-service,10,0.763252,0.01627
+text-service,10,0.763252,0.01627
+unique-id-service,10,0.763252,0.01627
+user-timeline-service,10,0.763252,0.01627
+social-graph-service,10,0.79149,0.003175
+url-shorten-service,10,0.79149,0.003175
+user-mention-service,10,0.79149,0.003175
+user-service,10,1.0,0.000198

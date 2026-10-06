@@ -1,0 +1,211 @@
+claim_id,description,value,value_raw,unit,source_file,source_script,commit
+campaign_runs_total,Total fault-injection runs in the final campaign,180,180,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_architectures,Distinct architectures under test,2,2,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_cells,"Distinct (architecture, service, fault type) cells",36,36,cells,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_reps_per_cell,Repetitions per cell (balanced design),5,5,repetitions,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_fault_types,Fault types injected,2,2,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_runs_failed,Runs with telemetry failure,0,0,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_runs_censored,Right-censored recovery observations,0,0,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_censoring_rate_pct,Censoring rate,0.0,0.0,%,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_gateway_runs,Runs faulting a gateway service (excluded by design),0,0,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+sn_runs,Runs on socialnetwork,110,110,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+sn_services,Services in the socialnetwork analysis set,11,11,services,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+hr_runs,Runs on hotelreservation,70,70,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+hr_services,Services in the hotelreservation analysis set,7,7,services,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_start_utc,First run timestamp (UTC),2026-09-26 05:02,2026-09-26 05:02,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_end_utc,Last run timestamp (UTC),2026-09-26 13:35,2026-09-26 13:35,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+campaign_duration_hours,"Elapsed wall-clock time, first to last run",8.5,8.53887797638889,hours,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+integrity_checks_total,Pre-analysis integrity checks run,10,10,checks,analysis/final/integrity_checks.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+integrity_checks_passed,Pre-analysis integrity checks passed,10,10,checks,analysis/final/integrity_checks.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_rho,"Primary test: Spearman rho, SN, ancestor_count vs ancestor_affected_count, kill faults",0.785,0.785118891023205,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_rho_full,"Primary test: Spearman rho, full precision",0.785119,0.785118891023205,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_ci_lo,Primary test: 95% CI lower bound,0.000,0.0,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_ci_hi,Primary test: 95% CI upper bound,1.000,1.0,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_ci_method,Primary test: CI method,BCa,BCa,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_n_services,Primary test: services correlated,11,11,services,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_p_locked,"Primary test: raw p as locked (10,000 Monte-Carlo permutations)",0.0080,0.007999200079992,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_p_bh_locked,Primary test: BH-adjusted p as locked,0.3451,0.3450512091647978,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_significant,Primary test: significant after BH-FDR at q=0.05,no,false,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+primary_p_exact,Primary test: raw p by exact enumeration (supplementary),0.006926,0.00692641,,analysis/final/exact_p_supplement.csv,analysis/final/exact_p_supplement.py,8e319f2
+primary_p_exact_arrangements,Primary test: distinct arrangements enumerated,9240,9240,arrangements,analysis/final/exact_p_supplement.csv,analysis/final/exact_p_supplement.py,8e319f2
+primary_p_bh_exact,Primary test: BH-adjusted p with exact p substituted (supplementary),0.3048,0.304762,,analysis/final/exact_p_supplement.csv,analysis/final/exact_p_supplement.py,8e319f2
+primary_significant_exact,Primary test: significant after BH-FDR using exact p,no,false,,analysis/final/exact_p_supplement.csv,analysis/final/exact_p_supplement.py,8e319f2
+exact_tests_refined,Confirmatory tests refined to an exact p (supplementary),43,43,tests,analysis/final/exact_p_supplement.csv,analysis/final/exact_p_supplement.py,8e319f2
+conf_family_size,Tests in the confirmatory (kill) family,44,44,tests,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+conf_family_defined,Tests with a defined p in the confirmatory (kill) family,44,44,tests,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+conf_family_significant,"Tests significant after BH-FDR, confirmatory (kill) family",0,0,tests,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+conf_best_raw_p,Smallest raw p in the confirmatory (kill) family,0.0080,0.007999200079992,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+conf_best_bh_p,"BH-adjusted p of the smallest-raw-p test, confirmatory (kill) family",0.3451,0.3450512091647978,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+conf_best_predictor,"Predictor of the smallest-raw-p test, confirmatory (kill) family",ancestor_count,ancestor_count,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+repl_family_size,Tests in the replication (latency) family,44,44,tests,analysis/final/replication_family_latency.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+repl_family_defined,Tests with a defined p in the replication (latency) family,44,44,tests,analysis/final/replication_family_latency.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+repl_family_significant,"Tests significant after BH-FDR, replication (latency) family",0,0,tests,analysis/final/replication_family_latency.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+repl_best_raw_p,Smallest raw p in the replication (latency) family,0.0076,0.0075992400759924,,analysis/final/replication_family_latency.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+repl_best_bh_p,"BH-adjusted p of the smallest-raw-p test, replication (latency) family",0.1848,0.1847815218478152,,analysis/final/replication_family_latency.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+repl_best_predictor,"Predictor of the smallest-raw-p test, replication (latency) family",ancestor_count,ancestor_count,,analysis/final/replication_family_latency.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+fdr_q,False discovery rate controlled at,0.05,0.05,,analysis/final/confirmatory_family_kill.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+expl_attempted,Exploratory tests attempted,154,154,tests,analysis/final/exploratory_family.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+expl_testable,Exploratory tests with a defined p,66,66,tests,analysis/final/exploratory_family.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+expl_undefined,"Exploratory tests undefined (outcome constant, not null)",88,88,tests,analysis/final/exploratory_family.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+expl_significant,Exploratory tests significant after their own BH-FDR,2,2,tests,analysis/final/exploratory_family.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+expl_sig_hybrid_criticality_rho,"Exploratory: delta_p95_ms vs hybrid_criticality, latency, socialnetwork: rho",0.949,0.9490938946064404,,analysis/final/exploratory_family.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+expl_sig_hybrid_criticality_bh_p,"Exploratory: delta_p95_ms vs hybrid_criticality, latency, socialnetwork: BH-adjusted p",0.0033,0.0032996700329967,,analysis/final/exploratory_family.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+expl_sig_degree_rho,"Exploratory: delta_p95_ms vs degree, latency, socialnetwork: rho",0.953,0.9534625892455922,,analysis/final/exploratory_family.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+expl_sig_degree_bh_p,"Exploratory: delta_p95_ms vs degree, latency, socialnetwork: BH-adjusted p",0.0033,0.0032996700329967,,analysis/final/exploratory_family.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_kill_rho,"H1b hybrid_criticality vs ancestor_affected_count, Social Network, kill: rho",-0.144,-0.1436180734200655,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_kill_ci_lo,H1b Social Network kill: CI lower,-0.810,-0.8104432008587535,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_kill_ci_hi,H1b Social Network kill: CI upper,0.698,0.6980250503541886,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_kill_p,H1b Social Network kill: raw p,0.6688,0.6688331166883311,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_kill_bh_p,H1b Social Network kill: BH-adjusted p,0.9925,0.9924812030075189,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_kill_rho,"H1b hybrid_criticality vs ancestor_affected_count, Hotel Reservation, kill: rho",-0.258,-0.2581988897471611,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_kill_ci_lo,H1b Hotel Reservation kill: CI lower,-0.730,-0.7302967433402215,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_kill_ci_hi,H1b Hotel Reservation kill: CI upper,-0.167,-0.1666666666666666,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_kill_p,H1b Hotel Reservation kill: raw p,1.0000,1.0,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_kill_bh_p,H1b Hotel Reservation kill: BH-adjusted p,1.0000,1.0,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_latency_rho,"H1b hybrid_criticality vs ancestor_affected_count, Social Network, latency: rho",-0.144,-0.1436180734200655,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_latency_ci_lo,H1b Social Network latency: CI lower,-0.805,-0.805327950708631,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_latency_ci_hi,H1b Social Network latency: CI upper,0.713,0.7125281993815842,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_latency_p,H1b Social Network latency: raw p,0.6656,0.6656334366563343,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_sn_latency_bh_p,H1b Social Network latency: BH-adjusted p,0.9152,0.9152459754024598,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_latency_rho,"H1b hybrid_criticality vs ancestor_affected_count, Hotel Reservation, latency: rho",-0.258,-0.2581988897471611,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_latency_ci_lo,H1b Hotel Reservation latency: CI lower,-0.750,-0.75,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_latency_ci_hi,H1b Hotel Reservation latency: CI upper,-0.167,-0.1666666666666666,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_latency_p,H1b Hotel Reservation latency: raw p,1.0000,1.0,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_hr_latency_bh_p,H1b Hotel Reservation latency: BH-adjusted p,1.0000,1.0,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_all_negative,H1b: hybrid metric rho <= 0 in every architecture-by-fault cell,yes,true,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_any_distinguishable,H1b: any cell distinguishable from zero after FDR,no,false,,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+h1b_cells,H1b cells tested (2 architectures x 2 fault types),4,4,cells,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_sn_kill_run,"Ancestor saturation, Social Network, kill, run level",0.909,0.9090909090909092,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_sn_kill_service,"Ancestor saturation, Social Network, kill, service level",0.909,0.9090909090909092,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_sn_kill_tautological,Social Network kill: tautological at the analysis unit,no,false,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_sn_latency_run,"Ancestor saturation, Social Network, latency, run level",0.891,0.8909090909090909,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_sn_latency_service,"Ancestor saturation, Social Network, latency, service level",0.909,0.9090909090909092,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_sn_latency_tautological,Social Network latency: tautological at the analysis unit,no,false,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_hr_kill_run,"Ancestor saturation, Hotel Reservation, kill, run level",1.000,1.0,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_hr_kill_service,"Ancestor saturation, Hotel Reservation, kill, service level",1.000,1.0,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_hr_kill_tautological,Hotel Reservation kill: tautological at the analysis unit,yes,true,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_hr_latency_run,"Ancestor saturation, Hotel Reservation, latency, run level",1.000,1.0,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_hr_latency_service,"Ancestor saturation, Hotel Reservation, latency, service level",1.000,1.0,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+saturation_hr_latency_tautological,Hotel Reservation latency: tautological at the analysis unit,yes,true,,analysis/final/ancestor_saturation.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_kill_mean,"compose-post-service measured ancestor_affected_count, mean over 5 kill reps",1.0,1.0,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_kill_min,"compose-post-service ancestor_affected_count, min, kill",1,1,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_kill_max,"compose-post-service ancestor_affected_count, max, kill",1,1,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_kill_reps,"compose-post-service repetitions, kill",5,5,runs,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_latency_mean,"compose-post-service measured ancestor_affected_count, mean over 5 latency reps",1.0,1.0,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_latency_min,"compose-post-service ancestor_affected_count, min, latency",1,1,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_latency_max,"compose-post-service ancestor_affected_count, max, latency",1,1,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_latency_reps,"compose-post-service repetitions, latency",5,5,runs,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_rank_ancestor_count,compose-post-service rank by ancestor_count (1 = highest) among the 11 SN services,11,11,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_rank_hybrid,compose-post-service rank by hybrid_criticality (1 = highest) among the 11 SN services,1,1,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_set_size,Services in the SN analysis set used for ranking,11,11,services,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_ancestor_count,compose-post-service graph ancestor_count,1,1,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_descendants,compose-post-service graph descendant count,10,10,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_out_degree,compose-post-service out-degree (direct callees),7,7,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+composepost_hybrid,compose-post-service hybrid_criticality score,0.302,0.301515,,analysis/final/compose_post_service.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+loo_rho_min,"Leave-one-out: minimum rho across the 11 exclusions (SN, kill)",0.696,0.696454,,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,8e319f2
+loo_rho_max,"Leave-one-out: maximum rho across the 11 exclusions (SN, kill)",1.000,1.0,,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,8e319f2
+loo_n_exclusions,Leave-one-out: recomputations performed per fault type,11,11,recomputations,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,8e319f2
+loo_userservice_rho,Leave-one-out: rho with user-service excluded,1.000,1.0,,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,8e319f2
+loo_userservice_delta,Leave-one-out: change in rho from excluding user-service,+0.215,0.214881,,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,8e319f2
+loo_second_largest_service,Leave-one-out: service with the second largest swing,compose-post-service,compose-post-service,,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,8e319f2
+loo_second_largest_delta,Leave-one-out: second largest change in rho,-0.089,-0.088665,,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,8e319f2
+loo_swing_ratio,Leave-one-out: user-service swing divided by the next largest,2.4,2.4235154796142786,x,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,8e319f2
+userservice_ancestor_count,user-service graph ancestor_count,4,4,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+userservice_measured,user-service measured ancestor_affected_count (identical in every kill repetition),2,2,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+userservice_runs_departing,user-service kill runs where measured < graph ancestors,5,5,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_n,Social Network: services in the analysis set,11,11,services,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_n_prereg,Social Network: services preregistered,11,11,services,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_n_matches,Social Network: n matches preregistration,yes,true,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_levels,Social Network: distinct ancestor_count levels,4,4,levels,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_levels_match,Social Network: levels match preregistration,yes,true,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_ceiling,"Social Network: best attainable rho, untied outcome",0.941,0.9414688716912718,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_ceiling_prereg,Social Network: preregistered ceiling rho,0.941,0.941,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_ceiling_matches,Social Network: ceiling reproduces the preregistered value,yes,true,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_ceiling_p,Social Network: exact p at the ceiling,0.0002,0.0001999800019998,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_sn_ceiling_p_asymptotic,Social Network: asymptotic p at the ceiling (NOT for inference),0.0000,1.52705773342431e-05,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_n,Hotel Reservation: services in the analysis set,7,7,services,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_n_prereg,Hotel Reservation: services preregistered,7,7,services,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_n_matches,Hotel Reservation: n matches preregistration,yes,true,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_levels,Hotel Reservation: distinct ancestor_count levels,2,2,levels,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_levels_match,Hotel Reservation: levels match preregistration,yes,true,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_ceiling,"Hotel Reservation: best attainable rho, untied outcome",0.791,0.7905694150420949,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_ceiling_prereg,Hotel Reservation: preregistered ceiling rho,0.791,0.791,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_ceiling_matches,Hotel Reservation: ceiling reproduces the preregistered value,yes,true,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_ceiling_p,Hotel Reservation: exact p at the ceiling,0.0952,0.0952380952380952,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_ceiling_p_asymptotic,Hotel Reservation: asymptotic p at the ceiling (NOT for inference),0.0343,0.0343165992063963,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+power_hr_prereg_stated_p,Preregistration section 7.2's stated Hotel Reservation ceiling p (the asymptotic value),0.034,0.034,,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+degenerate_pairs,Predictor-architecture pairs that are degenerate,2,2,pairs,analysis/final/degenerate_predictors.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+testable_pairs,Predictor-architecture pairs that are testable,22,22,pairs,analysis/final/degenerate_predictors.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+total_predictor_pairs,Predictor-architecture pairs considered,24,24,pairs,analysis/final/degenerate_predictors.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+degenerate_sn_predictor,Degenerate predictor on socialnetwork,eigenvector,eigenvector,,analysis/final/degenerate_predictors.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+degenerate_sn_value,Constant value of eigenvector on socialnetwork,0.000000,0.0,,analysis/final/degenerate_predictors.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+degenerate_hr_predictor,Degenerate predictor on hotelreservation,in_degree,in_degree,,analysis/final/degenerate_predictors.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+degenerate_hr_value,Constant value of in_degree on hotelreservation,0.142857,0.1428571428571428,,analysis/final/degenerate_predictors.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+descendant_affected_count_distinct_values,Distinct service-median values of descendant_affected_count across all architectures and fault types,1,1,values,analysis/final/service_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+descendant_affected_count_constant_at,Constant value of descendant_affected_count at the service level,0,0.0,,analysis/final/service_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+unrelated_affected_count_distinct_values,Distinct service-median values of unrelated_affected_count across all architectures and fault types,1,1,values,analysis/final/service_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+unrelated_affected_count_constant_at,Constant value of unrelated_affected_count at the service level,0,0.0,,analysis/final/service_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+descendant_affected_runs_nonzero,Runs (of 180) in which at least one descendant service degraded,1,1,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+descendant_affected_runs_zero,Runs (of 180) in which no descendant service degraded,179,179,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+descendant_affected_runs_zero_pct,Percentage of runs with no descendant service degraded,99.4,99.44444444444444,%,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+descendant_affected_max_in_any_run,Largest descendant_affected_count observed in any single run,2,2,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+descendant_affected_exception_run,The single run with a nonzero descendant_affected_count,socialnetwork/compose-post-service/kill/rep3,socialnetwork/compose-post-service/kill/rep3,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+unrelated_affected_runs_nonzero,Runs (of 180) in which at least one unrelated service degraded,1,1,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+unrelated_affected_runs_zero,Runs (of 180) in which no unrelated service degraded,179,179,runs,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+unrelated_affected_runs_zero_pct,Percentage of runs with no unrelated service degraded,99.4,99.44444444444444,%,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+unrelated_affected_max_in_any_run,Largest unrelated_affected_count observed in any single run,2,2,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+unrelated_affected_exception_run,The single run with a nonzero unrelated_affected_count,hotelreservation/profile/kill/rep4,hotelreservation/profile/kill/rep4,,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+deviations_total,"Deviations from the preregistration, total",9,9,deviations,analysis/final/deviations.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+deviations_runs_invalidated,Campaign runs invalidated across all deviations,17,17,runs,analysis/final/deviations.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+deviations_precampaign,Deviations found before any campaign data existed,1,1,deviations,analysis/final/deviations.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+quarantine_items,Numbered items in the quarantine log,13,13,items,_quarantine/QUARANTINE_LOG.md,hand-maintained log,8e319f2
+replication_primary_identical,Median ancestor_affected_count identical between kill and latency in every architecture,yes,true,,analysis/final/service_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+trec_rho_between_faults_sn,Spearman rho between kill and latency median T_rec across socialnetwork services,0.384,0.3835616438356164,,analysis/final/service_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+fault_invariant_services_sn,socialnetwork services whose full set of five per-run ancestor_affected_count values is identical under kill and latency,10,10,services,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+fault_invariant_services_total_sn,socialnetwork services compared,11,11,services,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+trec_rho_between_faults_hr,Spearman rho between kill and latency median T_rec across hotelreservation services,0.857,0.8571428571428573,,analysis/final/service_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+fault_invariant_services_hr,hotelreservation services whose full set of five per-run ancestor_affected_count values is identical under kill and latency,7,7,services,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+fault_invariant_services_total_hr,hotelreservation services compared,7,7,services,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+fault_invariant_services_all,Services (both architectures) whose per-run ancestor_affected_count values are identical under both fault types,17,17,services,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+fault_invariant_services_all_total,Services compared across both architectures,18,18,services,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+trec_median_s,Median recovery time across all 180 runs,15.74,15.74,s,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+trec_min_s,Minimum recovery time observed,9.72,9.72,s,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+trec_max_s,Maximum recovery time observed,156.27,156.27,s,analysis/final/run_level_data.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+sn_analysis_set_size,Services in the Social Network analysis set,11,11,services,analysis/final/sn_predictor_ranks.csv,analysis/final/run_confirmatory_analysis.py,8e319f2
+fault_latency_delay_ms,Injected network delay for latency faults,500,500,ms,faultinjection/fault_config.py,paper/build_numbers.py,8e319f2
+fault_latency_jitter_ms,Jitter around the injected delay,100,100,ms,faultinjection/fault_config.py,paper/build_numbers.py,8e319f2
+fault_kill_signal,Signal used for kill faults,SIGKILL,SIGKILL,,faultinjection/fault_config.py,paper/build_numbers.py,8e319f2
+threshold_degradation_factor,Relative p95 threshold for flagging a service as latency-degraded,2.0,2.0,x,measurement/metrics_collector.py,paper/build_numbers.py,8e319f2
+threshold_degradation_floor_ms,Absolute p95 rise required alongside the relative threshold,1.0,1.0,ms,measurement/metrics_collector.py,paper/build_numbers.py,8e319f2
+threshold_error_rate_abs,Absolute error-rate rise for flagging a service,0.05,0.05,,measurement/metrics_collector.py,paper/build_numbers.py,8e319f2
+hybrid_w_in,Hybrid metric weight on in-degree centrality (fixed a priori; never fitted to outcome data),0.4,0.4,,centrality/metric_constants.py,paper/build_numbers.py,8e319f2
+hybrid_w_out,Hybrid metric weight on fan-out-scaled out-degree centrality (fixed a priori; never fitted to outcome data),0.4,0.4,,centrality/metric_constants.py,paper/build_numbers.py,8e319f2
+hybrid_w_btw,Hybrid metric weight on betweenness centrality (fixed a priori; never fitted to outcome data),0.2,0.2,,centrality/metric_constants.py,paper/build_numbers.py,8e319f2
+hybrid_weights_tuned,Whether the hybrid metric's weights were tuned against outcome data (a weight lockfile exists),no,false,,centrality/output/tuned_weights.lock.json,paper/build_numbers.py,8e319f2
+protocol_warmup_s,Warm-up before the baseline window,60,60,s,tools/run_campaign.py,paper/build_numbers.py,8e319f2
+protocol_fault_duration_s,Fault hold duration,30,30,s,tools/run_campaign.py,paper/build_numbers.py,8e319f2
+protocol_recovery_cap_s,"Recovery probe cap, beyond which a run is censored",180,180,s,tools/run_campaign.py,paper/build_numbers.py,8e319f2
+protocol_confirm_s,Confirmation period a recovered state must hold,5,5,s,tools/run_campaign.py,paper/build_numbers.py,8e319f2
+protocol_probe_lag_s,"Lag applied to the probe window, to avoid partially written spans",5,5,s,tools/run_campaign.py,paper/build_numbers.py,8e319f2
+protocol_min_traces,Minimum traces before a probe sample may vote for recovery,20,20,traces,tools/run_campaign.py,paper/build_numbers.py,8e319f2
+protocol_load_users,Concurrent load-generator users,25,25,users,tools/run_campaign.py,paper/build_numbers.py,8e319f2
+protocol_cooldown_s,Cooldown after each run,20,20,s,tools/run_campaign.py,paper/build_numbers.py,8e319f2
+protocol_baseline_window_s,"Baseline measurement window, as actually recorded in every run",60,60.0,s,data/campaign/runs/*.json,paper/build_numbers.py,8e319f2
+protocol_baseline_window_distinct,Distinct baseline window lengths across the campaign,1,1,values,data/campaign/runs/*.json,paper/build_numbers.py,8e319f2
+graph_sn_nodes,Services in the reconstructed socialnetwork dependency graph,12,12,services,data/graphs/sn_CANONICAL.json,paper/build_numbers.py,8e319f2
+graph_sn_edges,Observed call edges in the socialnetwork dependency graph,17,17,edges,data/graphs/sn_CANONICAL.json,paper/build_numbers.py,8e319f2
+graph_sn_traces_examined,Traces examined to reconstruct the socialnetwork graph,2449,2449,traces,data/graphs/sn_CANONICAL.json,paper/build_numbers.py,8e319f2
+graph_sn_spans_examined,Spans examined to reconstruct the socialnetwork graph,32847,32847,spans,data/graphs/sn_CANONICAL.json,paper/build_numbers.py,8e319f2
+graph_hr_nodes,Services in the reconstructed hotelreservation dependency graph,8,8,services,data/graphs/hr_CANONICAL.json,paper/build_numbers.py,8e319f2
+graph_hr_edges,Observed call edges in the hotelreservation dependency graph,7,7,edges,data/graphs/hr_CANONICAL.json,paper/build_numbers.py,8e319f2
+graph_hr_traces_examined,Traces examined to reconstruct the hotelreservation graph,3446,3446,traces,data/graphs/hr_CANONICAL.json,paper/build_numbers.py,8e319f2
+graph_hr_spans_examined,Spans examined to reconstruct the hotelreservation graph,31155,31155,spans,data/graphs/hr_CANONICAL.json,paper/build_numbers.py,8e319f2
+dsb_commit,DeathStarBench commit the benchmarks were built from,6ecb097,6ecb097,,data/graphs/hr_CANONICAL.json,paper/build_numbers.py,8e319f2
+hr_manifest_expected_edges,Call edges the published Hotel Reservation architecture implies,8,8,edges,sdg/hotel_expected_services.py,paper/build_numbers.py,8e319f2
+hr_manifest_edges_recovered,Manifest edges recovered by trace reconstruction,6,6,edges,"data/graphs/{hr,sn}_CANONICAL.json",paper/build_numbers.py,8e319f2
+hr_manifest_edges_missed,Manifest edges never observed under this workload,2,2,edges,"data/graphs/{hr,sn}_CANONICAL.json",paper/build_numbers.py,8e319f2
+hr_manifest_edges_missed_names,Which manifest edges were never observed,reservation->user; search->profile,reservation->user; search->profile,,"data/graphs/{hr,sn}_CANONICAL.json",paper/build_numbers.py,8e319f2
+hr_manifest_edges_extra,Observed edges the manifest does not list,frontend->profile,frontend->profile,,"data/graphs/{hr,sn}_CANONICAL.json",paper/build_numbers.py,8e319f2
+hr_expected_services_manifest,Services the published architecture lists,8,8,services,sdg/hotel_expected_services.py,paper/build_numbers.py,8e319f2
+hr_user_observed_callers,Observed callers of the Hotel Reservation user service,frontend,frontend,,"data/graphs/{hr,sn}_CANONICAL.json",paper/build_numbers.py,8e319f2
+hr_user_observed_caller_count,Number of observed callers of user,1,1,callers,"data/graphs/{hr,sn}_CANONICAL.json",paper/build_numbers.py,8e319f2

@@ -1,0 +1,222 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {
+    "application": "socialnetwork",
+    "captured_at": "2026-09-23T18:48:26.242759+00:00",
+    "jaeger_url": "http://localhost:16686",
+    "lookback": "1h",
+    "deathstarbench": {
+      "commit": "6ecb09706140f8730b5385c08f1386c654c3c526",
+      "short": "6ecb097",
+      "dirty": true,
+      "modified_files": []
+    },
+    "traces_examined": 2449,
+    "spans_examined": 32847,
+    "services_in_jaeger": [
+      "compose-post-service",
+      "home-timeline-service",
+      "media-service",
+      "nginx-web-server",
+      "post-storage-service",
+      "social-graph-service",
+      "text-service",
+      "unique-id-service",
+      "url-shorten-service",
+      "user-mention-service",
+      "user-service",
+      "user-timeline-service"
+    ],
+    "app_services": [
+      "compose-post-service",
+      "home-timeline-service",
+      "media-service",
+      "nginx-web-server",
+      "post-storage-service",
+      "social-graph-service",
+      "text-service",
+      "unique-id-service",
+      "url-shorten-service",
+      "user-mention-service",
+      "user-service",
+      "user-timeline-service"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "compose-post-service"
+    },
+    {
+      "id": "home-timeline-service"
+    },
+    {
+      "id": "media-service"
+    },
+    {
+      "id": "nginx-web-server"
+    },
+    {
+      "id": "post-storage-service"
+    },
+    {
+      "id": "social-graph-service"
+    },
+    {
+      "id": "text-service"
+    },
+    {
+      "id": "unique-id-service"
+    },
+    {
+      "id": "url-shorten-service"
+    },
+    {
+      "id": "user-mention-service"
+    },
+    {
+      "id": "user-service"
+    },
+    {
+      "id": "user-timeline-service"
+    }
+  ],
+  "edges": [
+    {
+      "source": "compose-post-service",
+      "target": "home-timeline-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 1680.85,
+      "avg_latency_ms": 1.68
+    },
+    {
+      "source": "compose-post-service",
+      "target": "media-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 12.31,
+      "avg_latency_ms": 0.01
+    },
+    {
+      "source": "compose-post-service",
+      "target": "post-storage-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 933.44,
+      "avg_latency_ms": 0.93
+    },
+    {
+      "source": "compose-post-service",
+      "target": "text-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 1486.21,
+      "avg_latency_ms": 1.49
+    },
+    {
+      "source": "compose-post-service",
+      "target": "unique-id-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 29.79,
+      "avg_latency_ms": 0.03
+    },
+    {
+      "source": "compose-post-service",
+      "target": "user-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 12.52,
+      "avg_latency_ms": 0.01
+    },
+    {
+      "source": "compose-post-service",
+      "target": "user-timeline-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 1566.56,
+      "avg_latency_ms": 1.57
+    },
+    {
+      "source": "home-timeline-service",
+      "target": "post-storage-service",
+      "weight": 698,
+      "call_count": 698,
+      "avg_latency_us": 1848.84,
+      "avg_latency_ms": 1.85
+    },
+    {
+      "source": "home-timeline-service",
+      "target": "social-graph-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 462.07,
+      "avg_latency_ms": 0.46
+    },
+    {
+      "source": "nginx-web-server",
+      "target": "compose-post-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 8836.59,
+      "avg_latency_ms": 8.84
+    },
+    {
+      "source": "nginx-web-server",
+      "target": "home-timeline-service",
+      "weight": 698,
+      "call_count": 698,
+      "avg_latency_us": 2859.03,
+      "avg_latency_ms": 2.86
+    },
+    {
+      "source": "nginx-web-server",
+      "target": "social-graph-service",
+      "weight": 1066,
+      "call_count": 1066,
+      "avg_latency_us": 159768.59,
+      "avg_latency_ms": 159.77
+    },
+    {
+      "source": "nginx-web-server",
+      "target": "user-timeline-service",
+      "weight": 251,
+      "call_count": 251,
+      "avg_latency_us": 5850.76,
+      "avg_latency_ms": 5.85
+    },
+    {
+      "source": "social-graph-service",
+      "target": "user-service",
+      "weight": 2132,
+      "call_count": 2132,
+      "avg_latency_us": 718.2,
+      "avg_latency_ms": 0.72
+    },
+    {
+      "source": "text-service",
+      "target": "url-shorten-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 13.42,
+      "avg_latency_ms": 0.01
+    },
+    {
+      "source": "text-service",
+      "target": "user-mention-service",
+      "weight": 434,
+      "call_count": 434,
+      "avg_latency_us": 13.8,
+      "avg_latency_ms": 0.01
+    },
+    {
+      "source": "user-timeline-service",
+      "target": "post-storage-service",
+      "weight": 251,
+      "call_count": 251,
+      "avg_latency_us": 4282.49,
+      "avg_latency_ms": 4.28
+    }
+  ]
+}

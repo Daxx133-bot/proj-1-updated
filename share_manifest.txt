@@ -1,0 +1,550 @@
+share_manifest.txt -- every file in this copy, and the script that needs it
+
+Built from the working repository at commit c868ed8. A file with no consumer is not
+included. Entries are grouped by the pattern that selected them; `files` is how many
+matched and `bytes` their total size.
+
+703 files, 57.2 MB
+
+==============================================================================
+
+CLAUDE.md
+    needed by : the standing research-integrity rules the repository operates under
+    files     : 1
+    bytes     : 1,971
+      - CLAUDE.md
+
+PREREGISTRATION.md
+    needed by : the locked analysis plan; deviation log in section 12
+    files     : 1
+    bytes     : 55,679
+      - PREREGISTRATION.md
+
+_audit/AUDIT_REPORT.md
+    needed by : the research-integrity audit findings
+    files     : 1
+    bytes     : 31,430
+      - _audit/AUDIT_REPORT.md
+
+_audit/CONFIRMATORY_ANALYSIS.md
+    needed by : output of analysis/final/run_confirmatory_analysis.py
+    files     : 1
+    bytes     : 51,649
+      - _audit/CONFIRMATORY_ANALYSIS.md
+
+_audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md
+    needed by : frozen copy of the plan as locked, cited by run_confirmatory_analysis.py
+    files     : 1
+    bytes     : 51,361
+      - _audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md
+
+_quarantine/QUARANTINE_LOG.md
+    needed by : paper/build_numbers.py counts its numbered items
+    files     : 1
+    bytes     : 23,720
+      - _quarantine/QUARANTINE_LOG.md
+
+analysis/__init__.py
+    needed by : package marker for analysis.final
+    files     : 1
+    bytes     : 19
+      - analysis/__init__.py
+
+analysis/final/*.csv
+    needed by : paper/build_numbers.py, make_tables.py, make_figures.py
+    files     : 18
+    bytes     : 191,171
+      - analysis/final/ancestor_saturation.csv
+      - analysis/final/compose_post_service.csv
+      - analysis/final/confirmatory_family_kill.csv
+      - ... and 15 more matching this pattern
+
+analysis/final/*.md
+    needed by : output of analysis/final/blind_recompute.py and exact_p_supplement.py
+    files     : 2
+    bytes     : 7,317
+      - analysis/final/blind_recompute.md
+      - analysis/final/exact_p_supplement.md
+
+analysis/final/__init__.py
+    needed by : package marker
+    files     : 1
+    bytes     : 0
+      - analysis/final/__init__.py
+
+analysis/final/blind_recompute.py
+    needed by : entry point: independent recomputation from spans
+    files     : 1
+    bytes     : 13,322
+      - analysis/final/blind_recompute.py
+
+analysis/final/exact_p_supplement.py
+    needed by : entry point: exact-enumeration p-values
+    files     : 1
+    bytes     : 10,710
+      - analysis/final/exact_p_supplement.py
+
+analysis/final/fast_stats.py
+    needed by : analysis/final/run_confirmatory_analysis.py
+    files     : 1
+    bytes     : 6,359
+      - analysis/final/fast_stats.py
+
+analysis/final/figures/*.png
+    needed by : output of analysis/final/run_confirmatory_analysis.py
+    files     : 6
+    bytes     : 597,050
+      - analysis/final/figures/fig_forest_confirmatory.png
+      - analysis/final/figures/fig_forest_replication.png
+      - analysis/final/figures/fig_km_ancestor_count_kill.png
+      - analysis/final/figures/fig_km_ancestor_count_latency.png
+      - analysis/final/figures/fig_primary_kill.png
+      - analysis/final/figures/fig_primary_latency.png
+
+analysis/final/leave_one_out.py
+    needed by : entry point: post-hoc sensitivity check
+    files     : 1
+    bytes     : 5,675
+      - analysis/final/leave_one_out.py
+
+analysis/final/run_confirmatory_analysis.py
+    needed by : entry point: the preregistered analysis
+    files     : 1
+    bytes     : 85,252
+      - analysis/final/run_confirmatory_analysis.py
+
+centrality/__init__.py
+    needed by : package marker
+    files     : 1
+    bytes     : 21
+      - centrality/__init__.py
+
+centrality/compute_centrality.py
+    needed by : centrality/hybrid_weight_optimizer.py
+    files     : 1
+    bytes     : 13,447
+      - centrality/compute_centrality.py
+
+centrality/hybrid_weight_optimizer.py
+    needed by : run_confirmatory_analysis.py
+    files     : 1
+    bytes     : 19,242
+      - centrality/hybrid_weight_optimizer.py
+
+centrality/metric_constants.py
+    needed by : run_confirmatory_analysis.py, paper/build_numbers.py
+    files     : 1
+    bytes     : 4,439
+      - centrality/metric_constants.py
+
+data/analysis/predictor_table.csv
+    needed by : tools/compute_test_family.py
+    files     : 1
+    bytes     : 3,715
+      - data/analysis/predictor_table.csv
+
+data/campaign/manifest.json
+    needed by : tools/run_campaign.py: the run manifest
+    files     : 1
+    bytes     : 81,712
+      - data/campaign/manifest.json
+
+data/campaign/runs/*.json
+    needed by : run_confirmatory_analysis.py, leave_one_out.py, blind_recompute.py, build_numbers.py, both audit gates
+    files     : 180
+    bytes     : 1,748,656
+      - data/campaign/runs/run_hotelreservation_geo_kill_1_2026-09-26T05-59-48.569064+00-00.json
+      - data/campaign/runs/run_hotelreservation_geo_kill_2_2026-09-26T07-56-10.175782+00-00.json
+      - data/campaign/runs/run_hotelreservation_geo_kill_3_2026-09-26T09-25-00.209890+00-00.json
+      - ... and 177 more matching this pattern
+
+data/graphs/hr_CANONICAL.json
+    needed by : run_confirmatory_analysis.py, build_numbers.py, run_pilot.py
+    files     : 1
+    bytes     : 2,483
+      - data/graphs/hr_CANONICAL.json
+
+data/graphs/sn_CANONICAL.json
+    needed by : run_confirmatory_analysis.py, leave_one_out.py, blind_recompute.py, build_numbers.py, run_pilot.py
+    files     : 1
+    bytes     : 5,318
+      - data/graphs/sn_CANONICAL.json
+
+data/pilot/pilot_*.json
+    needed by : paper/make_figures.py (Figure 4, the two 2026-09-26 HR runs); tools/check_threshold_floor.py (all pilot runs)
+    files     : 16
+    bytes     : 126,320
+      - data/pilot/pilot_hotelreservation_geo_kill_rep1_2026-09-23T19-08-46.868483+00-00.json
+      - data/pilot/pilot_hotelreservation_geo_kill_rep2_2026-09-23T19-13-10.567156+00-00.json
+      - data/pilot/pilot_hotelreservation_search_cpu_rep1_2026-09-24T19-41-03.434443+00-00.json
+      - ... and 13 more matching this pattern
+
+data/spans/*.json.gz
+    needed by : blind_recompute.py (Social Network runs), tools/audit_run_topology.py (all runs), tools/analyze_live_spans.py (replay), paper/make_figures.py (the two 2026-09-26 HR pilot runs, Figure 4)
+    files     : 366
+    bytes     : 55,457,910
+      - data/spans/spans_hotelreservation_geo_kill_rep1_20260926T055913Z_baseline_window.json.gz
+      - data/spans/spans_hotelreservation_geo_kill_rep1_20260926T055913Z_fault_window.json.gz
+      - data/spans/spans_hotelreservation_geo_kill_rep2_20260926T075535Z_baseline_window.json.gz
+      - ... and 363 more matching this pattern
+
+faultinjection/__init__.py
+    needed by : package marker
+    files     : 1
+    bytes     : 25
+      - faultinjection/__init__.py
+
+faultinjection/fault_config.py
+    needed by : tools/run_pilot.py; parsed by paper/build_numbers.py
+    files     : 1
+    bytes     : 8,412
+      - faultinjection/fault_config.py
+
+infra/__init__.py
+    needed by : package marker
+    files     : 1
+    bytes     : 16
+      - infra/__init__.py
+
+infra/_locustfile_baseline.py
+    needed by : tools/run_pilot.py (Social Network load)
+    files     : 1
+    bytes     : 1,689
+      - infra/_locustfile_baseline.py
+
+infra/_locustfile_hotel.py
+    needed by : tools/run_pilot.py (Hotel Reservation load)
+    files     : 1
+    bytes     : 4,121
+      - infra/_locustfile_hotel.py
+
+infra/docker-compose.override.yml
+    needed by : DeathStarBench Social Network stack: pins Jaeger
+    files     : 1
+    bytes     : 3,835
+      - infra/docker-compose.override.yml
+
+infra/docker_utils.py
+    needed by : tools/run_pilot.py, run_campaign.py, faultinjection/fault_config.py
+    files     : 1
+    bytes     : 2,144
+      - infra/docker_utils.py
+
+infra/health_check.py
+    needed by : tests/test_service_health.py, tests/test_user_flows.py
+    files     : 1
+    bytes     : 12,583
+      - infra/health_check.py
+
+infra/health_check_hotel.py
+    needed by : Docker reproduction: Hotel Reservation stack check
+    files     : 1
+    bytes     : 7,763
+      - infra/health_check_hotel.py
+
+infra/hotel-compose.override.yml
+    needed by : DeathStarBench Hotel Reservation stack: pins Jaeger, port 16687
+    files     : 1
+    bytes     : 3,066
+      - infra/hotel-compose.override.yml
+
+infra/init_hotel_data.py
+    needed by : Docker reproduction: seeds Hotel Reservation data
+    files     : 1
+    bytes     : 7,047
+      - infra/init_hotel_data.py
+
+infra/init_social_graph.py
+    needed by : Docker reproduction: seeds Social Network data
+    files     : 1
+    bytes     : 6,509
+      - infra/init_social_graph.py
+
+infra/setup_env.py
+    needed by : Docker reproduction: brings up the Social Network stack
+    files     : 1
+    bytes     : 9,773
+      - infra/setup_env.py
+
+infra/setup_hotel_env.py
+    needed by : Docker reproduction: brings up the Hotel Reservation stack
+    files     : 1
+    bytes     : 6,696
+      - infra/setup_hotel_env.py
+
+measurement/__init__.py
+    needed by : package marker
+    files     : 1
+    bytes     : 22
+      - measurement/__init__.py
+
+measurement/blast_radius.py
+    needed by : tools/run_pilot.py
+    files     : 1
+    bytes     : 5,353
+      - measurement/blast_radius.py
+
+measurement/metrics_collector.py
+    needed by : tools/run_pilot.py; parsed by paper/build_numbers.py
+    files     : 1
+    bytes     : 17,233
+      - measurement/metrics_collector.py
+
+measurement/recovery_probe.py
+    needed by : tools/run_pilot.py
+    files     : 1
+    bytes     : 17,059
+      - measurement/recovery_probe.py
+
+paper/CLAIMS_LEDGER.md
+    needed by : paper/check_ledger.py
+    files     : 1
+    bytes     : 15,672
+      - paper/CLAIMS_LEDGER.md
+
+paper/INDEX.csv
+    needed by : output of paper/build_all.py
+    files     : 1
+    bytes     : 3,418
+      - paper/INDEX.csv
+
+paper/build_all.py
+    needed by : entry point: regenerates every paper artifact
+    files     : 1
+    bytes     : 2,869
+      - paper/build_all.py
+
+paper/build_numbers.py
+    needed by : paper/build_all.py
+    files     : 1
+    bytes     : 35,301
+      - paper/build_numbers.py
+
+paper/check_draft_ids.py
+    needed by : verifies paper/draft markers against numbers.csv
+    files     : 1
+    bytes     : 5,341
+      - paper/check_draft_ids.py
+
+paper/check_ledger.py
+    needed by : paper/build_all.py
+    files     : 1
+    bytes     : 3,783
+      - paper/check_ledger.py
+
+paper/draft/*.md
+    needed by : manuscript sections; markers checked by paper/check_draft_ids.py
+    files     : 9
+    bytes     : 81,779
+      - paper/draft/audit_disclosure.md
+      - paper/draft/limitations.md
+      - paper/draft/method.md
+      - ... and 6 more matching this pattern
+
+paper/emit_macros.py
+    needed by : paper/build_all.py
+    files     : 1
+    bytes     : 3,649
+      - paper/emit_macros.py
+
+paper/figures/*.csv
+    needed by : output of paper/make_figures.py; backing data per figure
+    files     : 5
+    bytes     : 5,722
+      - paper/figures/fig_leave_one_out_data.csv
+      - paper/figures/fig_primary_sn_data.csv
+      - paper/figures/fig_q3_artifact_data.csv
+      - paper/figures/fig_rank_inversion_data.csv
+      - paper/figures/figures_index.csv
+
+paper/figures/*.pdf
+    needed by : output of paper/make_figures.py
+    files     : 4
+    bytes     : 87,833
+      - paper/figures/fig_leave_one_out.pdf
+      - paper/figures/fig_primary_sn.pdf
+      - paper/figures/fig_q3_artifact.pdf
+      - paper/figures/fig_rank_inversion.pdf
+
+paper/figures/*.png
+    needed by : output of paper/make_figures.py
+    files     : 4
+    bytes     : 708,159
+      - paper/figures/fig_leave_one_out.png
+      - paper/figures/fig_primary_sn.png
+      - paper/figures/fig_q3_artifact.png
+      - paper/figures/fig_rank_inversion.png
+
+paper/make_figures.py
+    needed by : paper/build_all.py
+    files     : 1
+    bytes     : 14,750
+      - paper/make_figures.py
+
+paper/make_tables.py
+    needed by : paper/build_all.py
+    files     : 1
+    bytes     : 11,901
+      - paper/make_tables.py
+
+paper/numbers.csv
+    needed by : paper/emit_macros.py; regenerated by paper/build_numbers.py
+    files     : 1
+    bytes     : 37,054
+      - paper/numbers.csv
+
+paper/numbers.json
+    needed by : output of paper/emit_macros.py
+    files     : 1
+    bytes     : 63,672
+      - paper/numbers.json
+
+paper/numbers.tex
+    needed by : output of paper/emit_macros.py
+    files     : 1
+    bytes     : 29,096
+      - paper/numbers.tex
+
+paper/tables/*.csv
+    needed by : output of paper/make_tables.py
+    files     : 10
+    bytes     : 23,559
+      - paper/tables/tables_index.csv
+      - paper/tables/tbl_deviations.csv
+      - paper/tables/tbl_family_summary.csv
+      - ... and 7 more matching this pattern
+
+paper/tables/*.md
+    needed by : output of paper/make_tables.py
+    files     : 9
+    bytes     : 23,881
+      - paper/tables/tbl_deviations.md
+      - paper/tables/tbl_family_summary.md
+      - paper/tables/tbl_h1b.md
+      - ... and 6 more matching this pattern
+
+pyproject.toml
+    needed by : pytest configuration: the `integration` marker
+    files     : 1
+    bytes     : 757
+      - pyproject.toml
+
+requirements.txt
+    needed by : pip install -r
+    files     : 1
+    bytes     : 176
+      - requirements.txt
+
+sdg/__init__.py
+    needed by : package marker
+    files     : 1
+    bytes     : 14
+      - sdg/__init__.py
+
+sdg/hotel_expected_services.py
+    needed by : paper/build_numbers.py (manifest comparison)
+    files     : 1
+    bytes     : 2,857
+      - sdg/hotel_expected_services.py
+
+tests/__init__.py
+    needed by : package marker
+    files     : 1
+    bytes     : 16
+      - tests/__init__.py
+
+tests/conftest.py
+    needed by : pytest fixtures
+    files     : 1
+    bytes     : 4,379
+      - tests/conftest.py
+
+tests/test_*.py
+    needed by : pytest
+    files     : 8
+    bytes     : 67,560
+      - tests/test_campaign_runner.py
+      - tests/test_container_resolution.py
+      - tests/test_fast_stats.py
+      - ... and 5 more matching this pattern
+
+tools/__init__.py
+    needed by : package marker
+    files     : 1
+    bytes     : 0
+      - tools/__init__.py
+
+tools/analyze_live_spans.py
+    needed by : replays the blast-radius rule over persisted spans
+    files     : 1
+    bytes     : 9,586
+      - tools/analyze_live_spans.py
+
+tools/audit_baseline_sanity.py
+    needed by : pre-analysis gate: baseline steady state
+    files     : 1
+    bytes     : 4,176
+      - tools/audit_baseline_sanity.py
+
+tools/audit_run_topology.py
+    needed by : pre-analysis gate: service presence per run
+    files     : 1
+    bytes     : 3,646
+      - tools/audit_run_topology.py
+
+tools/build_predictor_table.py
+    needed by : produces data/analysis/predictor_table.csv
+    files     : 1
+    bytes     : 7,815
+      - tools/build_predictor_table.py
+
+tools/check_threshold_floor.py
+    needed by : evidence for the 1.0 ms absolute floor (deviation 1)
+    files     : 1
+    bytes     : 6,063
+      - tools/check_threshold_floor.py
+
+tools/compute_test_family.py
+    needed by : derives the BH-FDR family size from the graphs
+    files     : 1
+    bytes     : 3,518
+      - tools/compute_test_family.py
+
+tools/run_campaign.py
+    needed by : campaign runner; parsed by paper/build_numbers.py for protocol
+    files     : 1
+    bytes     : 24,680
+      - tools/run_campaign.py
+
+tools/run_pilot.py
+    needed by : tools/run_campaign.py
+    files     : 1
+    bytes     : 22,627
+      - tools/run_pilot.py
+
+
+==============================================================================
+
+FILES CREATED FOR THIS COPY (not copied from the original repository)
+
+README.md
+    needed by : the reader; describes this copy, its outcome and how to rebuild it
+.gitignore
+    needed by : git; excludes caches, virtual environments and secrets
+share_manifest.txt
+    needed by : the reader; this file
+_quarantine/QUARANTINE_INDEX.txt
+    needed by : the reader; one line per withdrawn file, none of which is copied
+
+MODIFIED IN THIS COPY ONLY
+
+tests/test_campaign_runner.py
+    14 tests marked @pytest.mark.integration. They drive the campaign runner as far
+    as its stack-lifecycle helpers, which shell out to `docker compose` with the
+    working directory set to <parent>/DeathStarBench/<app>, so they require Docker
+    and a separate DeathStarBench checkout at commit 6ecb097 as a sibling of this
+    folder. The other 5 tests in the file need neither and are unmarked.
+
+_audit/AUDIT_REPORT.md, _quarantine/QUARANTINE_LOG.md
+    One absolute path in each replaced with the placeholder <LOCAL_IDE_WORKSPACE>.
+    Documentation text only. No data file, script or checksummed artifact was edited.

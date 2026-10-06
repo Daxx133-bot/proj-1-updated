@@ -1,0 +1,5 @@
+figure,shows,data_file,source_file,source_script,formats
+fig_primary_sn,"ancestor_count vs measured ancestor_affected_count per SN service, with y=x and the departing services labelled",paper/figures/fig_primary_sn_data.csv,analysis/final/service_level_data.csv,analysis/final/run_confirmatory_analysis.py,"png, pdf"
+fig_rank_inversion,"Rank of all 11 SN services by hybrid_criticality vs by ancestor_count, compose-post-service highlighted",paper/figures/fig_rank_inversion_data.csv,analysis/final/sn_predictor_ranks.csv,analysis/final/run_confirmatory_analysis.py,"png, pdf"
+fig_leave_one_out,"Post-hoc: primary rho recomputed with each SN service excluded, kill faults",paper/figures/fig_leave_one_out_data.csv,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,"png, pdf"
+fig_q3_artifact,"Per-service p95 under the old end-to-end root-span scope vs the corrected own-span scope, HR search latency fault",paper/figures/fig_q3_artifact_data.csv,data/pilot/pilot_hotelreservation_search_latency_rep*_2026-09-26T*.json + data/spans/,paper/make_figures.py,"png, pdf"

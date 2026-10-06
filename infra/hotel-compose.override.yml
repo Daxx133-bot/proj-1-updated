@@ -1,0 +1,112 @@
+# ============================================================================
+# hotel-compose.override.yml
+# ============================================================================
+# Place this file next to the DeathStarBench hotelReservation/docker-compose.yml.
+# Docker Compose automatically merges it.
+#
+# Key changes vs the upstream file:
+#   - Jaeger pinned to 1.62.0 (versions >=1.63.0 break DSB tracing)
+#   - Jaeger UI exposed on HOST port 16687 (Social Network uses 16686)
+#   - Jaeger UDP agents on 6832/6831 (same ports, isolated project network)
+#   - frontend exposed on HOST port 5000
+#   - JAEGER_SAMPLE_RATIO set to 1.0 (100% trace sampling for graph reconstruction)
+#   - All application services labelled for Pumba targeting
+#   - Memory limits added to prevent OOM kills during CPU stress experiments
+# ============================================================================
+
+services:
+
+  # ── Jaeger: pin version, expose on port 16687 to avoid conflict ──────────
+  jaeger:
+    image: jaegertracing/all-in-one:1.62.0
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    ports:
+      - "16687:16686"       # Jaeger UI (SN uses 16686)
+      - "9412:9411"         # Zipkin collector (SN uses 9411)
+    labels:
+      - "pumba.skip=true"   # Do NOT fault-inject the tracing infrastructure
+
+  # ── Frontend: expose on port 5000 ────────────────────────────────────────
+  frontend:
+    ports:
+      - "5000:5000"
+    environment:
+      - JAEGER_SAMPLE_RATIO=1.0
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  # ── Application microservices ─────────────────────────────────────────────
+  profile:
+    environment:
+      - JAEGER_SAMPLE_RATIO=1.0
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  search:
+    environment:
+      - JAEGER_SAMPLE_RATIO=1.0
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  geo:
+    environment:
+      - JAEGER_SAMPLE_RATIO=1.0
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  rate:
+    environment:
+      - JAEGER_SAMPLE_RATIO=1.0
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  reservation:
+    environment:
+      - JAEGER_SAMPLE_RATIO=1.0
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  user:
+    environment:
+      - JAEGER_SAMPLE_RATIO=1.0
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  recommendation:
+    environment:
+      - JAEGER_SAMPLE_RATIO=1.0
+    labels:
+      - "pumba.target=true"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
