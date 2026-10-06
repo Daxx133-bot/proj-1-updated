@@ -1,6 +1,6 @@
 %% paper/numbers.tex -- AUTO-GENERATED from paper/numbers.csv. DO NOT EDIT.
 %% Regenerate: python paper/build_numbers.py && python paper/emit_macros.py
-% Generated at repository commit 785dc59. 277 macros.
+% Generated at repository commit 176e6b8. 340 macros.
 
 % Total fault-injection runs in the final campaign (analysis/final/run_level_data.csv)
 \newcommand{\NumCampaignRunsTotal}{180}
@@ -556,3 +556,129 @@
 \newcommand{\NumHrUserObservedCallers}{frontend}
 % Number of observed callers of user (data/graphs/{hr,sn}_CANONICAL.json)
 \newcommand{\NumHrUserObservedCallerCount}{1}
+% Runs, socialnetwork, kill (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwSnKillRuns}{55}
+% Runs with the gateway among the degraded ancestors, socialnetwork, kill (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwSnKillRunsGatewayDegraded}{55}
+% Fraction of runs with the gateway among the degraded ancestors, socialnetwork, kill (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwSnKillFracGatewayDegraded}{1.000}
+% Runs, socialnetwork, latency (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwSnLatencyRuns}{55}
+% Runs with the gateway among the degraded ancestors, socialnetwork, latency (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwSnLatencyRunsGatewayDegraded}{55}
+% Fraction of runs with the gateway among the degraded ancestors, socialnetwork, latency (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwSnLatencyFracGatewayDegraded}{1.000}
+% Runs, hotelreservation, kill (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwHrKillRuns}{35}
+% Runs with the gateway among the degraded ancestors, hotelreservation, kill (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwHrKillRunsGatewayDegraded}{35}
+% Fraction of runs with the gateway among the degraded ancestors, hotelreservation, kill (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwHrKillFracGatewayDegraded}{1.000}
+% Runs, hotelreservation, latency (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwHrLatencyRuns}{35}
+% Runs with the gateway among the degraded ancestors, hotelreservation, latency (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwHrLatencyRunsGatewayDegraded}{35}
+% Fraction of runs with the gateway among the degraded ancestors, hotelreservation, latency (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwHrLatencyFracGatewayDegraded}{1.000}
+% socialnetwork analysis-set services with the gateway among their graph ancestors (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwSnServicesGatewayAncestor}{11}
+% hotelreservation analysis-set services with the gateway among their graph ancestors (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwHrServicesGatewayAncestor}{7}
+% Runs (all architectures and fault types) with the gateway among the degraded ancestors (post-hoc descriptive) (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwRunsGatewayDegradedAll}{180}
+% Runs covered by the gateway decomposition (analysis/final/gateway_decomposition_summary.csv)
+\newcommand{\NumGwRunsAll}{180}
+% compose-post-service runs, both fault types (analysis/final/gateway_decomposition.csv)
+\newcommand{\NumComposepostRunsTotal}{10}
+% compose-post-service runs whose degraded ancestors are exactly the gateway (nginx-web-server) (analysis/final/gateway_decomposition.csv)
+\newcommand{\NumComposepostRunsOnlyGatewayAncestor}{10}
+% socialnetwork per-service latency samples in the persisted spans (analysis/final/sn_span_composition.csv)
+\newcommand{\NumSnSpanSamples}{2598}
+% socialnetwork samples that fell back to all of a service's spans (no span.kind tag) (analysis/final/sn_span_composition.csv)
+\newcommand{\NumSnSpanSamplesFallback}{2598}
+% hotelreservation per-service latency samples in the persisted spans (analysis/final/sn_span_composition.csv)
+\newcommand{\NumHrSpanSamples}{1168}
+% hotelreservation samples that fell back to all of a service's spans (no span.kind tag) (analysis/final/sn_span_composition.csv)
+\newcommand{\NumHrSpanSamplesFallback}{0}
+% Spans selected for Social Network per-service latency (analysis/final/sn_span_composition.csv)
+\newcommand{\NumSnSpansSelected}{540433}
+% Of those, spans whose operation name ends in _client (analysis/final/sn_span_composition.csv)
+\newcommand{\NumSnSpansSelectedClient}{268839}
+% Percentage of selected Social Network spans that are *_client spans (analysis/final/sn_span_composition.csv)
+\newcommand{\NumSnSpansSelectedClientPct}{49.7}
+% Social Network per-service baseline entries in the run records (analysis/final/sn_span_composition.csv)
+\newcommand{\NumSnRecordSamples}{1320}
+% Of those, entries labelled scope = service_server_spans (analysis/final/sn_span_composition.csv)
+\newcommand{\NumSnRecordSamplesLabelledServer}{1320}
+% Social Network runs replayed under the server-only rule (analysis/final/sn_server_only_replay.csv)
+\newcommand{\NumReplayRuns}{110}
+% Runs whose stored A/D/U the existing-rule replay reproduces (analysis/final/sn_server_only_replay.csv)
+\newcommand{\NumReplayExistingRuleMatchesStored}{109}
+% Runs whose A/D/U changes under the server-only rule, against the existing-rule replay of the same spans (analysis/final/sn_server_only_replay.csv)
+\newcommand{\NumReplayRunsChanged}{2}
+% Runs whose server-only A/D/U differs from the stored value (analysis/final/sn_server_only_replay.csv)
+\newcommand{\NumReplayRunsDifferFromStored}{3}
+% Service-by-fault cells whose median A, D or U differs between the server-only replay and the stored values (analysis/final/sn_server_only_replay.csv)
+\newcommand{\NumReplayServiceMediansChanged}{0}
+% Social Network primary test under the server-only replay, kill: rho (post hoc) (analysis/final/sn_server_only_replay_tests.csv)
+\newcommand{\NumReplayPrimaryRhoKill}{0.785119}
+% Social Network primary test under the server-only replay, kill: exact p (post hoc, nominal) (analysis/final/sn_server_only_replay_tests.csv)
+\newcommand{\NumReplayPrimaryPKill}{0.006926}
+% Social Network primary test under the server-only replay, latency: rho (post hoc) (analysis/final/sn_server_only_replay_tests.csv)
+\newcommand{\NumReplayPrimaryRhoLatency}{0.785119}
+% Social Network primary test under the server-only replay, latency: exact p (post hoc, nominal) (analysis/final/sn_server_only_replay_tests.csv)
+\newcommand{\NumReplayPrimaryPLatency}{0.006926}
+% Server-only replay leaves the Social Network primary rho and exact p identical to the stored-outcome values, both fault types (analysis/final/sn_server_only_replay_tests.csv)
+\newcommand{\NumReplayPrimaryIdentical}{yes}
+% Runs invalidated and re-collected under deviation 1 (analysis/final/deviations.csv)
+\newcommand{\NumDeviationOneRunsInvalidated}{3}
+% Runs invalidated and re-collected under deviation 2 (analysis/final/deviations.csv)
+\newcommand{\NumDeviationTwoRunsInvalidated}{3}
+% Runs invalidated and re-collected under deviation 4 (analysis/final/deviations.csv)
+\newcommand{\NumDeviationFourRunsInvalidated}{11}
+% Deviations that invalidated no runs (analysis/final/deviations.csv)
+\newcommand{\NumDeviationsNoData}{9}
+% Deviations that invalidated at least one run (analysis/final/deviations.csv)
+\newcommand{\NumDeviationsWithData}{3}
+% Elapsed time from the first CAMPAIGN START in the progress log (the pre-launch rehearsal) to the last kept run's end-timestamp (data/campaign/progress.log; analysis/final/run_level_data.csv)
+\newcommand{\NumCampaignDurationInclRehearsalHours}{9.3}
+% Nominal recovery-probe polling interval (data/campaign/runs/*.json (recovery_poll_interval_s))
+\newcommand{\NumTrecPollIntervalNominalS}{1}
+% Effective polling interval: smallest per-run median gap between recovery-probe samples (data/campaign/runs/*.json (recovery_samples.t_s))
+\newcommand{\NumTrecPollIntervalEffMinS}{1.4}
+% Effective polling interval: largest per-run median gap between recovery-probe samples (data/campaign/runs/*.json (recovery_samples.t_s))
+\newcommand{\NumTrecPollIntervalEffMaxS}{2.4}
+% Locust wait between tasks, minimum (SN) (infra/_locustfile_baseline.py)
+\newcommand{\NumProtocolSnWaitMinS}{0.5}
+% Locust wait between tasks, maximum (SN) (infra/_locustfile_baseline.py)
+\newcommand{\NumProtocolSnWaitMaxS}{1.5}
+% Locust task weight for compose_post (SN workload) (infra/_locustfile_baseline.py)
+\newcommand{\NumProtocolSnTaskWeightComposePost}{3}
+% Locust task weight for read_home_timeline (SN workload) (infra/_locustfile_baseline.py)
+\newcommand{\NumProtocolSnTaskWeightReadHomeTimeline}{5}
+% Locust task weight for read_user_timeline (SN workload) (infra/_locustfile_baseline.py)
+\newcommand{\NumProtocolSnTaskWeightReadUserTimeline}{2}
+% Locust wait between tasks, minimum (HR) (infra/_locustfile_hotel.py)
+\newcommand{\NumProtocolHrWaitMinS}{0.5}
+% Locust wait between tasks, maximum (HR) (infra/_locustfile_hotel.py)
+\newcommand{\NumProtocolHrWaitMaxS}{1.5}
+% Locust task weight for hotel_search (HR workload) (infra/_locustfile_hotel.py)
+\newcommand{\NumProtocolHrTaskWeightHotelSearch}{6}
+% Locust task weight for make_reservation (HR workload) (infra/_locustfile_hotel.py)
+\newcommand{\NumProtocolHrTaskWeightMakeReservation}{2}
+% Locust task weight for get_user (HR workload) (infra/_locustfile_hotel.py)
+\newcommand{\NumProtocolHrTaskWeightGetUser}{2}
+% Locust task weight for get_recommendations (HR workload) (infra/_locustfile_hotel.py)
+\newcommand{\NumProtocolHrTaskWeightGetRecommendations}{1}
+% Primary test: Monte-Carlo permutations behind the locked raw p (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryNPermutations}{10000}
+% Primary test: BH-adjusted p divided by q (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumPrimaryPBhOverQ}{6.9}
+% H1b: distinct architecture-by-rho comparisons among the four cells (analysis/final/h1b_hybrid_metric.csv)
+\newcommand{\NumHOnebDistinctComparisons}{2}
+% Pilot method-validation runs behind Figure 4 (not campaign runs) (paper/figures/fig_q3_artifact_data.csv)
+\newcommand{\NumQThreePilotRuns}{2}
+% Services sharing one identical end-to-end-scope baseline p95 in each Figure 4 run (paper/figures/fig_q3_artifact_data.csv)
+\newcommand{\NumQThreeIdenticalBaselineServices}{3}
+% Which services share it (paper/figures/fig_q3_artifact_data.csv)
+\newcommand{\NumQThreeIdenticalBaselineNames}{geo, rate, search}

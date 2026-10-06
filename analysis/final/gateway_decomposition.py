@@ -1,0 +1,133 @@
+"""
+gateway_decomposition.py -- POST-HOC DESCRIPTIVE TABLE. NOT PREREGISTERED. NO HYPOTHESIS
+TEST IS RUN HERE.
+
+For each service in the analysis set of each architecture, this tabulates how much of the
+measured ancestor_affected_count is the gateway. The gateway (the single in-degree-zero
+node of each canonical graph) is excluded from the analysis set as a faulted service, but
+it is a graph ancestor of analysis-set services and can be counted among their degraded
+ancestors. This table makes that share visible. It informs the near-tautology caveat in the
+Limitations (section 5.4); it is a description of the stored outcomes, not a new analysis.
+
+Inputs : data/campaign/runs/*.json             (ancestor_affected_services per run)
+         data/graphs/{sn,hr}_CANONICAL.json    (ancestors, gateway identity)
+Outputs: analysis/final/gateway_decomposition.csv          (one row per service x fault)
+         analysis/final/gateway_decomposition_summary.csv  (one row per architecture x fault)
+         analysis/final/gateway_decomposition.md
+
+Run: python analysis/final/gateway_decomposition.py
+"""
+from __future__ import annotations
+
+import glob
+import json
+import os
+
+import networkx as nx
+import pandas as pd
+
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+RUNS = os.path.join(REPO, "data", "campaign", "runs")
+GRAPHS = {"socialnetwork": os.path.join(REPO, "data", "graphs", "sn_CANONICAL.json"),
+          "hotelreservation": os.path.join(REPO, "data", "graphs", "hr_CANONICAL.json")}
+OUT = os.path.join(REPO, "analysis", "final")
+LABEL = "POST-HOC DESCRIPTIVE -- not preregistered, no hypothesis test"
+
+
+def load_graph(app: str) -> nx.DiGraph:
+    with open(GRAPHS[app], encoding="utf-8") as fh:
+        return nx.node_link_graph(json.load(fh), edges="edges")
+
+
+def main() -> int:
+    runs = []
+    for f in sorted(glob.glob(os.path.join(RUNS, "run_*.json"))):
+        with open(f, encoding="utf-8") as fh:
+            d = json.load(fh)
+        runs.append({"app": d["app"], "service": d["service"],
+                     "fault_type": d["fault_type"], "repetition": d["repetition"],
+                     "ancestor_affected_count": d["ancestor_affected_count"],
+                     "ancestors_degraded": [s for s in
+                                            d["ancestor_affected_services"].split(",") if s]})
+    runs = pd.DataFrame(runs)
+
+    rows, summ = [], []
+    for app in ("socialnetwork", "hotelreservation"):
+        G = load_graph(app)
+        gateways = [n for n in G.nodes() if G.in_degree(n) == 0]
+        if len(gateways) != 1:
+            raise SystemExit("%s: expected one gateway, found %s" % (app, gateways))
+        gw = gateways[0]
+        sub_app = runs[runs.app == app].copy()
+        sub_app["gateway_degraded"] = sub_app.ancestors_degraded.apply(lambda a: gw in a)
+        sub_app["non_gateway_degraded"] = sub_app.ancestors_degraded.apply(
+            lambda a: len([s for s in a if s != gw]))
+        sub_app["only_gateway_degraded"] = sub_app.ancestors_degraded.apply(
+            lambda a: a == [gw])
+        for svc in sorted(n for n in G.nodes() if n != gw):
+            anc = nx.ancestors(G, svc)
+            for fault in ("kill", "latency"):
+                s = sub_app[(sub_app.service == svc) & (sub_app.fault_type == fault)]
+                rows.append({
+                    "label": LABEL, "architecture": app, "gateway": gw, "service": svc,
+                    "fault_type": fault, "n_runs": len(s),
+                    "ancestor_count": len(anc), "gateway_is_ancestor": gw in anc,
+                    "median_degraded_ancestors": float(s.ancestor_affected_count.median()),
+                    "median_degraded_ancestors_gateway": float(
+                        s.gateway_degraded.astype(int).median()),
+                    "median_degraded_ancestors_non_gateway": float(
+                        s.non_gateway_degraded.median()),
+                    "runs_gateway_degraded": int(s.gateway_degraded.sum()),
+                    "runs_only_gateway_degraded": int(s.only_gateway_degraded.sum()),
+                })
+        for fault in ("kill", "latency"):
+            s = sub_app[sub_app.fault_type == fault]
+            summ.append({
+                "label": LABEL, "architecture": app, "gateway": gw, "fault_type": fault,
+                "n_runs": len(s), "runs_gateway_degraded": int(s.gateway_degraded.sum()),
+                "fraction_runs_gateway_degraded": float(s.gateway_degraded.mean()),
+                "services": int(s.service.nunique()),
+                "services_with_gateway_ancestor": int(sum(
+                    gw in nx.ancestors(G, v) for v in s.service.unique())),
+            })
+
+    df, sm = pd.DataFrame(rows), pd.DataFrame(summ)
+    df.to_csv(os.path.join(OUT, "gateway_decomposition.csv"), index=False)
+    sm.to_csv(os.path.join(OUT, "gateway_decomposition_summary.csv"), index=False)
+
+    L = ["# Gateway decomposition of degraded ancestors", "",
+         "**%s.** Generated by `analysis/final/gateway_decomposition.py` from "
+         "`data/campaign/runs/` and `data/graphs/`. It informs the near-tautology caveat in "
+         "the Limitations (section 5.4)." % LABEL, "",
+         "Each architecture's gateway is its single in-degree-zero node. It is excluded from "
+         "the analysis set as a faulted service but can be counted among the degraded "
+         "ancestors of the services that are faulted.", "",
+         "## Per architecture and fault type", "",
+         "| architecture | fault | runs | runs with the gateway among degraded ancestors | "
+         "fraction | services with the gateway as an ancestor |",
+         "|---|---|---:|---:|---:|---:|"]
+    for _, r in sm.iterrows():
+        L.append("| %s | %s | %d | %d | %.3f | %d of %d |" % (
+            r.architecture, r.fault_type, r.n_runs, r.runs_gateway_degraded,
+            r.fraction_runs_gateway_degraded, r.services_with_gateway_ancestor, r.services))
+    L += ["", "## Per service", "",
+          "Medians are over each cell's repetitions.", "",
+          "| architecture | service | fault | ancestor_count | gateway is an ancestor | "
+          "median degraded ancestors | of which the gateway | of which other ancestors | "
+          "runs with gateway degraded |",
+          "|---|---|---|---:|---|---:|---:|---:|---:|"]
+    for _, r in df.iterrows():
+        L.append("| %s | %s | %s | %d | %s | %g | %g | %g | %d of %d |" % (
+            r.architecture, r.service, r.fault_type, r.ancestor_count,
+            "yes" if r.gateway_is_ancestor else "no", r.median_degraded_ancestors,
+            r.median_degraded_ancestors_gateway, r.median_degraded_ancestors_non_gateway,
+            r.runs_gateway_degraded, r.n_runs))
+    L.append("")
+    with open(os.path.join(OUT, "gateway_decomposition.md"), "w", encoding="utf-8") as fh:
+        fh.write("\n".join(L))
+    print("wrote gateway_decomposition.csv, _summary.csv, .md (%d service rows)" % len(df))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,4 +1,8 @@
-share_manifest.txt -- every file in this copy, and the script that needs it
+share_manifest.txt -- every file in this copy at the time of its first commit, and the
+script that needs it
+
+This is the manifest as of the first commit of this copy (5366876). It does not list files
+added by later commits; `git log --stat` shows those.
 
 Built from the working repository at commit c868ed8. A file with no consumer is not
 included. Entries are grouped by the pattern that selected them; `files` is how many

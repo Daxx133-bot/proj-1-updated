@@ -1,0 +1,5 @@
+label,architecture,gateway,fault_type,n_runs,runs_gateway_degraded,fraction_runs_gateway_degraded,services,services_with_gateway_ancestor
+"POST-HOC DESCRIPTIVE -- not preregistered, no hypothesis test",socialnetwork,nginx-web-server,kill,55,55,1.0,11,11
+"POST-HOC DESCRIPTIVE -- not preregistered, no hypothesis test",socialnetwork,nginx-web-server,latency,55,55,1.0,11,11
+"POST-HOC DESCRIPTIVE -- not preregistered, no hypothesis test",hotelreservation,frontend,kill,35,35,1.0,7,7
+"POST-HOC DESCRIPTIVE -- not preregistered, no hypothesis test",hotelreservation,frontend,latency,35,35,1.0,7,7

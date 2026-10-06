@@ -46,8 +46,11 @@ were built to prevent.
 Twelve deviations from the locked plan are recorded (Table 8) %[id:deviations_total]. Across
 all of them, 17 runs %[id:deviations_runs_invalidated] were invalidated; every one was
 quarantined and re-collected rather than analysed or dropped, which is why the final dataset
-is complete and balanced at 180 runs %[id:campaign_runs_total]. Four deviations invalidated
-no data at all. We group them below by when they occurred, since that is what determines how
+is complete and balanced at 180 runs %[id:campaign_runs_total]. Nine %[id:deviations_no_data]
+of the twelve deviations invalidated no data. The three %[id:deviations_with_data] that did
+are deviation 1 (3 runs %[id:deviation_1_runs_invalidated]), deviation 2 (3 runs
+%[id:deviation_2_runs_invalidated]) and deviation 4 (11 runs
+%[id:deviation_4_runs_invalidated]). We group them below by when they occurred, since that is what determines how
 much they could have influenced a result.
 
 **Before any campaign data existed.** One deviation %[id:deviations_precampaign] was found
@@ -123,8 +126,8 @@ document forbids for inference. Under the exact test it mandates, that ceiling p
 This sharpens the preregistration's own conclusion rather than contradicting it, and §5.2
 gives the consequence. No analysis in this paper used the asymptotic value.
 
-**After the analysis was complete.** The final deviation was made after the results were
-known, and we mark it as such. The Social Network permutation tests had fallen back to Monte
+**After the analysis was complete.** Deviation 9 was made after the results were known, and
+we mark it as such. The Social Network permutation tests had fallen back to Monte
 Carlo sampling because exhaustive enumeration of 11 factorial orderings was judged infeasible.
 That judgement was wrong: the permutation null depends only on the two rank vectors, so
 permuting the vector carrying more ties enumerates the identical null distribution from far
@@ -142,6 +145,32 @@ advance, an independent resampling with a different seed having landed on the ot
 the locked value. The verdict is unchanged either way
 %[id:primary_significant_exact], the exact values appear only in a supplementary table
 (Table 9), and the locked Monte Carlo value remains the preregistered one.
+
+**Recorded after the analysis, by a verification of the repository.** Three further
+deviations were found by a read-only check of the repository against its own records, after
+the analysis was complete. None changed a stored outcome or a locked output.
+
+Deviation 10 concerns the hybrid metric's weights. The locked plan specified a
+cross-architecture protocol that tuned the weights on Social Network and froze them for Hotel
+Reservation. It was not carried out. The analysis used the weights 0.4 %[id:hybrid_w_in], 0.4
+%[id:hybrid_w_out] and 0.2 %[id:hybrid_w_btw] inherited from the withdrawn analysis, where an
+empirical search had chosen them, and they were not re-tuned on the campaign data
+%[id:hybrid_weights_reoptimised_on_campaign] (§3.3, §6.1). The fixed weights were already in
+the analysis code before the lock, but the departure was not recorded until this
+verification.
+
+Deviation 11 concerns Social Network latency attribution. Social Network spans carry no
+span-kind tag, so its per-service latency used all of a service's spans, client spans
+included, while the run records labelled the samples as server spans (§3.5). A post-hoc
+replay on server-only spans changed 2 %[id:replay_runs_changed] of 110 %[id:replay_runs]
+run-level outcomes and no service-level median %[id:replay_service_medians_changed], and left
+the primary result identical %[id:replay_primary_identical]. Social Network recovery times
+could not be replayed, because the recovery probe's windows were not stored (§5.8).
+
+Deviation 12 concerns one Hotel Reservation latency run, which was attempted twice. The
+first attempt was interrupted during its recovery probe when the campaign was stopped for
+deviation 2. Its spans were saved, but it wrote no run record and was never analysed; the
+completed second attempt is the run reported.
 
 ## 6.3 Verification
 

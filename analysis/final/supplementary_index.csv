@@ -4,3 +4,7 @@ blind_recompute.md,analysis/final/blind_recompute.py,"supplementary independent 
 sn_server_only_replay.csv,analysis/final/sn_server_only_replay.py,"post-hoc sensitivity replay (Deviation 11), not part of the preregistered analysis",no
 sn_server_only_replay_tests.csv,analysis/final/sn_server_only_replay.py,"post-hoc sensitivity replay (Deviation 11), not part of the preregistered analysis",no
 sn_server_only_replay.md,analysis/final/sn_server_only_replay.py,"post-hoc sensitivity replay (Deviation 11), not part of the preregistered analysis",no
+gateway_decomposition.csv,analysis/final/gateway_decomposition.py,"post-hoc descriptive table, not part of the preregistered analysis; informs the near-tautology caveat (Limitations 5.4)",no
+gateway_decomposition_summary.csv,analysis/final/gateway_decomposition.py,"post-hoc descriptive table, not part of the preregistered analysis; informs the near-tautology caveat (Limitations 5.4)",no
+gateway_decomposition.md,analysis/final/gateway_decomposition.py,"post-hoc descriptive table, not part of the preregistered analysis; informs the near-tautology caveat (Limitations 5.4)",no
+sn_span_composition.csv,analysis/final/sn_span_composition.py,"post-hoc descriptive count (Deviation 11), not part of the preregistered analysis",no

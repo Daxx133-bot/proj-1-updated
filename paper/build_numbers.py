@@ -246,6 +246,217 @@ def protocol_and_topology_numbers():
         len(ucallers), F_GRAPH, S_SELF, "callers")
 
 
+def supplementary_numbers(conf, h1b, devs, runs):
+    """Ids added 2026-10-06 for factual fixes to the drafts.
+
+    Post-hoc and descriptive outputs (gateway decomposition, span composition, the SN
+    server-only replay), the workload mix, polling resolution, the Figure 4 pilot data,
+    and per-deviation run counts. Every value is read from a file; nothing is typed.
+    """
+    import ast
+    import glob as _glob
+    import json as _json
+
+    S_SELF = "paper/build_numbers.py"
+    F_GW = "analysis/final/gateway_decomposition_summary.csv"
+    F_GWS = "analysis/final/gateway_decomposition.csv"
+    S_GW = "analysis/final/gateway_decomposition.py"
+    F_SC, S_SC = "analysis/final/sn_span_composition.csv", "analysis/final/sn_span_composition.py"
+    F_RP = "analysis/final/sn_server_only_replay.csv"
+    F_RPT = "analysis/final/sn_server_only_replay_tests.csv"
+    S_RP = "analysis/final/sn_server_only_replay.py"
+    F_Q3 = "paper/figures/fig_q3_artifact_data.csv"
+    lab = {"socialnetwork": "sn", "hotelreservation": "hr"}
+
+    # ---- gateway decomposition (post hoc, descriptive) ---------------------
+    gw = pd.read_csv(os.path.join(REPO, F_GW))
+    for _, r in gw.iterrows():
+        k = f"gw_{lab[r.architecture]}_{r.fault_type}"
+        what = f"{r.architecture}, {r.fault_type} (post-hoc descriptive)"
+        add(f"{k}_runs", f"Runs, {what}", int(r.n_runs), F_GW, S_GW, "runs")
+        add(f"{k}_runs_gateway_degraded", f"Runs with the gateway among the degraded "
+            f"ancestors, {what}", int(r.runs_gateway_degraded), F_GW, S_GW, "runs")
+        add(f"{k}_frac_gateway_degraded", f"Fraction of runs with the gateway among the "
+            f"degraded ancestors, {what}", float(r.fraction_runs_gateway_degraded),
+            F_GW, S_GW, "", "%.3f")
+    for app in ("socialnetwork", "hotelreservation"):
+        r = gw[(gw.architecture == app)].iloc[0]
+        add(f"gw_{lab[app]}_services_gateway_ancestor", f"{app} analysis-set services with "
+            f"the gateway among their graph ancestors", int(r.services_with_gateway_ancestor),
+            F_GW, S_GW, "services")
+    add("gw_runs_gateway_degraded_all", "Runs (all architectures and fault types) with the "
+        "gateway among the degraded ancestors (post-hoc descriptive)",
+        int(gw.runs_gateway_degraded.sum()), F_GW, S_GW, "runs")
+    add("gw_runs_all", "Runs covered by the gateway decomposition", int(gw.n_runs.sum()),
+        F_GW, S_GW, "runs")
+    gws = pd.read_csv(os.path.join(REPO, F_GWS))
+    cp = gws[(gws.architecture == "socialnetwork") & (gws.service == "compose-post-service")]
+    add("composepost_runs_total", "compose-post-service runs, both fault types",
+        int(cp.n_runs.sum()), F_GWS, S_GW, "runs")
+    add("composepost_runs_only_gateway_ancestor", "compose-post-service runs whose degraded "
+        "ancestors are exactly the gateway (nginx-web-server)",
+        int(cp.runs_only_gateway_degraded.sum()), F_GWS, S_GW, "runs")
+
+    # ---- SN span composition (Deviation 11) --------------------------------
+    sc = pd.read_csv(os.path.join(REPO, F_SC)).set_index("architecture")
+    for app in ("socialnetwork", "hotelreservation"):
+        r, p = sc.loc[app], lab[app]
+        add(f"{p}_span_samples", f"{app} per-service latency samples in the persisted spans",
+            int(r.samples), F_SC, S_SC, "samples")
+        add(f"{p}_span_samples_fallback", f"{app} samples that fell back to all of a "
+            f"service's spans (no span.kind tag)", int(r.samples_fallback), F_SC, S_SC,
+            "samples")
+    r = sc.loc["socialnetwork"]
+    add("sn_spans_selected", "Spans selected for Social Network per-service latency",
+        int(r.spans_selected), F_SC, S_SC, "spans")
+    add("sn_spans_selected_client", "Of those, spans whose operation name ends in _client",
+        int(r.spans_selected_client_named), F_SC, S_SC, "spans")
+    add("sn_spans_selected_client_pct", "Percentage of selected Social Network spans that "
+        "are *_client spans", 100.0 * float(r.fraction_selected_client_named), F_SC, S_SC,
+        "%", "%.1f")
+    add("sn_record_samples", "Social Network per-service baseline entries in the run records",
+        int(r.record_baseline_samples), F_SC, S_SC, "samples")
+    add("sn_record_samples_labelled_server", "Of those, entries labelled "
+        "scope = service_server_spans", int(r.record_baseline_labelled_server_spans),
+        F_SC, S_SC, "samples")
+
+    # ---- SN server-only replay (post hoc, Deviation 11) --------------------
+    rp = pd.read_csv(os.path.join(REPO, F_RP))
+    add("replay_runs", "Social Network runs replayed under the server-only rule",
+        len(rp), F_RP, S_RP, "runs")
+    add("replay_existing_rule_matches_stored", "Runs whose stored A/D/U the existing-rule "
+        "replay reproduces", int(rp.existing_replay_matches_stored.sum()), F_RP, S_RP, "runs")
+    add("replay_runs_changed", "Runs whose A/D/U changes under the server-only rule, "
+        "against the existing-rule replay of the same spans",
+        int(rp.server_only_differs_from_existing_replay.sum()), F_RP, S_RP, "runs")
+    add("replay_runs_differ_from_stored", "Runs whose server-only A/D/U differs from the "
+        "stored value", int(rp.server_only_differs_from_stored.sum()), F_RP, S_RP, "runs")
+    changed = 0
+    for (s, f), g in rp.groupby(["service", "fault_type"]):
+        for o in ("A", "D", "U"):
+            if g[f"server_only_{o}"].median() != g[f"stored_{o}"].median():
+                changed += 1
+                break
+    add("replay_service_medians_changed", "Service-by-fault cells whose median A, D or U "
+        "differs between the server-only replay and the stored values", changed, F_RP, S_RP,
+        "cells")
+    rt = pd.read_csv(os.path.join(REPO, F_RPT))
+    same = True
+    for fault in ("kill", "latency"):
+        st = rt[(rt.fault_type == fault) & (rt.source == "stored")].iloc[0]
+        so = rt[(rt.fault_type == fault) & (rt.source == "replay_server_only")].iloc[0]
+        add(f"replay_primary_rho_{fault}", f"Social Network primary test under the "
+            f"server-only replay, {fault}: rho (post hoc)", so.spearman_rho, F_RPT, S_RP,
+            "", "%.6f")
+        add(f"replay_primary_p_{fault}", f"Social Network primary test under the "
+            f"server-only replay, {fault}: exact p (post hoc, nominal)",
+            so.p_exact_two_sided, F_RPT, S_RP, "", "%.6f")
+        same &= (so.spearman_rho == st.spearman_rho and
+                 so.p_exact_two_sided == st.p_exact_two_sided)
+    add("replay_primary_identical", "Server-only replay leaves the Social Network primary "
+        "rho and exact p identical to the stored-outcome values, both fault types",
+        bool(same), F_RPT, S_RP)
+
+    # ---- deviations: which invalidated runs --------------------------------
+    for _, r in devs[devs.runs_invalidated > 0].iterrows():
+        add(f"deviation_{int(r.n)}_runs_invalidated", f"Runs invalidated and re-collected "
+            f"under deviation {int(r.n)}", int(r.runs_invalidated),
+            "analysis/final/deviations.csv", RCA, "runs")
+    add("deviations_no_data", "Deviations that invalidated no runs",
+        int((devs.runs_invalidated == 0).sum()), "analysis/final/deviations.csv", RCA,
+        "deviations")
+    add("deviations_with_data", "Deviations that invalidated at least one run",
+        int((devs.runs_invalidated > 0).sum()), "analysis/final/deviations.csv", RCA,
+        "deviations")
+
+    # ---- campaign span including the rehearsal -----------------------------
+    # The progress log is not part of every copy of the repository (the share copy omits
+    # it). Where it is absent the value is recorded as missing, never estimated.
+    log = os.path.join(REPO, "data", "campaign", "progress.log")
+    first = None
+    if os.path.isfile(log):
+        with open(log, encoding="utf-8") as fh:
+            for line in fh:
+                if "CAMPAIGN START" in line:
+                    first = pd.Timestamp(line[1:line.index("]")])
+                    break
+    ts = pd.to_datetime(runs.timestamp, format="mixed", utc=True)
+    add("campaign_duration_incl_rehearsal_hours", "Elapsed time from the first CAMPAIGN "
+        "START in the progress log (the pre-launch rehearsal) to the last kept run's "
+        "end-timestamp",
+        (ts.max() - first).total_seconds() / 3600.0 if first is not None
+        else "SOURCE NOT FOUND",
+        "data/campaign/progress.log; analysis/final/run_level_data.csv", S_SELF, "hours",
+        "%.1f" if first is not None else None)
+
+    # ---- recovery-probe polling resolution ---------------------------------
+    nominal, med = set(), []
+    for f in _glob.glob(os.path.join(REPO, "data", "campaign", "runs", "*.json")):
+        with open(f, encoding="utf-8") as fh:
+            d = _json.load(fh)
+        nominal.add(float(d["recovery_poll_interval_s"]))
+        t = [s["t_s"] for s in d.get("recovery_samples") or []]
+        if len(t) > 1:
+            med.append(float(np.median(np.diff(t))))
+    add("trec_poll_interval_nominal_s", "Nominal recovery-probe polling interval",
+        nominal.pop() if len(nominal) == 1 else float("nan"),
+        "data/campaign/runs/*.json (recovery_poll_interval_s)", S_SELF, "s", "%.0f")
+    add("trec_poll_interval_eff_min_s", "Effective polling interval: smallest per-run median "
+        "gap between recovery-probe samples", min(med),
+        "data/campaign/runs/*.json (recovery_samples.t_s)", S_SELF, "s", "%.1f")
+    add("trec_poll_interval_eff_max_s", "Effective polling interval: largest per-run median "
+        "gap between recovery-probe samples", max(med),
+        "data/campaign/runs/*.json (recovery_samples.t_s)", S_SELF, "s", "%.1f")
+
+    # ---- workload mix, from the locustfiles the runner launches -------------
+    for app, rel in (("sn", "infra/_locustfile_baseline.py"),
+                     ("hr", "infra/_locustfile_hotel.py")):
+        tree = ast.parse(open(os.path.join(REPO, rel), encoding="utf-8").read())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.FunctionDef):
+                for dec in node.decorator_list:
+                    if (isinstance(dec, ast.Call) and getattr(dec.func, "id", "") == "task"
+                            and dec.args):
+                        add(f"protocol_{app}_task_weight_{node.name}",
+                            f"Locust task weight for {node.name} ({app.upper()} workload)",
+                            int(dec.args[0].value), rel, S_SELF)
+            if (isinstance(node, ast.Assign) and any(getattr(t, "id", "") == "wait_time"
+                                                     for t in node.targets)):
+                lo, hi = (a.value for a in node.value.args)
+                add(f"protocol_{app}_wait_min_s", f"Locust wait between tasks, minimum "
+                    f"({app.upper()})", float(lo), rel, S_SELF, "s", "%.1f")
+                add(f"protocol_{app}_wait_max_s", f"Locust wait between tasks, maximum "
+                    f"({app.upper()})", float(hi), rel, S_SELF, "s", "%.1f")
+
+    # ---- primary test: resampling and distance from the threshold ----------
+    pr = conf[(conf.architecture == "socialnetwork") & (conf.predictor == "ancestor_count") &
+              (conf.outcome == "ancestor_affected_count")].iloc[0]
+    add("primary_n_permutations", "Primary test: Monte-Carlo permutations behind the locked "
+        "raw p", int(pr.n_permutations), "analysis/final/confirmatory_family_kill.csv", RCA,
+        "permutations")
+    add("primary_p_bh_over_q", "Primary test: BH-adjusted p divided by q",
+        float(pr.p_bh_adjusted) / float(pr.fdr_q),
+        "analysis/final/confirmatory_family_kill.csv", RCA, "x", "%.1f")
+    add("h1b_distinct_comparisons", "H1b: distinct architecture-by-rho comparisons among the "
+        "four cells", int(len(h1b[["architecture", "spearman_rho"]].drop_duplicates())),
+        "analysis/final/h1b_hybrid_metric.csv", RCA, "comparisons")
+
+    # ---- Figure 4 (pilot method-validation runs, outside the 180) ----------
+    q3 = pd.read_csv(os.path.join(REPO, F_Q3))
+    add("q3_pilot_runs", "Pilot method-validation runs behind Figure 4 (not campaign runs)",
+        int(q3.run.nunique()), F_Q3, "paper/make_figures.py", "runs")
+    groups = set()
+    for _, g in q3.groupby("run"):
+        c = g.groupby("old_baseline_p95_ms").service.apply(lambda s: tuple(sorted(s)))
+        groups.add(max(c, key=len))
+    only = groups.pop() if len(groups) == 1 else None
+    add("q3_identical_baseline_services", "Services sharing one identical end-to-end-scope "
+        "baseline p95 in each Figure 4 run", len(only) if only else float("nan"), F_Q3,
+        "paper/make_figures.py", "services")
+    add("q3_identical_baseline_names", "Which services share it",
+        ", ".join(only) if only else "differs between runs", F_Q3, "paper/make_figures.py")
+
+
 def main():
     conf = pd.read_csv(os.path.join(FINAL, "confirmatory_family_kill.csv"))
     repl = pd.read_csv(os.path.join(FINAL, "replication_family_latency.csv"))
@@ -660,6 +871,7 @@ def main():
         "services")
 
     protocol_and_topology_numbers()
+    supplementary_numbers(conf, h1b, devs, runs)
 
     df = pd.DataFrame(ROWS)
     dupes = df[df.claim_id.duplicated(keep=False)]

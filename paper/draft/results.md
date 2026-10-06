@@ -31,24 +31,28 @@ Network and Hotel Reservation.
 ## 4.1 The confirmatory test
 
 Our primary hypothesis was that a service's transitive caller count predicts the number of
-services degraded by its failure. On Social Network under kill faults, the correlation
+services degraded by its failure. This primary hypothesis replaced the original fan-out
+hypothesis after the pilot %[prereg:§1]. On Social Network under kill faults, the correlation
 between `ancestor_count` and measured `ancestor_affected_count` is ρ = 0.785
 %[id:primary_rho] across 11 %[id:primary_n_services] services, with a bias-corrected and
 accelerated bootstrap interval of [0.000, 1.000] %[id:primary_ci_lo] %[id:primary_ci_hi]
-%[id:primary_ci_method]. The uncorrected permutation p-value is 0.0080
-%[id:primary_p_locked]. After Benjamini–Hochberg correction across the 44
+%[id:primary_ci_method]. The uncorrected permutation p-value, from 10,000
+%[id:primary_n_permutations] Monte-Carlo permutations, is 0.0080 %[id:primary_p_locked]; the
+exact value, 0.006926 %[id:primary_p_exact], is given in Table 9 (Deviation 9). After
+Benjamini–Hochberg correction across the 44
 %[id:conf_family_size] tests in the confirmatory family, the adjusted p-value is 0.3451
 %[id:primary_p_bh_locked].
 
 **None of the 44 confirmatory tests is significant at q = 0.05**
 %[id:conf_family_significant] %[id:fdr_q]. The primary test carries the smallest
 uncorrected p-value in the family %[id:conf_best_raw_p] %[id:conf_best_predictor], and its
-adjusted value sits roughly an order of magnitude above the threshold. Table 3 gives the
+adjusted value is about seven times the threshold (6.9 %[id:primary_p_bh_over_q]). Table 3
+gives the
 primary predictor–outcome test in each family and architecture; Table 4 summarises both
 families. We state the result plainly: the preregistered hypothesis is not confirmed. The
 point estimate is large and positive, and we report it as such, but the correction we
-committed to in advance rejects it, and the confidence interval spans the entire admissible
-range.
+committed to in advance rejects it, and the confidence interval spans from no association to
+a perfect one.
 
 Two features of the data qualify that number further, and both matter more than the p-value
 does.
@@ -92,7 +96,10 @@ failure severs many downstream relationships. Our preregistered secondary hypoth
 was that this fan-out premise is not merely unhelpful but directionally wrong, and that the
 metric would correlate negatively with measured blast radius.
 
-Table 5 gives all four architecture-by-fault cells %[id:h1b_cells]. The correlation between
+Table 5 gives all four architecture-by-fault cells %[id:h1b_cells]. The four cells are not
+independent: the outcome vectors coincide across fault types
+%[id:replication_primary_identical], so they contain 2 %[id:h1b_distinct_comparisons]
+distinct comparisons, one per architecture. The correlation between
 `hybrid_criticality` and `ancestor_affected_count` is negative in every one
 %[id:h1b_all_negative]: ρ = −0.144 on Social Network under both kill
 %[id:h1b_sn_kill_rho] and latency %[id:h1b_sn_latency_rho] faults, and ρ = −0.258 on Hotel
@@ -121,14 +128,18 @@ callers it ranks last %[id:composepost_rank_ancestor_count], having a single gra
 %[id:composepost_ancestor_count]. Figure 2 shows the full rank inversion across all eleven
 services.
 
-Measurement resolves the disagreement in favour of the caller-based ranking. Killing
-`compose-post-service` degrades exactly 1 service in every one of its 5
+Measurement resolves the disagreement in favour of the caller-based ranking. Faulting
+`compose-post-service` leaves exactly one degraded ancestor in every run: in each of its 5
 %[id:composepost_kill_reps] kill repetitions, with a minimum and maximum of 1
-%[id:composepost_kill_min] %[id:composepost_kill_max] and hence zero variance, and the
-latency condition reproduces this exactly %[id:composepost_latency_mean]
-%[id:composepost_latency_min] %[id:composepost_latency_max]. The service the original metric
-identifies as the most critical in the application is, by measurement, among the least
-consequential to fail.
+%[id:composepost_kill_min] %[id:composepost_kill_max] and hence zero variance, and likewise
+under latency faults %[id:composepost_latency_mean] %[id:composepost_latency_min]
+%[id:composepost_latency_max]. In all 10 %[id:composepost_runs_only_gateway_ancestor]
+%[id:composepost_runs_total] runs that ancestor is `nginx-web-server`, the gateway. Kill
+repetition 3 also recorded two degraded descendants %[id:descendant_affected_max_in_any_run]
+%[id:descendant_affected_exception_run], the only such run in the campaign (§4.5). The
+service the original metric identifies as the most critical in the application is, by
+measurement, the lowest on the preregistered outcome. That outcome counts degraded services;
+it does not measure requests or functionality lost.
 
 We present this as a worked case and not as a general finding. It concerns one service in
 one application, and the eleven-service correlation that would generalise it is the null
@@ -154,11 +165,11 @@ independent evidence about the primary hypothesis.
 Read as a finding rather than as a limitation, this says something worth stating: which
 services degrade when a given service fails is essentially invariant to *how* that service
 fails. A process that vanishes and a process that becomes slow propagate to the same
-neighbours. The invariance does not extend to recovery, where the two fault types diverge
-substantially; the correlation between kill and latency median recovery times is 0.384
-%[id:trec_rho_between_faults_sn] on Social Network and 0.857
-%[id:trec_rho_between_faults_hr] on Hotel Reservation. The replication remains informative
-for recovery time, where the fault types genuinely differ.
+neighbours. For recovery, the correlation between kill and latency median recovery times
+shows moderate agreement on Social Network (0.384 %[id:trec_rho_between_faults_sn]) and
+strong agreement on Hotel Reservation (0.857 %[id:trec_rho_between_faults_hr], n = 7
+%[id:hr_services]). The replication remains informative for recovery time, where the two
+fault types give different values (§4.8).
 
 ## 4.5 Direction of propagation
 
@@ -215,6 +226,69 @@ ties cap the attainable correlation at 0.941 %[id:power_sn_ceiling] and 0.791
 %[id:power_hr_ceiling] respectively. For Hotel Reservation the consequence is severe: under
 the exact permutation test our plan mandates, the best attainable p-value is 0.0952
 %[id:power_hr_ceiling_p], which is above the conventional threshold before any correction is
-applied. Hotel Reservation could not have reached nominal significance for this predictor at
-any observed outcome whatsoever. This is a property of its tie structure and sample size,
-not of anything we measured.
+applied. The preregistration quoted p = 0.034 %[id:power_hr_prereg_stated_p] for this
+ceiling, which is the asymptotic value (Deviation 7); the exact value the plan mandates is
+0.0952 %[id:power_hr_ceiling_p]. Hotel Reservation could not have reached nominal
+significance for this predictor at any observed outcome whatsoever. This is a property of
+its tie structure and sample size, not of anything we measured.
+
+## 4.8 Recovery time
+
+No run was censored %[id:campaign_runs_censored], so under the preregistered rule the
+Spearman rank test is the primary test for recovery time and the survival models are
+secondary (Deviation 6). Each family contains 22 recovery-time tests %[id:trec_conf_tests]
+%[id:trec_repl_tests], corrected within the family together with the primary-outcome tests.
+
+For `ancestor_count` on Social Network, ρ = −0.356 %[id:trec_conf_sn_ancestor_rho] under
+kill faults (uncorrected p = 0.2807 %[id:trec_conf_sn_ancestor_p], adjusted 0.9264
+%[id:trec_conf_sn_ancestor_bh_p]) and −0.060 %[id:trec_repl_sn_ancestor_rho] under latency
+faults (p = 0.8647 %[id:trec_repl_sn_ancestor_p], adjusted 1.0000
+%[id:trec_repl_sn_ancestor_bh_p]). On Hotel Reservation, reported as directional only,
+ρ = −0.158 under both fault types %[id:trec_conf_hr_ancestor_rho]
+%[id:trec_repl_hr_ancestor_rho] (p = 0.8571 %[id:trec_conf_hr_ancestor_p]
+%[id:trec_repl_hr_ancestor_p]; adjusted 0.9925 %[id:trec_conf_hr_ancestor_bh_p] and 1.0000
+%[id:trec_repl_hr_ancestor_bh_p]). For `hybrid_criticality` on Social Network, ρ = 0.098
+%[id:trec_conf_sn_hybrid_rho] under kill faults (p = 0.7699 %[id:trec_conf_sn_hybrid_p],
+adjusted 0.9925 %[id:trec_conf_sn_hybrid_bh_p]) and 0.767 %[id:trec_repl_sn_hybrid_rho]
+under latency faults (p = 0.0084 %[id:trec_repl_sn_hybrid_p], adjusted 0.1848
+%[id:trec_repl_sn_hybrid_bh_p]). On Hotel Reservation it is 0.204
+%[id:trec_conf_hr_hybrid_rho] under kill faults (p = 0.8571 %[id:trec_conf_hr_hybrid_p],
+adjusted 0.9925 %[id:trec_conf_hr_hybrid_bh_p]) and 0.408 %[id:trec_repl_hr_hybrid_rho]
+under latency faults (p = 0.5714 %[id:trec_repl_hr_hybrid_p], adjusted 0.8111
+%[id:trec_repl_hr_hybrid_bh_p]). No recovery-time test is significant after correction in
+either family %[id:trec_conf_significant] %[id:trec_repl_significant].
+
+The Cox and log-rank results that follow are secondary and are not corrected for
+multiplicity. Hazard ratios are per one unit of `ancestor_count`. At run level, with
+standard errors clustered by service, the hazard ratio for `ancestor_count` on Social
+Network is 1.173 %[id:trec_conf_sn_ancestor_cox_run_hr] (95% CI 0.876
+%[id:trec_conf_sn_ancestor_cox_run_ci_lo] to 1.570 %[id:trec_conf_sn_ancestor_cox_run_ci_hi],
+p = 0.2836 %[id:trec_conf_sn_ancestor_cox_run_p]) under kill faults and 0.998
+%[id:trec_repl_sn_ancestor_cox_run_hr] (0.816 %[id:trec_repl_sn_ancestor_cox_run_ci_lo] to
+1.221 %[id:trec_repl_sn_ancestor_cox_run_ci_hi], p = 0.9859
+%[id:trec_repl_sn_ancestor_cox_run_p]) under latency faults. On Hotel Reservation it is
+1.522 %[id:trec_conf_hr_ancestor_cox_run_hr] (1.067 %[id:trec_conf_hr_ancestor_cox_run_ci_lo]
+to 2.171 %[id:trec_conf_hr_ancestor_cox_run_ci_hi], p = 0.0204
+%[id:trec_conf_hr_ancestor_cox_run_p]) under kill faults and 0.882
+%[id:trec_repl_hr_ancestor_cox_run_hr] (0.578 %[id:trec_repl_hr_ancestor_cox_run_ci_lo] to
+1.346 %[id:trec_repl_hr_ancestor_cox_run_ci_hi], p = 0.5609
+%[id:trec_repl_hr_ancestor_cox_run_p]) under latency faults. At service level the hazard
+ratios are 1.479 %[id:trec_conf_sn_ancestor_cox_service_hr] (0.688
+%[id:trec_conf_sn_ancestor_cox_service_ci_lo] to 3.181
+%[id:trec_conf_sn_ancestor_cox_service_ci_hi], p = 0.3163
+%[id:trec_conf_sn_ancestor_cox_service_p]) and 1.184 %[id:trec_repl_sn_ancestor_cox_service_hr]
+(0.627 %[id:trec_repl_sn_ancestor_cox_service_ci_lo] to 2.236
+%[id:trec_repl_sn_ancestor_cox_service_ci_hi], p = 0.6018
+%[id:trec_repl_sn_ancestor_cox_service_p]) on Social Network under kill and latency faults,
+and 2.179 %[id:trec_conf_hr_ancestor_cox_service_hr] %[id:trec_repl_hr_ancestor_cox_service_hr]
+(0.302 %[id:trec_conf_hr_ancestor_cox_service_ci_lo] to 15.722
+%[id:trec_conf_hr_ancestor_cox_service_ci_hi], p = 0.4399
+%[id:trec_conf_hr_ancestor_cox_service_p] %[id:trec_repl_hr_ancestor_cox_service_p]) on
+Hotel Reservation under both. The log-rank test across predictor terciles gives p = 0.5154
+%[id:trec_conf_sn_ancestor_logrank_p] and 0.5561 %[id:trec_repl_sn_ancestor_logrank_p] for
+`ancestor_count` on Social Network under kill and latency faults, and 0.2099
+%[id:trec_conf_sn_hybrid_logrank_p] and 0.1099 %[id:trec_repl_sn_hybrid_logrank_p] for
+`hybrid_criticality`. It is undefined for 10 of the 22 recovery-time tests in each family
+%[id:trec_conf_logrank_undefined] %[id:trec_repl_logrank_undefined], including
+`ancestor_count` on Hotel Reservation, because the predictor has fewer than two distinct
+terciles there.

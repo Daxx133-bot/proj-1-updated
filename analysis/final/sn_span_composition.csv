@@ -1,0 +1,3 @@
+label,architecture,span_files,samples,samples_fallback,spans_selected,spans_selected_server_named,spans_selected_client_named,record_baseline_samples,record_baseline_labelled_server_spans,fraction_selected_client_named
+"POST-HOC DESCRIPTIVE -- not preregistered, no hypothesis test (Deviation 11)",hotelreservation,146,1168,0,513388,0,0,560,560,0.0
+"POST-HOC DESCRIPTIVE -- not preregistered, no hypothesis test (Deviation 11)",socialnetwork,220,2598,2598,540433,183268,268839,1320,1320,0.4974511178999062

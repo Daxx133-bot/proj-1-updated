@@ -136,3 +136,11 @@ contention was evaluated during piloting and dropped before the campaign because
 size was too small to classify reliably, which we record as a scope decision in §6. Resource
 exhaustion, partial failures, and corrupted or slow responses are all outside what we
 measured.
+
+## 5.8 Social Network recovery times were not replayed
+
+Social Network per-service latency used all of a service's spans rather than its server
+spans (§3.5, Deviation 11). The blast-radius outcomes could be replayed on server-only spans
+from the stored baseline and fault windows, but recovery times could not: the recovery
+probe's windows were not stored, so Social Network recovery times could not be replayed and
+stand as measured.

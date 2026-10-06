@@ -38,9 +38,9 @@ architecture most of the relationship is definitional (§3.1 below). **Say inste
 correlation is positive and does not survive the preregistered correction.
 
 **1.5 UNSUPPORTED** — "The result is marginal / approaches significance / would be
-significant in a larger sample." The adjusted p is roughly an order of magnitude above the
-threshold, and no sample-size claim was tested. **Say instead:** the test is null after
-correction, and §4 gives the preregistered power ceiling.
+significant in a larger sample." The adjusted p is about seven times the threshold
+(`primary_p_bh_over_q`), and no sample-size claim was tested. **Say instead:** the test is
+null after correction, and §4 gives the preregistered power ceiling.
 
 ---
 

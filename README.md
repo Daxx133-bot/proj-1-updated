@@ -194,9 +194,13 @@ The campaign was collected at commit `5976178` of the archived original reposito
 
 ## Reading order
 
-For an assessor: `paper/CLAIMS_LEDGER.md` first, then
-`_audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md` for what was committed to in
-advance, then `_audit/CONFIRMATORY_ANALYSIS.md` for the full analysis narrative, then
-`paper/draft/` for the manuscript sections. `paper/numbers.csv` connects any number in those
-documents back to the file and script that produced it, and `share_manifest.txt` connects
-every file in this copy to the script that needs it.
+For an assessor: `paper/CLAIMS_LEDGER.md` first, then the preregistration for what was
+committed to in advance. Two files in `_audit/preregistration_versions/` hold it:
+`PREREGISTRATION_v3_FROZEN_95d37e5.md` is the text as locked, and
+`PREREGISTRATION_v3_LOCKED.md` is the lock plus its amendment log
+(`PREREGISTRATION_v3_AT_LOCK_eaadaf1.md` is the pre-lock draft at the commit the lock header
+names; that directory's README explains all three). Then `_audit/CONFIRMATORY_ANALYSIS.md`
+for the full analysis narrative, then `paper/draft/` for the manuscript sections.
+`paper/numbers.csv` connects any number in those documents back to the file and script that
+produced it, and `share_manifest.txt` connects every file present at this copy's first
+commit to the script that needs it.
