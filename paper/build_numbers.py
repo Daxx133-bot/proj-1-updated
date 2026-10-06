@@ -115,20 +115,45 @@ def protocol_and_topology_numbers():
         float(mc.ERROR_RATE_ABS_THRESHOLD), "measurement/metrics_collector.py",
         S_SELF, "", "%.2f")
 
-    # ---- hybrid metric weights, fixed a priori and never tuned -------------
+    # ---- hybrid metric weights: inherited, not a priori (Deviation 10) -----
+    # FIXED_WEIGHTS were carried over from the withdrawn analysis, where an empirical
+    # search chose them (centrality/metric_constants.py CHANGELOG). The preregistered
+    # cross-arch protocol was not executed.
     wk = load("centrality/metric_constants.py", "_wk")
     for field, cid, desc in (
             ("w_in", "hybrid_w_in", "Hybrid metric weight on in-degree centrality"),
             ("w_out", "hybrid_w_out",
              "Hybrid metric weight on fan-out-scaled out-degree centrality"),
             ("w_btw", "hybrid_w_btw", "Hybrid metric weight on betweenness centrality")):
-        add(cid, desc + " (fixed a priori; never fitted to outcome data)",
+        add(cid, desc + " (inherited from an empirical search in the withdrawn analysis; "
+            "not a priori; not re-tuned on campaign data; Deviation 10)",
             float(getattr(wk.FIXED_WEIGHTS, field)), "centrality/metric_constants.py",
             S_SELF, "", "%.1f")
     lock = os.path.join(REPO, "centrality", "output", "tuned_weights.lock.json")
-    add("hybrid_weights_tuned", "Whether the hybrid metric's weights were tuned against "
-        "outcome data (a weight lockfile exists)", os.path.isfile(lock),
-        "centrality/output/tuned_weights.lock.json", S_SELF)
+    lock_exists = os.path.isfile(lock)
+    add("hybrid_weights_lockfile_exists", "Whether the cross-arch weight lockfile exists "
+        "(it would exist only if the preregistered tuning protocol had been run)",
+        lock_exists, "centrality/output/tuned_weights.lock.json", S_SELF)
+    # A weight search on campaign data would leave output beside that data or beside the
+    # final analysis: a file named for weights/tuning/grids/optimisation, or a table with
+    # weight columns. Look in both places.
+    search_out = []
+    for d in ("data/campaign", "analysis/final"):
+        for f in _glob.glob(os.path.join(REPO, d, "**", "*"), recursive=True):
+            if not os.path.isfile(f):
+                continue
+            if re.search(r"weight|tuned|grid|optimi", os.path.basename(f), re.I):
+                search_out.append(f)
+            elif f.endswith(".csv"):
+                with open(f, encoding="utf-8", errors="replace") as fh:
+                    header = fh.readline().strip().split(",")
+                if {"w_in", "w_out", "w_btw"} & set(header):
+                    search_out.append(f)
+    add("hybrid_weights_reoptimised_on_campaign", "Whether the hybrid metric's weights "
+        "were re-optimised on campaign data", lock_exists or bool(search_out),
+        "check: centrality/output/tuned_weights.lock.json absent AND no file under "
+        "data/campaign/ or analysis/final/ whose name matches weight|tuned|grid|optimi or "
+        "whose CSV header has a w_in/w_out/w_btw column", S_SELF)
 
     # ---- run protocol, from the campaign runner's RunArgs -------------------
     src = open(os.path.join(REPO, "tools", "run_campaign.py"), encoding="utf-8").read()
@@ -331,6 +356,52 @@ def main():
             b.predictor, fn, RCA)
     add("fdr_q", "False discovery rate controlled at", float(conf.fdr_q.iloc[0]),
         F_CONF, RCA, "", "%.2f")
+
+    # ------------------------------------------------- T_rec, both families --
+    # T_rec tests sit inside the 44-test families above. With no censoring, Spearman is
+    # the primary T_rec test (deviation 6); Cox and log-rank are reported alongside and
+    # are not separately FDR-corrected. Hotel Reservation is directional only.
+    def pfmt(v):
+        return "%.4f" if v != v or v >= 1e-4 else "%.2e"
+
+    for tag, df, fn in (("conf", conf, F_CONF), ("repl", repl, F_REPL)):
+        name = "confirmatory (kill)" if tag == "conf" else "replication (latency)"
+        t = df[df.outcome == "T_rec"]
+        add(f"trec_{tag}_tests", f"T_rec tests in the {name} family", len(t), fn, RCA,
+            "tests")
+        add(f"trec_{tag}_significant", f"T_rec tests significant after BH-FDR, {name} "
+            f"family", int(t.significant_after_fdr.sum()), fn, RCA, "tests")
+        add(f"trec_{tag}_logrank_undefined", f"T_rec tests with no log-rank p (fewer than "
+            f"two distinct predictor terciles), {name} family",
+            int(t.logrank_p.isna().sum()), fn, RCA, "tests")
+        for pred, short in (("ancestor_count", "ancestor"),
+                            ("hybrid_criticality", "hybrid")):
+            for _, r in t[t.predictor == pred].iterrows():
+                lab = "sn" if r.architecture == "socialnetwork" else "hr"
+                k = f"trec_{tag}_{lab}_{short}"
+                what = f"T_rec vs {pred}, {r.architecture_label}, {name}"
+                add(f"{k}_rho", f"{what}: Spearman rho", r.spearman_rho, fn, RCA, "",
+                    "%.3f")
+                add(f"{k}_p", f"{what}: raw permutation p", r.p_permutation, fn, RCA, "",
+                    pfmt(r.p_permutation))
+                add(f"{k}_bh_p", f"{what}: BH-adjusted p", r.p_bh_adjusted, fn, RCA, "",
+                    pfmt(r.p_bh_adjusted))
+                if pd.notna(r.logrank_p):
+                    add(f"{k}_logrank_p", f"{what}: log-rank p across predictor terciles",
+                        r.logrank_p, fn, RCA, "", pfmt(r.logrank_p))
+                if pred != "ancestor_count":
+                    continue
+                for lvl in ("run", "service"):
+                    unit = ("run level, SE clustered by service" if lvl == "run"
+                            else "service level")
+                    add(f"{k}_cox_{lvl}_hr", f"{what}: Cox hazard ratio per unit of "
+                        f"{pred} ({unit})", r[f"cox_{lvl}_hr"], fn, RCA, "", "%.3f")
+                    add(f"{k}_cox_{lvl}_ci_lo", f"{what}: Cox hazard ratio 95% CI lower "
+                        f"({unit})", r[f"cox_{lvl}_ci_lo"], fn, RCA, "", "%.3f")
+                    add(f"{k}_cox_{lvl}_ci_hi", f"{what}: Cox hazard ratio 95% CI upper "
+                        f"({unit})", r[f"cox_{lvl}_ci_hi"], fn, RCA, "", "%.3f")
+                    add(f"{k}_cox_{lvl}_p", f"{what}: Cox p ({unit})", r[f"cox_{lvl}_p"],
+                        fn, RCA, "", pfmt(r[f"cox_{lvl}_p"]))
 
     # ------------------------------------------------------- exploratory -----
     add("expl_attempted", "Exploratory tests attempted", len(expl), F_EXPL, RCA, "tests")

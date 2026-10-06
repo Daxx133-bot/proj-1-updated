@@ -176,13 +176,18 @@ documented with what was removed and why. The audit findings themselves are in
 3. **Supporting audit artifacts.** Gate outputs, validation dumps and run logs. The
    human-readable reports are included; the machine outputs behind them are not.
 
-**Nothing from the withdrawn material is used in the current results.** The measurement
-pipeline, the metric implementation and the analysis were rebuilt, and the campaign in
-`data/campaign/` was collected fresh under the locked preregistration. The metric weights are
-now fixed a priori in `centrality/metric_constants.py`, with written reasoning for each, and
-are never fitted to outcome data. Deviations from the locked plan are logged in
-`PREREGISTRATION.md` §12 and tabulated in `paper/tables/tbl_deviations.csv`; there are nine,
-and the 17 runs invalidated across them were quarantined and re-collected rather than
+**Nothing from the withdrawn material is used in the current results, with one exception:
+the hybrid metric's weights.** The measurement pipeline, the metric implementation and the
+analysis were rebuilt, and the campaign in `data/campaign/` was collected fresh under the
+locked preregistration. The weights 0.4, 0.4 and 0.2 (`centrality/metric_constants.py`) were
+inherited from the original proposal. In the earlier, withdrawn analysis they had been chosen
+by an empirical search, so they are not a priori. We did not re-tune them on the campaign
+data. The preregistered protocol, which tuned weights on Social Network and froze them for
+Hotel Reservation, was not carried out (Deviation 10). Because the original search favoured
+the metric, this is unlikely to explain a failure to find an association. Deviations from
+the locked plan are logged in `PREREGISTRATION.md` §12 and tabulated in
+`paper/tables/tbl_deviations.csv`; there are twelve, and the 17 runs invalidated across them
+were quarantined and re-collected rather than
 analysed or dropped.
 
 The campaign was collected at commit `5976178` of the archived original repository.

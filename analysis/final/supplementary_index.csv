@@ -1,3 +1,6 @@
 output,produced_by,status,affects_preregistered_results
 leave_one_out.csv,analysis/final/leave_one_out.py,"post-hoc robustness check, not part of the preregistered confirmatory family",no
 blind_recompute.md,analysis/final/blind_recompute.py,"supplementary independent verification, not part of the preregistered analysis",no
+sn_server_only_replay.csv,analysis/final/sn_server_only_replay.py,"post-hoc sensitivity replay (Deviation 11), not part of the preregistered analysis",no
+sn_server_only_replay_tests.csv,analysis/final/sn_server_only_replay.py,"post-hoc sensitivity replay (Deviation 11), not part of the preregistered analysis",no
+sn_server_only_replay.md,analysis/final/sn_server_only_replay.py,"post-hoc sensitivity replay (Deviation 11), not part of the preregistered analysis",no

@@ -233,7 +233,7 @@ preregistered rule promoting the rank test to primary fired on a threshold fixed
 computed.
 `integrity_checks_total`, `integrity_checks_passed`
 
-**8.4 SUPPORTED** — Nine deviations from the preregistration are logged, invalidating 17 runs
+**8.4 SUPPORTED** — Twelve deviations from the preregistration are logged, invalidating 17 runs
 in total, all of which were quarantined and re-collected rather than analysed or discarded.
 `deviations_total`, `deviations_runs_invalidated`, `quarantine_items`
 
@@ -255,6 +255,21 @@ raw spans reproduces it, and agrees with the stored per-run outcome fields on th
 the affected services in all 110 Social Network runs.
 *Source: `analysis/final/blind_recompute.md`. Supplementary verification; it establishes that
 the implementation is faithful to the data, not that the definitions are correct.*
+
+**8.8 SUPPORTED** — The weights 0.4, 0.4 and 0.2 were inherited from the original proposal.
+In the earlier, withdrawn analysis they had been chosen by an empirical search, so they are
+not a priori. We did not re-tune them on the campaign data. The preregistered protocol, which
+tuned weights on Social Network and froze them for Hotel Reservation, was not carried out
+(Deviation 10). Because the original search favoured the metric, this is unlikely to explain
+a failure to find an association.
+`hybrid_w_in`, `hybrid_w_out`, `hybrid_w_btw`, `hybrid_weights_lockfile_exists`,
+`hybrid_weights_reoptimised_on_campaign`
+*Provenance: `centrality/metric_constants.py` CHANGELOG; `PREREGISTRATION.md` §12 deviation
+10.*
+
+**8.9 UNSUPPORTED** — "The weights were set a priori" / "never fitted to outcome data" / "the
+equal in/out split is a neutral prior". They were chosen by an empirical search in the
+withdrawn analysis and carried over. **Say instead:** the wording of 8.8.
 
 ---
 

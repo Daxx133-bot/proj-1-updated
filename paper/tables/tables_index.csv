@@ -7,4 +7,4 @@ tbl_primary_exact_p_supplementary,Supplementary: exact-enumeration p for the pri
 tbl_h1b,H1b: hybrid_criticality vs ancestor_affected_count in all four architecture-by-fault cells,analysis/final/h1b_hybrid_metric.csv,analysis/final/run_confirmatory_analysis.py,4
 tbl_leave_one_out,Post-hoc: Social Network primary rho recomputed with each service excluded,analysis/final/leave_one_out.csv,analysis/final/leave_one_out.py,24
 tbl_power,Preregistered power table reproduced from the actual analysis sets,analysis/final/power_table.csv,analysis/final/run_confirmatory_analysis.py,2
-tbl_deviations,"Every deviation from the preregistration, ready for the deviations section",analysis/final/deviations.csv,analysis/final/run_confirmatory_analysis.py,9
+tbl_deviations,"Every deviation from the preregistration, ready for the deviations section",analysis/final/deviations.csv,analysis/final/run_confirmatory_analysis.py,12

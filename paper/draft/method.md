@@ -76,18 +76,15 @@ dropped after results are seen, and none was.
 
 The hybrid criticality metric is the measure this work set out to evaluate. It combines
 in-degree centrality, out-degree centrality scaled by a linear fan-out weight, and directed
-betweenness. Its weights are fixed at 0.4 %[id:hybrid_w_in] on the inbound channel, 0.4
+betweenness. Its weights are 0.4 %[id:hybrid_w_in] on the inbound channel, 0.4
 %[id:hybrid_w_out] on the fan-out-scaled outbound channel and 0.2 %[id:hybrid_w_btw] on
-betweenness. These weights were set a priori, in a constants module that records the
-reasoning for each, and were never fitted against any outcome variable
-%[id:hybrid_weights_tuned]. The equal split between the inbound and outbound channels is the
-neutral prior for the hypothesis under test: weighting fan-out more heavily would assume the
-conclusion, and weighting it less would assume its negation. Betweenness carries half the
-weight of the two degree channels because it is degenerate on graphs this shallow. We regard
-this as the central methodological commitment of the study. A metric whose weights are
-selected to maximise correlation against the same outcome that is then reported is not being
-tested at all, and a correlation obtained that way is a maximum over a search presented as a
-single measurement.
+betweenness. These weights were inherited from the original proposal. In the earlier,
+withdrawn analysis they had been chosen by an empirical search, so they are not a priori. We
+did not re-tune them on the campaign data %[id:hybrid_weights_reoptimised_on_campaign]. The
+preregistered protocol, which tuned weights on Social Network and froze them for Hotel
+Reservation, was not carried out (Deviation 10) %[id:hybrid_weights_lockfile_exists].
+Because the original search favoured the metric, this is unlikely to explain a failure to
+find an association.
 
 Two predictor–architecture pairs are declared degenerate in advance because the predictor is
 constant across an architecture's analysis set, which leaves Spearman's ρ undefined

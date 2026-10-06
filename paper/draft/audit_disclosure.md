@@ -21,13 +21,21 @@ inspectable rather than disappearing from the history. The measurement pipeline,
 implementation and the analysis were then rebuilt from the ground up, and the study
 reported here is an entirely new campaign.
 
-Three commitments follow from that history and shape everything in this paper. Every number
+Two commitments follow from that history and shape everything in this paper. Every number
 we report is produced by a script reading logged data, and where a value cannot be traced to
-a script and an input file we record the gap rather than fill it. The metric weights are
-fixed a priori in a constants module with written reasoning for each, and were never fitted
-to outcome data %[id:hybrid_weights_tuned]. And the analysis was specified and locked before
-the campaign began, with every subsequent change to that specification logged, dated, and
-marked according to whether campaign data had been analysed at the time.
+a script and an input file we record the gap rather than fill it. And the analysis was
+specified and locked before the campaign began, with every subsequent change to that
+specification logged, dated, and marked according to whether campaign data had been analysed
+at the time.
+
+The hybrid metric's weights, 0.4 %[id:hybrid_w_in], 0.4 %[id:hybrid_w_out] and 0.2
+%[id:hybrid_w_btw], were inherited from the original proposal. In the earlier, withdrawn
+analysis they had been chosen by an empirical search, so they are not a priori. We did not
+re-tune them on the campaign data %[id:hybrid_weights_reoptimised_on_campaign]. The
+preregistered protocol, which tuned weights on Social Network and froze them for Hotel
+Reservation, was not carried out (Deviation 10) %[id:hybrid_weights_lockfile_exists].
+Because the original search favoured the metric, this is unlikely to explain a failure to
+find an association.
 
 We state this history because a reader assessing the present results is entitled to know it,
 and because the safeguards described throughout §3 are only meaningful in light of what they
@@ -35,7 +43,7 @@ were built to prevent.
 
 ## 6.2 Deviations from the locked specification
 
-Nine deviations from the locked plan are recorded (Table 8) %[id:deviations_total]. Across
+Twelve deviations from the locked plan are recorded (Table 8) %[id:deviations_total]. Across
 all of them, 17 runs %[id:deviations_runs_invalidated] were invalidated; every one was
 quarantined and re-collected rather than analysed or dropped, which is why the final dataset
 is complete and balanced at 180 runs %[id:campaign_runs_total]. Four deviations invalidated

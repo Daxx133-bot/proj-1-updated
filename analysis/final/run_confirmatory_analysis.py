@@ -837,6 +837,142 @@ def deviations_table() -> pd.DataFrame:
             "detected_by": ("the analyst, while reconciling the reported raw p against an "
                             "independent recomputation"),
         },
+        # Rows 10-12 were appended on 2026-10-06, after the confirmatory analysis was
+        # complete, by a read-only verification of the repository. Rows 1-9 are unchanged.
+        {
+            "n": 10, "date": "2026-10-06",
+            "title": ("Preregistered cross-architecture weight-tuning protocol not "
+                      "executed; inherited weights used"),
+            "stage": ("in code before the lock; first recorded after the lock and after "
+                      "the campaign data had been analysed"),
+            "what_happened": (
+                "Section 3 of the locked preregistration fixed a cross-architecture weight "
+                "protocol: tune (w_in, w_out, w_btw) on Social Network over a 0.05 grid, "
+                "freeze the result to centrality/output/tuned_weights.lock.json, and "
+                "evaluate once on Hotel Reservation. It was not executed; no lockfile "
+                "exists. The analysis instead used FIXED_WEIGHTS = (0.4, 0.4, 0.2) from "
+                "centrality/metric_constants.py, whose own changelog states that they were "
+                "carried over from the previous implementation's default, which "
+                "centrality/compute_centrality.py documents as optimised empirically via "
+                "hybrid_weight_optimizer.py on the withdrawn dataset. They are therefore "
+                "not a priori. Timeline from git: metric_constants.py created at 9e4bda4 "
+                "(2026-09-23); the v1 draft preregistration (6e598ce) left the choice "
+                "between cross-arch and fixed weights as open question 1, and no decision "
+                "on it is recorded anywhere; FIXED_WEIGHTS was wired into "
+                "tools/build_predictor_table.py at d755a23 (2026-09-24 23:53 UTC); "
+                "preregistration v3 nevertheless kept cross-arch in section 3 and was "
+                "locked at 95d37e5 (2026-09-26 04:17 UTC); the confirmatory analysis "
+                "(dc03920, 2026-09-27 16:34 UTC) used the fixed weights without noting the "
+                "discrepancy, and the manuscript drafts described the weights as set a "
+                "priori and never fitted. The departure was in place in code before the "
+                "lock and before any campaign data existed, but it was not acknowledged "
+                "until this entry, which was written after the lock and after the campaign "
+                "data had been analysed."),
+            "what_changed": (
+                "Nothing in any locked output, and the weights were not re-tuned on "
+                "campaign data. README.md, the method and audit-disclosure drafts and "
+                "the claims ledger now state that the weights were inherited from an "
+                "empirical search in the withdrawn analysis, are not a priori, and were "
+                "not re-tuned. The numbers.csv id hybrid_weights_tuned, which only tested "
+                "whether a lockfile exists, is renamed hybrid_weights_lockfile_exists, and "
+                "hybrid_weights_reoptimised_on_campaign is added. Direction of possible "
+                "bias: the original search was designed to favour the metric, so the "
+                "inherited weights are unlikely to explain a failure to find an "
+                "association."),
+            "outcome_affected": ("the hybrid_criticality predictor (H1b and every "
+                                 "comparator test using it); no outcome measurement"),
+            "runs_invalidated": 0,
+            "runs_disposition": "not applicable",
+            "record": ("PREREGISTRATION.md section 12 deviation 10; "
+                       "centrality/metric_constants.py CHANGELOG"),
+            "detected_by": ("read-only verification of the repository against the locked "
+                            "preregistration"),
+        },
+        {
+            "n": 11, "date": "2026-10-06",
+            "title": ("Social Network per-service latency used all of a service's spans, "
+                      "recorded as server spans"),
+            "stage": ("found after the analysis was complete; sensitivity replay run "
+                      "post hoc"),
+            "what_happened": (
+                "measurement.metrics_collector.select_spans selects a service's server "
+                "spans by the span.kind tag and, when a service's spans carry no such tag, "
+                "falls back to all of that service's spans. No Social Network span carries "
+                "span.kind (the C++ Jaeger client does not emit it), so every Social "
+                "Network per-service sample used the fallback: 2,598 of 2,598 baseline and "
+                "fault-window samples in the persisted spans, and by construction every "
+                "recovery-probe sample. 268,839 of the 540,433 spans selected (49.7%) were "
+                "*_client spans, which measure a callee's latency as observed by the "
+                "caller -- the re-attribution section 6.1 was written to exclude. The run "
+                "records nonetheless label every such sample scope = "
+                "'service_server_spans:<service>' and carry no fallback flag. The existence "
+                "of the fallback was disclosed in section 6.1 and the method draft; that it "
+                "applied to every Social Network sample, and the mislabelled scope, were "
+                "not. Hotel Reservation spans carry span.kind; 0 of 1,168 of its samples "
+                "fell back."),
+            "what_changed": (
+                "Nothing in the measurement code or any stored outcome. "
+                "analysis/final/sn_server_only_replay.py replays the blast-radius rule for "
+                "all 110 Social Network runs from their persisted spans with per-service "
+                "latency restricted to *_server operations; nginx-web-server, whose "
+                "operations are HTTP routes, keeps the existing handling. Degradation and "
+                "error-rate rules unchanged. Validated first: the existing rule reproduces "
+                "the stored ancestor/descendant/unrelated counts for 70 of 70 Hotel "
+                "Reservation runs and 109 of 110 Social Network runs. Result: against the "
+                "existing-rule replay of the same bytes, 2 of 110 runs change "
+                "(compose-post-service kill rep 3, descendants 2 -> 1; "
+                "post-storage-service latency rep 3, ancestors 3 -> 4); no service-level "
+                "median changes, so the Social Network primary test is unchanged for both "
+                "fault types (rho 0.785119, exact p 0.00692641), and user-service still "
+                "registers 2 of its 4 ancestors in all 10 of its runs. Recovery-probe "
+                "windows were not persisted, so Social Network T_rec cannot be replayed "
+                "and stands as measured under the fallback."),
+            "outcome_affected": ("Social Network ancestor/descendant/unrelated affected "
+                                 "counts and T_rec (measurement scope); replay shows no "
+                                 "service-level change in the affected counts"),
+            "runs_invalidated": 0,
+            "runs_disposition": ("No run reset or re-collected. Stored outcomes retained; "
+                                 "the replay is a post-hoc sensitivity analysis in "
+                                 "separate files."),
+            "record": ("PREREGISTRATION.md section 12 deviation 11; "
+                       "analysis/final/sn_server_only_replay.py, .csv, _tests.csv and .md"),
+            "detected_by": ("read-only verification of select_spans against the persisted "
+                            "spans"),
+        },
+        {
+            "n": 12, "date": "2026-10-06",
+            "title": ("hotelreservation|rate|latency|1 attempted twice; first attempt's "
+                      "spans persisted without a run record"),
+            "stage": "during the campaign (2026-09-26); first documented 2026-10-06",
+            "what_happened": (
+                "data/campaign/manifest.json records attempts = 2 for "
+                "hotelreservation|rate|latency|1. The first attempt ran after the "
+                "geo|latency|1 failure and stack restore (06:19 UTC), injected its netem "
+                "fault, and persisted its baseline and fault-window spans "
+                "(data/spans/spans_hotelreservation_rate_latency_rep1_20260926T062355Z_"
+                "*.json.gz). It was interrupted during its recovery probe when the "
+                "campaign was stopped for the defect that became amendment 2 "
+                "(data/campaign/campaign_stdout.log ends inside that probe) and wrote no "
+                "run record. After the restart at 06:31:48 UTC the run was attempted again "
+                "and completed at 06:45:05 UTC; that second attempt is the only record "
+                "analysed. The interrupted attempt was not listed among amendment 2's "
+                "resets, in the quarantine log, or in this table."),
+            "what_changed": (
+                "Nothing. The first attempt's outcome was never computed or used. Its span "
+                "files remain in data/spans/ and are identified here so they are not "
+                "mistaken for an analysed run."),
+            "outcome_affected": "none",
+            "runs_invalidated": 0,
+            "runs_disposition": (
+                "Second attempt retained. Every stack was brought down and the Hotel "
+                "Reservation stack brought back up at 06:31:48 UTC between the two "
+                "attempts, so the first attempt's fault cannot have carried into the "
+                "second."),
+            "record": ("PREREGISTRATION.md section 12 deviation 12; "
+                       "data/campaign/manifest.json; data/campaign/progress.log; "
+                       "data/campaign/campaign_stdout.log"),
+            "detected_by": ("read-only verification of the manifest against data/spans"),
+        },
     ])
 
 

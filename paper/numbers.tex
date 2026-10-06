@@ -1,6 +1,6 @@
 %% paper/numbers.tex -- AUTO-GENERATED from paper/numbers.csv. DO NOT EDIT.
 %% Regenerate: python paper/build_numbers.py && python paper/emit_macros.py
-% Generated at repository commit 8e319f2. 210 macros.
+% Generated at repository commit 785dc59. 277 macros.
 
 % Total fault-injection runs in the final campaign (analysis/final/run_level_data.csv)
 \newcommand{\NumCampaignRunsTotal}{180}
@@ -92,6 +92,138 @@
 \newcommand{\NumReplBestPredictor}{ancestor\_count}
 % False discovery rate controlled at (analysis/final/confirmatory_family_kill.csv)
 \newcommand{\NumFdrQ}{0.05}
+% T_rec tests in the confirmatory (kill) family (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfTests}{22}
+% T_rec tests significant after BH-FDR, confirmatory (kill) family (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSignificant}{0}
+% T_rec tests with no log-rank p (fewer than two distinct predictor terciles), confirmatory (kill) family (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfLogrankUndefined}{10}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): Spearman rho (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorRho}{-0.356}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): raw permutation p (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorP}{0.2807}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): BH-adjusted p (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorBhP}{0.9264}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): log-rank p across predictor terciles (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorLogrankP}{0.5154}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): Cox hazard ratio per unit of ancestor_count (run level, SE clustered by service) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorCoxRunHr}{1.173}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): Cox hazard ratio 95% CI lower (run level, SE clustered by service) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorCoxRunCiLo}{0.876}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): Cox hazard ratio 95% CI upper (run level, SE clustered by service) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorCoxRunCiHi}{1.570}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): Cox p (run level, SE clustered by service) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorCoxRunP}{0.2836}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): Cox hazard ratio per unit of ancestor_count (service level) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorCoxServiceHr}{1.479}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): Cox hazard ratio 95% CI lower (service level) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorCoxServiceCiLo}{0.688}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): Cox hazard ratio 95% CI upper (service level) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorCoxServiceCiHi}{3.181}
+% T_rec vs ancestor_count, Social Network, confirmatory (kill): Cox p (service level) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnAncestorCoxServiceP}{0.3163}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): Spearman rho (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorRho}{-0.158}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): raw permutation p (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorP}{0.8571}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): BH-adjusted p (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorBhP}{0.9925}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): Cox hazard ratio per unit of ancestor_count (run level, SE clustered by service) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorCoxRunHr}{1.522}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): Cox hazard ratio 95% CI lower (run level, SE clustered by service) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorCoxRunCiLo}{1.067}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): Cox hazard ratio 95% CI upper (run level, SE clustered by service) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorCoxRunCiHi}{2.171}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): Cox p (run level, SE clustered by service) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorCoxRunP}{0.0204}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): Cox hazard ratio per unit of ancestor_count (service level) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorCoxServiceHr}{2.179}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): Cox hazard ratio 95% CI lower (service level) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorCoxServiceCiLo}{0.302}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): Cox hazard ratio 95% CI upper (service level) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorCoxServiceCiHi}{15.722}
+% T_rec vs ancestor_count, Hotel Reservation, confirmatory (kill): Cox p (service level) (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrAncestorCoxServiceP}{0.4399}
+% T_rec vs hybrid_criticality, Social Network, confirmatory (kill): Spearman rho (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnHybridRho}{0.098}
+% T_rec vs hybrid_criticality, Social Network, confirmatory (kill): raw permutation p (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnHybridP}{0.7699}
+% T_rec vs hybrid_criticality, Social Network, confirmatory (kill): BH-adjusted p (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnHybridBhP}{0.9925}
+% T_rec vs hybrid_criticality, Social Network, confirmatory (kill): log-rank p across predictor terciles (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfSnHybridLogrankP}{0.2099}
+% T_rec vs hybrid_criticality, Hotel Reservation, confirmatory (kill): Spearman rho (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrHybridRho}{0.204}
+% T_rec vs hybrid_criticality, Hotel Reservation, confirmatory (kill): raw permutation p (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrHybridP}{0.8571}
+% T_rec vs hybrid_criticality, Hotel Reservation, confirmatory (kill): BH-adjusted p (analysis/final/confirmatory_family_kill.csv)
+\newcommand{\NumTrecConfHrHybridBhP}{0.9925}
+% T_rec tests in the replication (latency) family (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplTests}{22}
+% T_rec tests significant after BH-FDR, replication (latency) family (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSignificant}{0}
+% T_rec tests with no log-rank p (fewer than two distinct predictor terciles), replication (latency) family (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplLogrankUndefined}{10}
+% T_rec vs ancestor_count, Social Network, replication (latency): Spearman rho (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorRho}{-0.060}
+% T_rec vs ancestor_count, Social Network, replication (latency): raw permutation p (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorP}{0.8647}
+% T_rec vs ancestor_count, Social Network, replication (latency): BH-adjusted p (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorBhP}{1.0000}
+% T_rec vs ancestor_count, Social Network, replication (latency): log-rank p across predictor terciles (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorLogrankP}{0.5561}
+% T_rec vs ancestor_count, Social Network, replication (latency): Cox hazard ratio per unit of ancestor_count (run level, SE clustered by service) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorCoxRunHr}{0.998}
+% T_rec vs ancestor_count, Social Network, replication (latency): Cox hazard ratio 95% CI lower (run level, SE clustered by service) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorCoxRunCiLo}{0.816}
+% T_rec vs ancestor_count, Social Network, replication (latency): Cox hazard ratio 95% CI upper (run level, SE clustered by service) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorCoxRunCiHi}{1.221}
+% T_rec vs ancestor_count, Social Network, replication (latency): Cox p (run level, SE clustered by service) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorCoxRunP}{0.9859}
+% T_rec vs ancestor_count, Social Network, replication (latency): Cox hazard ratio per unit of ancestor_count (service level) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorCoxServiceHr}{1.184}
+% T_rec vs ancestor_count, Social Network, replication (latency): Cox hazard ratio 95% CI lower (service level) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorCoxServiceCiLo}{0.627}
+% T_rec vs ancestor_count, Social Network, replication (latency): Cox hazard ratio 95% CI upper (service level) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorCoxServiceCiHi}{2.236}
+% T_rec vs ancestor_count, Social Network, replication (latency): Cox p (service level) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnAncestorCoxServiceP}{0.6018}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): Spearman rho (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorRho}{-0.158}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): raw permutation p (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorP}{0.8571}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): BH-adjusted p (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorBhP}{1.0000}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): Cox hazard ratio per unit of ancestor_count (run level, SE clustered by service) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorCoxRunHr}{0.882}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): Cox hazard ratio 95% CI lower (run level, SE clustered by service) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorCoxRunCiLo}{0.578}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): Cox hazard ratio 95% CI upper (run level, SE clustered by service) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorCoxRunCiHi}{1.346}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): Cox p (run level, SE clustered by service) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorCoxRunP}{0.5609}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): Cox hazard ratio per unit of ancestor_count (service level) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorCoxServiceHr}{2.179}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): Cox hazard ratio 95% CI lower (service level) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorCoxServiceCiLo}{0.302}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): Cox hazard ratio 95% CI upper (service level) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorCoxServiceCiHi}{15.722}
+% T_rec vs ancestor_count, Hotel Reservation, replication (latency): Cox p (service level) (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrAncestorCoxServiceP}{0.4399}
+% T_rec vs hybrid_criticality, Social Network, replication (latency): Spearman rho (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnHybridRho}{0.767}
+% T_rec vs hybrid_criticality, Social Network, replication (latency): raw permutation p (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnHybridP}{0.0084}
+% T_rec vs hybrid_criticality, Social Network, replication (latency): BH-adjusted p (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnHybridBhP}{0.1848}
+% T_rec vs hybrid_criticality, Social Network, replication (latency): log-rank p across predictor terciles (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplSnHybridLogrankP}{0.1099}
+% T_rec vs hybrid_criticality, Hotel Reservation, replication (latency): Spearman rho (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrHybridRho}{0.408}
+% T_rec vs hybrid_criticality, Hotel Reservation, replication (latency): raw permutation p (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrHybridP}{0.5714}
+% T_rec vs hybrid_criticality, Hotel Reservation, replication (latency): BH-adjusted p (analysis/final/replication_family_latency.csv)
+\newcommand{\NumTrecReplHrHybridBhP}{0.8111}
 % Exploratory tests attempted (analysis/final/exploratory_family.csv)
 \newcommand{\NumExplAttempted}{154}
 % Exploratory tests with a defined p (analysis/final/exploratory_family.csv)
@@ -315,7 +447,7 @@
 % The single run with a nonzero unrelated_affected_count (analysis/final/run_level_data.csv)
 \newcommand{\NumUnrelatedAffectedExceptionRun}{hotelreservation/profile/kill/rep4}
 % Deviations from the preregistration, total (analysis/final/deviations.csv)
-\newcommand{\NumDeviationsTotal}{9}
+\newcommand{\NumDeviationsTotal}{12}
 % Campaign runs invalidated across all deviations (analysis/final/deviations.csv)
 \newcommand{\NumDeviationsRunsInvalidated}{17}
 % Deviations found before any campaign data existed (analysis/final/deviations.csv)
@@ -360,14 +492,16 @@
 \newcommand{\NumThresholdDegradationFloorMs}{1.0}
 % Absolute error-rate rise for flagging a service (measurement/metrics_collector.py)
 \newcommand{\NumThresholdErrorRateAbs}{0.05}
-% Hybrid metric weight on in-degree centrality (fixed a priori; never fitted to outcome data) (centrality/metric_constants.py)
+% Hybrid metric weight on in-degree centrality (inherited from an empirical search in the withdrawn analysis; not a priori; not re-tuned on campaign data; Deviation 10) (centrality/metric_constants.py)
 \newcommand{\NumHybridWIn}{0.4}
-% Hybrid metric weight on fan-out-scaled out-degree centrality (fixed a priori; never fitted to outcome data) (centrality/metric_constants.py)
+% Hybrid metric weight on fan-out-scaled out-degree centrality (inherited from an empirical search in the withdrawn analysis; not a priori; not re-tuned on campaign data; Deviation 10) (centrality/metric_constants.py)
 \newcommand{\NumHybridWOut}{0.4}
-% Hybrid metric weight on betweenness centrality (fixed a priori; never fitted to outcome data) (centrality/metric_constants.py)
+% Hybrid metric weight on betweenness centrality (inherited from an empirical search in the withdrawn analysis; not a priori; not re-tuned on campaign data; Deviation 10) (centrality/metric_constants.py)
 \newcommand{\NumHybridWBtw}{0.2}
-% Whether the hybrid metric's weights were tuned against outcome data (a weight lockfile exists) (centrality/output/tuned_weights.lock.json)
-\newcommand{\NumHybridWeightsTuned}{no}
+% Whether the cross-arch weight lockfile exists (it would exist only if the preregistered tuning protocol had been run) (centrality/output/tuned_weights.lock.json)
+\newcommand{\NumHybridWeightsLockfileExists}{no}
+% Whether the hybrid metric's weights were re-optimised on campaign data (check: centrality/output/tuned_weights.lock.json absent AND no file under data/campaign/ or analysis/final/ whose name matches weight|tuned|grid|optimi or whose CSV header has a w_in/w_out/w_btw column)
+\newcommand{\NumHybridWeightsReoptimisedOnCampaign}{no}
 % Warm-up before the baseline window (tools/run_campaign.py)
 \newcommand{\NumProtocolWarmupS}{60}
 % Fault hold duration (tools/run_campaign.py)

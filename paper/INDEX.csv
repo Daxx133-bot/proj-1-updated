@@ -1,17 +1,17 @@
 file,produced_by,bytes
-paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",15672
-paper/INDEX.csv,paper/build_all.py,2932
+paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",16650
+paper/INDEX.csv,paper/build_all.py,3418
 paper/build_all.py,source,2869
-paper/build_numbers.py,source,35301
+paper/build_numbers.py,source,39878
 paper/check_draft_ids.py,source,5341
 paper/check_ledger.py,source,3783
-paper/draft/audit_disclosure.md,"hand-written, markers validated by paper/check_draft_ids.py",11152
+paper/draft/audit_disclosure.md,"hand-written, markers validated by paper/check_draft_ids.py",11476
 paper/draft/limitations.md,"hand-written, markers validated by paper/check_draft_ids.py",9226
-paper/draft/method.md,"hand-written, markers validated by paper/check_draft_ids.py",20971
+paper/draft/method.md,"hand-written, markers validated by paper/check_draft_ids.py",20699
 paper/draft/outline_abstract.md,"hand-written, markers validated by paper/check_draft_ids.py",3810
 paper/draft/outline_conclusion.md,"hand-written, markers validated by paper/check_draft_ids.py",2816
 paper/draft/outline_discussion.md,"hand-written, markers validated by paper/check_draft_ids.py",6991
-paper/draft/outline_intro.md,"hand-written, markers validated by paper/check_draft_ids.py",5285
+paper/draft/outline_intro.md,"hand-written, markers validated by paper/check_draft_ids.py",5337
 paper/draft/outline_related_work.md,"hand-written, markers validated by paper/check_draft_ids.py",7480
 paper/draft/results.md,"hand-written, markers validated by paper/check_draft_ids.py",14048
 paper/emit_macros.py,source,3649
@@ -30,12 +30,12 @@ paper/figures/fig_rank_inversion_data.csv,paper/make_figures.py,470
 paper/figures/figures_index.csv,paper/make_figures.py,1085
 paper/make_figures.py,source,14750
 paper/make_tables.py,source,11901
-paper/numbers.csv,paper/build_numbers.py,37054
-paper/numbers.json,paper/emit_macros.py,63672
-paper/numbers.tex,paper/emit_macros.py,29096
-paper/tables/tables_index.csv,paper/make_tables.py,1771
-paper/tables/tbl_deviations.csv,paper/make_tables.py,13046
-paper/tables/tbl_deviations.md,paper/make_tables.py,13273
+paper/numbers.csv,paper/build_numbers.py,54489
+paper/numbers.json,paper/emit_macros.py,91274
+paper/numbers.tex,paper/emit_macros.py,42907
+paper/tables/tables_index.csv,paper/make_tables.py,1772
+paper/tables/tbl_deviations.csv,paper/make_tables.py,19916
+paper/tables/tbl_deviations.md,paper/make_tables.py,20199
 paper/tables/tbl_family_summary.csv,paper/make_tables.py,315
 paper/tables/tbl_family_summary.md,paper/make_tables.py,394
 paper/tables/tbl_h1b.csv,paper/make_tables.py,770
