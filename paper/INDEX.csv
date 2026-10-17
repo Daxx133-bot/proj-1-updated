@@ -1,43 +1,62 @@
 file,produced_by,bytes
-paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",16656
-paper/INDEX.csv,paper/build_all.py,3687
-paper/build_all.py,source,3353
-paper/build_docx.py,source,13424
+paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",16657
+paper/INDEX.csv,paper/build_all.py,3688
+paper/build_all.py,source,3529
+paper/build_docx.py,source,23028
 paper/build_numbers.py,source,58401
-paper/check_docx_numbers.py,source,11083
+paper/check_docx_numbers.py,source,12144
 paper/check_draft_ids.py,source,5341
 paper/check_ledger.py,source,3783
-paper/draft/audit_disclosure.md,"hand-written, markers validated by paper/check_draft_ids.py",13406
+paper/draft/audit_disclosure.md,"hand-written, markers validated by paper/check_draft_ids.py",13427
 paper/draft/limitations.md,"hand-written, markers validated by paper/check_draft_ids.py",9671
-paper/draft/method.md,"hand-written, markers validated by paper/check_draft_ids.py",23516
+paper/draft/method.md,"hand-written, markers validated by paper/check_draft_ids.py",23517
 paper/draft/outline_abstract.md,"hand-written, markers validated by paper/check_draft_ids.py",3810
-paper/draft/outline_conclusion.md,"hand-written, markers validated by paper/check_draft_ids.py",2816
-paper/draft/outline_discussion.md,"hand-written, markers validated by paper/check_draft_ids.py",6991
-paper/draft/outline_intro.md,"hand-written, markers validated by paper/check_draft_ids.py",5337
+paper/draft/outline_conclusion.md,"hand-written, markers validated by paper/check_draft_ids.py",2826
+paper/draft/outline_discussion.md,"hand-written, markers validated by paper/check_draft_ids.py",6999
+paper/draft/outline_intro.md,"hand-written, markers validated by paper/check_draft_ids.py",5335
 paper/draft/outline_related_work.md,"hand-written, markers validated by paper/check_draft_ids.py",7480
 paper/draft/results.md,"hand-written, markers validated by paper/check_draft_ids.py",19650
 paper/emit_macros.py,source,3649
-paper/figures/fig_leave_one_out.pdf,paper/make_figures.py,18556
-paper/figures/fig_leave_one_out.png,paper/make_figures.py,148202
+paper/figures/fig_leave_one_out.pdf,paper/make_figures.py,19096
+paper/figures/fig_leave_one_out.png,paper/make_figures.py,345376
 paper/figures/fig_leave_one_out_data.csv,paper/make_figures.py,502
 paper/figures/fig_primary_sn.pdf,paper/make_figures.py,22664
-paper/figures/fig_primary_sn.png,paper/make_figures.py,115498
+paper/figures/fig_primary_sn.png,paper/make_figures.py,260269
 paper/figures/fig_primary_sn_data.csv,paper/make_figures.py,768
-paper/figures/fig_q3_artifact.pdf,paper/make_figures.py,20762
-paper/figures/fig_q3_artifact.png,paper/make_figures.py,177168
+paper/figures/fig_q3_artifact.pdf,paper/make_figures.py,21320
+paper/figures/fig_q3_artifact.png,paper/make_figures.py,581279
 paper/figures/fig_q3_artifact_data.csv,paper/make_figures.py,2897
 paper/figures/fig_rank_inversion.pdf,paper/make_figures.py,25851
-paper/figures/fig_rank_inversion.png,paper/make_figures.py,267291
+paper/figures/fig_rank_inversion.png,paper/make_figures.py,590366
 paper/figures/fig_rank_inversion_data.csv,paper/make_figures.py,470
 paper/figures/figures_index.csv,paper/make_figures.py,1085
-paper/make_figures.py,source,14750
+paper/make_figures.py,source,15315
 paper/make_tables.py,source,11901
-paper/manuscript.docx,paper/build_docx.py,679567
-paper/number_audit.txt,paper/check_docx_numbers.py,4158
+paper/manuscript.docx,paper/build_docx.py,56645
+paper/number_audit.txt,paper/check_docx_numbers.py,4325
 paper/numbers.csv,paper/build_numbers.py,97219
 paper/numbers.json,paper/emit_macros.py,163688
 paper/numbers.tex,paper/emit_macros.py,77725
-paper/references.csv,hand-maintained; only rows with status VERIFIED are rendered,57
+paper/references.csv,hand-maintained; only rows with status VERIFIED are rendered,76
+paper/submission/Figure 1.pdf,paper/build_docx.py,21320
+paper/submission/Figure 1.png,paper/build_docx.py,581279
+paper/submission/Figure 2.pdf,paper/build_docx.py,22664
+paper/submission/Figure 2.png,paper/build_docx.py,260269
+paper/submission/Figure 3.pdf,paper/build_docx.py,19096
+paper/submission/Figure 3.png,paper/build_docx.py,345376
+paper/submission/Figure 4.pdf,paper/build_docx.py,25851
+paper/submission/Figure 4.png,paper/build_docx.py,590366
+paper/submission/Table 1.docx,paper/build_docx.py,37856
+paper/submission/Table 2.docx,paper/build_docx.py,37600
+paper/submission/Table 3.docx,paper/build_docx.py,37308
+paper/submission/Table 4.docx,paper/build_docx.py,37484
+paper/submission/Table 5.docx,paper/build_docx.py,37236
+paper/submission/Table 6.docx,paper/build_docx.py,37912
+paper/submission/Table 7.docx,paper/build_docx.py,37466
+paper/submission/Table 8.docx,paper/build_docx.py,37421
+paper/submission/Table 9.docx,paper/build_docx.py,45568
+paper/submission/cover_page.docx,paper/build_docx.py,36871
+paper/submission/figure_legends.docx,paper/build_docx.py,36993
 paper/tables/tables_index.csv,paper/make_tables.py,1772
 paper/tables/tbl_deviations.csv,paper/make_tables.py,19916
 paper/tables/tbl_deviations.md,paper/make_tables.py,20199

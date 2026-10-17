@@ -1,4 +1,4 @@
-# 8. Conclusion — paragraph outline
+# 8. Conclusions — paragraph outline
 
 Not prose. Four paragraphs, kept short. Ledger references are section numbers in
 `paper/CLAIMS_LEDGER.md`; ids are `paper/numbers.csv` claim_ids.
@@ -12,7 +12,7 @@ Not prose. Four paragraphs, kept short. Ledger references are section numbers in
 
 ## Constraints carried into this section
 
-- The conclusion must not introduce a claim that appears nowhere in §4. Every id above is
+- The Conclusions section must not introduce a claim that appears nowhere in §4. Every id above is
   already cited in `results.md`.
 - ¶4's practitioner recommendation rests on mechanism and on the null for the alternative,
   not on a demonstrated predictive result. It must say so in the same sentence.

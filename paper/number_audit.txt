@@ -1,4 +1,5 @@
-number_audit.txt -- written by paper/check_docx_numbers.py from paper/manuscript.docx
+number_audit.txt -- written by paper/check_docx_numbers.py
+Audited: manuscript, figure_legends.docx, Table 1.docx, Table 2.docx, Table 3.docx, Table 4.docx, Table 5.docx, Table 6.docx, Table 7.docx, Table 8.docx, Table 9.docx
 Nothing was changed. A match means the number has a traced source of the kind
 named, not that it is attached to the right claim. Tokens below 10 count as sourced
 only if an id marked in the same draft sentence carries that value.
@@ -8,6 +9,7 @@ Tokens by category:
   numbers.csv value (string)        3
   marked in sentence              167
   table cell                      706
+  table header                      0
   section number                   59
   table/figure number              27
   deviation number                 18
@@ -29,23 +31,23 @@ WEAK MATCH tokens (14), each with its sentence or table row:
      Several services in these applications have baseline p95 values in the hundredths of a millisecond, and at that scale a purely multiplicative rule responds to scheduler noise: a service whose p95 rises threefold between two consecutive fault-free windows satisfies a 2× test while representing no physically meaningful change.
   4. [3.6 Blast radius classification] token 0.01
      Rounding percentiles to two decimals before the comparison would put the quantisation step at 0.01 ms, which is comparable to the entire signal for the fastest services.
-  5. [4.1 The confirmatory test] token 0.05
-     Family sizes and how many tests survive BH-FDR at q=0.05
-  6. [4.1 The confirmatory test] token 1.0
+  5. [4.1 The confirmatory test] token 1.0
      If every service's measured blast radius simply equalled its graph ancestor count, a correlation of 1.0 would follow by construction and would test nothing.
-  7. [4.1 The confirmatory test] token 0.785
+  6. [4.1 The confirmatory test] token 0.785
      Social Network is not fully saturated, at 0.909 under kill faults, which is what makes ρ = 0.785 rather than 1.0.
-  8. [4.1 The confirmatory test] token 1.0
+  7. [4.1 The confirmatory test] token 1.0
      Social Network is not fully saturated, at 0.909 under kill faults, which is what makes ρ = 0.785 rather than 1.0.
-  9. [4.3 The motivating case] token 3
+  8. [4.3 The motivating case] token 3
      Kill repetition 3 also recorded two degraded descendants, the only such run in the campaign (§4.5).
- 10. [6.2 Hotel Reservation could not have reached significance] token 1.0
+  9. [6.2 Hotel Reservation could not have reached significance] token 1.0
      Under the exact permutation test our analysis plan mandates, a perfect result on Hotel Reservation, ρ = 1.0 with the observed tie structure, yields a p-value of 0.0952.
- 11. [6.2 Hotel Reservation could not have reached significance] token 0.05
+ 10. [6.2 Hotel Reservation could not have reached significance] token 0.05
      That is above the conventional 0.05 threshold before any multiplicity correction is applied.
- 12. [6.4 The primary predictor is close to definitional] token 1.0
+ 11. [6.4 The primary predictor is close to definitional] token 1.0
      The whole difference between ρ = 0.785 and a correlation of exactly 1.0 therefore rests on a single service.
- 13. [7.2 Deviations from the locked specification] token 8
+ 12. [7.2 Deviations from the locked specification] token 8
      That was defensible while per-service percentiles were still end-to-end values in the tens of milliseconds, but the corrected per-service definition of §3.5 moved 8 of 20 services into the range below 0.6 ms, where a multiplicative threshold responds to scheduler noise rather than to anything physical.
- 14. [7.2 Deviations from the locked specification] token 0.6
+ 13. [7.2 Deviations from the locked specification] token 0.6
      That was defensible while per-service percentiles were still end-to-end values in the tens of milliseconds, but the corrected per-service definition of §3.5 moved 8 of 20 services into the range below 0.6 ms, where a multiplicative threshold responds to scheduler noise rather than to anything physical.
+ 14. [Table 5.docx] token 0.05
+     Family sizes and how many tests survive BH-FDR at q=0.05

@@ -1,26 +1,38 @@
 """
-build_docx.py -- assemble paper/manuscript.docx from paper/draft/*.md. Writes no prose.
+build_docx.py -- assemble the PeerJ Computer Science submission from paper/draft/*.md.
+Writes no prose.
 
-Sections, in order: abstract, 1 introduction, 2 related work, 3 method, 4 results,
-5 discussion, 6 threats to validity, 7 audit and deviations, 8 conclusion, data
-availability, AI-use statement, references, appendix. A section with a prose draft is rendered from it. A section that has only an
-outline file, or no file at all, gets its heading followed by the visible placeholder
-[TO WRITE]; nothing is generated to fill it.
+Outputs
+  paper/manuscript.docx                 the manuscript, text only
+  paper/submission/Figure N.png / .pdf  figures, numbered by first mention (PNG >= 3000 px)
+  paper/submission/figure_legends.docx  one title per figure
+  paper/submission/Table N.docx         one table per file, title and units in the headers
+  paper/submission/cover_page.docx      title, authors, affiliation, corresponding author
+
+Sections, in order: Abstract (run-in headings Background, Methods, Results, Conclusions);
+1 Background; 2 Related Work; 3 Methods; 4 Results; 5 Discussion; 6 Threats to Validity;
+7 Audit and Deviations from Preregistration; 8 Conclusions; Acknowledgments; Funding
+Statement; Data Availability; AI-Use Statement; References. A section with a prose draft
+is rendered from it. A section with only an outline file, or no file, gets its heading and
+the visible placeholder [TO WRITE]; nothing is generated to fill it.
 
 Rendering rules
-  * Every %[...] drafting marker is removed. "> **Drafting note" blockquotes are removed.
-  * Tables (paper/tables/*.csv) and figures (paper/figures/*.png) are inserted after the
-    paragraph that first mentions them, numbered in order of first mention, and every
-    in-text "Table N" / "Figure N" is renumbered to match. The draft numbers are resolved to
-    files through the reference map in the results draft's drafting note. Captions come from
-    paper/tables/tables_index.csv and paper/figures/figures_index.csv. A table or figure the
-    text never mentions is appended, numbered, before the references.
-  * Citations are written [@key]. A key is resolved only if paper/references.csv has that
-    key with status VERIFIED; it is then numbered in order of first citation. Any other
-    [@key], and any [CITATION NEEDED: ...], stays as visible text.
-  * Section headings keep the numbers the drafts give them; nothing is renumbered, because
-    the prose cross-references those numbers.
-  * Plain single-column layout: Times New Roman 12 pt, 1.5 line spacing; tables in 8 pt.
+  * Every %[...] drafting marker and every "> **Drafting note" blockquote is removed.
+  * Figures and tables are not embedded. They are numbered in order of first mention and
+    every in-text mention is renumbered to match: "Table N", and for figures "Fig. N"
+    ("Figs. N and M") in running text, "Figure N" at the start of a sentence. Draft numbers
+    resolve to files through the reference map in the results draft's drafting note;
+    titles come from paper/tables/tables_index.csv and paper/figures/figures_index.csv.
+  * Citations are written [@key] or [@key1; @key2]. They render name-year, e.g.
+    (Smith, 2010), (Smith & Jones, 2010), (Smith, Jones & Brown, 2010),
+    (Smith et al., 2010), several separated by semicolons in chronological order. A
+    citation renders only if every key in it is a row of paper/references.csv with status
+    VERIFIED; otherwise the bracket, like any [CITATION NEEDED: ...], stays as visible
+    text. The reference list holds the cited VERIFIED rows, alphabetically, with DOIs.
+  * Format: US Letter, 2.5 cm margins, Times New Roman 12 pt, 1.5 line spacing, left
+    aligned, continuous line numbering, Word's built-in Title/Heading styles, Normal style
+    for body text.
+  * The build fails if the abstract exceeds 500 words.
 
 Run: python paper/build_docx.py
 """
@@ -29,51 +41,92 @@ from __future__ import annotations
 import csv
 import os
 import re
+import shutil
 import sys
 
 from docx import Document
+from docx.enum.section import WD_ORIENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Inches, Pt, RGBColor
+from docx.shared import Cm, Inches, Pt, RGBColor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(HERE)
 DRAFT = os.path.join(HERE, "draft")
 OUT = os.path.join(HERE, "manuscript.docx")
+SUB = os.path.join(HERE, "submission")
 REFS = os.path.join(HERE, "references.csv")
 FONT = "Times New Roman"
+ABSTRACT_MAX_WORDS = 500
+MIN_FIGURE_PX = 3000
+
+ABSTRACT_FILE = "abstract.md"          # prose abstract, when it exists
+ABSTRACT_PARTS = ["Background.", "Methods.", "Results.", "Conclusions."]
 
 # (heading used when there is no prose, prose draft, outline draft)
 SECTIONS = [
-    ("Abstract", None, "outline_abstract.md"),
-    ("1. Introduction", None, "outline_intro.md"),
+    ("Abstract", ABSTRACT_FILE, "outline_abstract.md"),
+    ("1. Background", None, "outline_intro.md"),
     ("2. Related Work", None, "outline_related_work.md"),
-    ("3. Method", "method.md", None),
+    ("3. Methods", "method.md", None),
     ("4. Results", "results.md", None),
     ("5. Discussion", None, "outline_discussion.md"),
     ("6. Threats to Validity", "limitations.md", None),
-    ("7. Audit and Deviations", "audit_disclosure.md", None),
-    ("8. Conclusion", None, "outline_conclusion.md"),
+    ("7. Audit and Deviations from Preregistration", "audit_disclosure.md", None),
+    ("8. Conclusions", None, "outline_conclusion.md"),
+    ("Acknowledgments", None, None),
+    ("Funding Statement", None, None),
     ("Data Availability", None, None),
-    ("AI-use statement", None, None),
+    ("AI-Use Statement", None, None),
 ]
-# Rendered after the references.
-TRAILING = [("Appendix", None, None)]
+TRAILING: list = []                     # sections after the references (none)
+
+COVER = {
+    "title": "[TITLE TO WRITE]",
+    "authors": ["Dakshrajsinh Tank", "[TO FILL: other authors]"],
+    "affiliation": "Vellore Institute of Technology, [TO FILL department]",
+    "corresponding": "[TO FILL name], [TO FILL email]",
+}
+
+# Units shown in table headers. Time and percentage units come from the column-name suffix
+# make_tables.py writes; count units name what is counted. Other columns are dimensionless
+# (correlations, p-values, centralities) or categorical.
+SUFFIX_UNITS = {"_ms": "ms", "_s": "s", "_pct": "%"}
+COUNT_UNITS = {
+    "n_services": "services", "n_services_actual": "services",
+    "n_services_preregistered": "services", "ancestor_count": "services",
+    "descendant_count": "services", "in_degree_raw": "callers",
+    "out_degree_raw": "callees", "measured_ancestor_affected_kill": "services",
+    "measured_ancestor_affected_latency": "services", "runs_invalidated": "runs",
+    "tests": "tests", "tests_with_defined_p": "tests", "significant_after_bh_q05": "tests",
+    "distinct_arrangements": "arrangements", "ancestor_count_levels_actual": "levels",
+    "ancestor_count_levels_preregistered": "levels",
+}
+TABLE_NOTE = ("Units are given in parentheses in the column headers; columns without a "
+              "unit are dimensionless or categorical.")
 
 MARKER = re.compile(r"\s*%\[[^\]]*\]")
 REF_MAP_ROW = re.compile(r"^>\s*\|\s*(Table|Figure)\s+(\d+)\s*\|\s*`([^`]+)`\s*\|")
 MENTION = re.compile(r"\b(Tables?|Figures?)\s+(\d+)((?:\s*(?:,|and)\s*\d+)*)")
-CITE = re.compile(r"\[@([A-Za-z0-9_:\-]+)\]")
+CITE = re.compile(r"\[(@[^\]\[]+)\]")
 INLINE = re.compile(r"(\*\*.+?\*\*|`[^`]+`|<sub>.*?</sub>|<sup>.*?</sup>|\*[^*\s][^*]*\*)")
 
+
+# ── drafts ────────────────────────────────────────────────────────────────────
 
 def read(name):
     with open(os.path.join(DRAFT, name), encoding="utf-8") as fh:
         return fh.read()
 
 
+def has_prose(name):
+    return bool(name) and os.path.isfile(os.path.join(DRAFT, name))
+
+
 def outline_heading(name, default):
     """The outline's own title, minus its ' — ... outline' suffix."""
-    if not name or not os.path.isfile(os.path.join(DRAFT, name)):
+    if not has_prose(name):
         return default
     first = read(name).splitlines()[0].lstrip("# ").strip()
     return re.split(r"\s+[—-]\s+", first)[0] or default
@@ -91,7 +144,7 @@ def draft_reference_map():
 
 def blocks(text):
     """Split a draft into (kind, text) blocks, dropping drafting-note blockquotes."""
-    out, para, quote = [], [], []
+    out, para = [], []
 
     def flush():
         if para:
@@ -123,40 +176,121 @@ def blocks(text):
     return out
 
 
-def load_refs():
-    if not os.path.isfile(REFS):
+# ── references: name-year ─────────────────────────────────────────────────────
+
+def load_refs(path=REFS):
+    if not os.path.isfile(path):
         return {}
-    with open(REFS, encoding="utf-8", newline="") as fh:
+    with open(path, encoding="utf-8", newline="") as fh:
         return {r["key"]: r for r in csv.DictReader(fh)
                 if r.get("status", "").strip() == "VERIFIED"}
 
 
-def read_csv_rows(path):
-    with open(path, encoding="utf-8", newline="") as fh:
-        return list(csv.reader(fh))
+def surnames(entry):
+    """Authors are 'Surname, Initials; Surname, Initials; ...'."""
+    return [a.split(",")[0].strip() for a in entry["authors"].split(";") if a.strip()]
 
 
-def captions(index_file, key_col):
-    rows = read_csv_rows(index_file)
-    head = rows[0]
-    k, s = head.index(key_col), head.index("shows")
-    return {r[k]: r[s] for r in rows[1:]}
+def author_label(entry):
+    s = surnames(entry)
+    if len(s) == 1:
+        return s[0]
+    if len(s) == 2:
+        return "%s & %s" % (s[0], s[1])
+    if len(s) == 3:
+        return "%s, %s & %s" % (s[0], s[1], s[2])
+    return "%s et al." % s[0]
 
 
-def set_base_style(doc):
+def year_suffixes(refs, keys):
+    """Add a, b, ... to the year where two cited works share author label and year."""
+    groups = {}
+    for k in keys:
+        groups.setdefault((author_label(refs[k]), refs[k]["year"]), []).append(k)
+    out = {}
+    for (_, year), ks in groups.items():
+        ks = sorted(ks, key=lambda k: refs[k]["title"].lower())
+        for i, k in enumerate(ks):
+            out[k] = year + ("abcdefghijklmnopqrstuvwxyz"[i] if len(ks) > 1 else "")
+    return out
+
+
+def format_citation(keys, refs, years):
+    entries = sorted(keys, key=lambda k: (years[k], author_label(refs[k]).lower()))
+    return "(%s)" % "; ".join("%s, %s" % (author_label(refs[k]), years[k]) for k in entries)
+
+
+def format_reference(entry, year):
+    def short(a):
+        sur, _, ini = a.partition(",")
+        ini = re.sub(r"[.\s]", "", ini)
+        return ("%s %s" % (sur.strip(), ini)).strip()
+    authors = ", ".join(short(a) for a in entry["authors"].split(";") if a.strip())
+    s = "%s. %s. %s. %s" % (authors, year, entry["title"].rstrip("."), entry["venue"])
+    if entry.get("volume"):
+        s += " %s" % entry["volume"]
+    if entry.get("issue"):
+        s += "(%s)" % entry["issue"]
+    if entry.get("pages"):
+        s += ":%s" % entry["pages"]
+    s += "."
+    if entry.get("doi"):
+        s += " DOI %s." % entry["doi"]
+    return s
+
+
+def resolve_citations(text, refs, cited):
+    """Replace [@a; @b] with a name-year citation when every key is VERIFIED."""
+    def keys_of(m):
+        parts = [p.strip() for p in m.group(1).split(";")]
+        if not all(p.startswith("@") and len(p) > 1 for p in parts):
+            return None
+        return [p[1:] for p in parts]
+
+    for m in CITE.finditer(text):
+        ks = keys_of(m)
+        if ks and all(k in refs for k in ks):
+            for k in ks:
+                if k not in cited:
+                    cited.append(k)
+    years = year_suffixes(refs, cited)
+
+    def sub(m):
+        ks = keys_of(m)
+        if not ks or not all(k in refs for k in ks):
+            return m.group(0)
+        return format_citation(ks, refs, years)
+    return CITE.sub(sub, text)
+
+
+# ── styling ───────────────────────────────────────────────────────────────────
+
+def style_document(doc, line_numbers=True):
     st = doc.styles["Normal"]
     st.font.name = FONT
     st.font.size = Pt(12)
     st.element.rPr.rFonts.set(qn("w:eastAsia"), FONT)
     st.paragraph_format.line_spacing = 1.5
     st.paragraph_format.space_after = Pt(6)
-    for name, size in (("Title", 16), ("Heading 1", 14), ("Heading 2", 12), ("Heading 3", 12)):
+    st.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    for name, size in (("Title", 16), ("Heading 1", 14), ("Heading 2", 12),
+                       ("Heading 3", 12)):
         h = doc.styles[name]
         h.font.name = FONT
         h.font.size = Pt(size)
         h.font.bold = True
         h.font.color.rgb = RGBColor(0, 0, 0)
         h.element.rPr.rFonts.set(qn("w:eastAsia"), FONT)
+        h.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    for sec in doc.sections:
+        sec.page_width, sec.page_height = Inches(8.5), Inches(11)
+        for side in ("left_margin", "right_margin", "top_margin", "bottom_margin"):
+            setattr(sec, side, Cm(2.5))
+        if line_numbers:
+            ln = OxmlElement("w:lnNumType")
+            ln.set(qn("w:countBy"), "1")
+            ln.set(qn("w:restart"), "continuous")
+            sec._sectPr.find(qn("w:pgMar")).addnext(ln)
 
 
 def add_runs(par, text):
@@ -179,18 +313,48 @@ def add_runs(par, text):
             par.add_run(piece)
 
 
+def placeholder(par, text="[TO WRITE]"):
+    r = par.add_run(text)
+    r.bold = True
+    r.font.color.rgb = RGBColor(0xC0, 0, 0)
+
+
+def read_csv_rows(path):
+    with open(path, encoding="utf-8", newline="") as fh:
+        return list(csv.reader(fh))
+
+
+def captions(index_file, key_col):
+    rows = read_csv_rows(index_file)
+    head = rows[0]
+    k, s = head.index(key_col), head.index("shows")
+    return {r[k]: r[s] for r in rows[1:]}
+
+
+def header_with_unit(col):
+    unit = COUNT_UNITS.get(col)
+    if unit is None:
+        for suf, u in SUFFIX_UNITS.items():
+            if col.endswith(suf):
+                unit = u
+                break
+    return "%s (%s)" % (col, unit) if unit else col
+
+
+# ── build ─────────────────────────────────────────────────────────────────────
+
 class Builder:
     def __init__(self):
         self.doc = Document()
-        set_base_style(self.doc)
+        style_document(self.doc)
         self.draft_map = draft_reference_map()
         self.tbl_caps = captions(os.path.join(HERE, "tables", "tables_index.csv"), "table")
         self.fig_caps = captions(os.path.join(HERE, "figures", "figures_index.csv"), "figure")
         self.number = {}          # file -> (kind, new number)
         self.counter = {"Table": 0, "Figure": 0}
         self.refs = load_refs()
-        self.ref_order = []
-        self.placed = set()
+        self.cited = []
+        self.abstract_words = 0
 
     def resolve(self, kind, n):
         f = self.draft_map.get((kind, n))
@@ -202,141 +366,189 @@ class Builder:
         return f
 
     def renumber(self, text):
-        """Rewrite Table/Figure mentions to first-mention numbers; return text, files."""
-        files = []
-
         def sub(m):
             word, first, rest = m.group(1), int(m.group(2)), m.group(3) or ""
             kind = "Table" if word.startswith("Table") else "Figure"
+            plural = word.endswith("s")
             nums = [first] + [int(x) for x in re.findall(r"\d+", rest)]
             new = []
             for n in nums:
                 f = self.resolve(kind, n)
-                if f is None:
-                    new.append("%d [UNRESOLVED %s %d]" % (n, kind, n))
-                else:
-                    files.append(f)
-                    new.append(str(self.number[f][1]))
+                new.append("%d [UNRESOLVED %s %d]" % (n, kind, n) if f is None
+                           else str(self.number[f][1]))
+            if kind == "Figure":
+                before = text[:m.start()].rstrip()
+                start = not before or before[-1] in ".!?"
+                word = ("Figures" if plural else "Figure") if start else \
+                       ("Figs." if plural else "Fig.")
             seps = re.findall(r"\s*(?:,|and)\s*", rest)
             out = word + " " + new[0]
             for sep, v in zip(seps, new[1:]):
                 out += sep + v
             return out
-
-        return MENTION.sub(sub, text), files
-
-    def cite(self, text):
-        def sub(m):
-            key = m.group(1)
-            if key not in self.refs:
-                return m.group(0)
-            if key not in self.ref_order:
-                self.ref_order.append(key)
-            return "[%d]" % (self.ref_order.index(key) + 1)
-        return CITE.sub(sub, text)
+        return MENTION.sub(sub, text)
 
     def paragraph(self, text, style=None):
         text = MARKER.sub("", text).strip()
-        text, files = self.renumber(text)
-        text = self.cite(text)
-        par = self.doc.add_paragraph(style=style)
-        add_runs(par, text)
-        for f in files:
-            if f not in self.placed:
-                self.place(f)
+        text = self.renumber(text)
+        text = resolve_citations(text, self.refs, self.cited)
+        add_runs(self.doc.add_paragraph(style=style), text)
 
-    def place(self, f):
-        kind, n = self.number[f]
-        base = os.path.splitext(os.path.basename(f))[0]
-        if kind == "Table":
-            path = os.path.join(os.path.dirname(HERE), f)
-            rows = read_csv_rows(path)
-            cap = self.doc.add_paragraph()
-            cap.add_run("Table %d. " % n).bold = True
-            cap.add_run(self.tbl_caps.get(base, base))
-            t = self.doc.add_table(rows=len(rows), cols=len(rows[0]))
-            t.style = "Table Grid"
-            for i, row in enumerate(rows):
-                for j, val in enumerate(row):
-                    cell = t.cell(i, j)
-                    cell.text = ""
-                    r = cell.paragraphs[0].add_run(val)
-                    r.font.size = Pt(8)
-                    r.bold = i == 0
-                    cell.paragraphs[0].paragraph_format.line_spacing = 1.0
+    def abstract(self):
+        self.doc.add_heading("Abstract", level=1)
+        if has_prose(ABSTRACT_FILE):
+            paras = [t for k, t in blocks(read(ABSTRACT_FILE)) if k == "p"]
         else:
-            png = os.path.join(os.path.dirname(HERE),
-                               os.path.splitext(f)[0] + ".png")
-            self.doc.add_picture(png, width=Inches(6.0))
-            self.doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
-            cap = self.doc.add_paragraph()
-            cap.add_run("Figure %d. " % n).bold = True
-            cap.add_run(self.fig_caps.get(base, base))
-        self.placed.add(f)
+            paras = ["**%s** [TO WRITE]" % h for h in ABSTRACT_PARTS]
+        for t in paras:
+            clean = MARKER.sub("", t).strip()
+            self.abstract_words += len(re.sub(r"[*`]", "", clean).split())
+            par = self.doc.add_paragraph()
+            if "[TO WRITE]" in clean:
+                head, _, rest = clean.partition("[TO WRITE]")
+                add_runs(par, head)
+                placeholder(par)
+                add_runs(par, rest)
+            else:
+                add_runs(par, resolve_citations(self.renumber(clean), self.refs,
+                                                self.cited))
 
     def to_write(self, heading):
         self.doc.add_heading(heading, level=1)
-        r = self.doc.add_paragraph().add_run("[TO WRITE]")
-        r.bold = True
-        r.font.color.rgb = RGBColor(0xC0, 0, 0)
+        placeholder(self.doc.add_paragraph())
 
     def build(self):
-        self.doc.add_heading("[TITLE TO WRITE]", level=0)
+        self.doc.add_heading(COVER["title"], level=0)
         for heading, prose, outline in SECTIONS:
-            if prose and os.path.isfile(os.path.join(DRAFT, prose)):
+            if prose == ABSTRACT_FILE:
+                self.abstract()
+            elif has_prose(prose):
                 for kind, text in blocks(read(prose)):
                     if kind.startswith("h"):
                         self.doc.add_heading(MARKER.sub("", text).strip(),
                                              level=int(kind[1]))
-                    elif kind == "quote":
-                        self.paragraph(text, style="Quote")
                     else:
-                        self.paragraph(text)
+                        self.paragraph(text, style="Quote" if kind == "quote" else None)
             else:
                 self.to_write(outline_heading(outline, heading))
 
-        leftover = [f for f in sorted(set(self.draft_map.values())) if f not in self.placed]
-        if leftover:
-            self.doc.add_heading("Tables and figures not referenced in the text", level=1)
-            for f in leftover:
-                kind = "Table" if "/tables/" in f else "Figure"
-                self.counter[kind] += 1
-                self.number[f] = (kind, self.counter[kind])
-                self.place(f)
-
         self.doc.add_heading("References", level=1)
-        if not self.ref_order:
-            r = self.doc.add_paragraph().add_run(
-                "[TO WRITE: no reference in paper/references.csv has status VERIFIED]")
-            r.bold = True
-            r.font.color.rgb = RGBColor(0xC0, 0, 0)
-        for i, key in enumerate(self.ref_order, 1):
-            e = self.refs[key]
-            self.doc.add_paragraph("[%d] %s (%s). %s. %s.%s" % (
-                i, e["authors"], e["year"], e["title"], e["venue"],
-                (" doi:%s" % e["doi"]) if e.get("doi") else ""))
-
+        if not self.cited:
+            placeholder(self.doc.add_paragraph(),
+                        "[TO WRITE: no reference in paper/references.csv has status "
+                        "VERIFIED and is cited]")
+        years = year_suffixes(self.refs, self.cited)
+        for k in sorted(self.cited, key=lambda k: (surnames(self.refs[k])[0].lower(),
+                                                   years[k], self.refs[k]["title"])):
+            self.doc.add_paragraph(format_reference(self.refs[k], years[k]))
         for heading, prose, outline in TRAILING:
             self.to_write(outline_heading(outline, heading))
 
         cp = self.doc.core_properties
         cp.author, cp.title, cp.comments = "", "", "built by paper/build_docx.py"
         self.doc.save(OUT)
-        return {"tables": self.counter["Table"], "figures": self.counter["Figure"],
-                "references": len(self.ref_order),
-                "order": [(self.number[f], f) for f in sorted(
-                    self.number, key=lambda f: (self.number[f][0], self.number[f][1]))]}
+
+        # Figures and tables never mentioned in the text are numbered after the rest.
+        for f in sorted(set(self.draft_map.values())):
+            if f not in self.number:
+                kind = "Table" if "/tables/" in f else "Figure"
+                self.counter[kind] += 1
+                self.number[f] = (kind, self.counter[kind])
+        return self.write_submission()
+
+    # ── submission files ──────────────────────────────────────────────────────
+    def write_submission(self):
+        os.makedirs(SUB, exist_ok=True)
+        figs = sorted((n, f) for f, (k, n) in self.number.items() if k == "Figure")
+        tbls = sorted((n, f) for f, (k, n) in self.number.items() if k == "Table")
+        written = set()
+
+        legends = Document()
+        style_document(legends, line_numbers=False)
+        legends.add_heading("Figure legends", level=1)
+        from PIL import Image
+        for n, f in figs:
+            base = os.path.splitext(os.path.basename(f))[0]
+            src_png = os.path.join(REPO, os.path.splitext(f)[0] + ".png")
+            src_pdf = os.path.join(REPO, os.path.splitext(f)[0] + ".pdf")
+            width = Image.open(src_png).size[0]
+            if width < MIN_FIGURE_PX:
+                raise SystemExit("%s is %d px wide; PeerJ needs at least %d"
+                                 % (src_png, width, MIN_FIGURE_PX))
+            for src, ext in ((src_png, "png"), (src_pdf, "pdf")):
+                dst = "Figure %d.%s" % (n, ext)
+                shutil.copyfile(src, os.path.join(SUB, dst))
+                written.add(dst)
+            p = legends.add_paragraph()
+            p.add_run("Figure %d. " % n).bold = True
+            p.add_run(self.fig_caps.get(base, base))
+        legends.save(os.path.join(SUB, "figure_legends.docx"))
+        written.add("figure_legends.docx")
+
+        for n, f in tbls:
+            base = os.path.splitext(os.path.basename(f))[0]
+            rows = read_csv_rows(os.path.join(REPO, f))
+            d = Document()
+            style_document(d, line_numbers=False)
+            if len(rows[0]) > 8:
+                s = d.sections[0]
+                s.orientation = WD_ORIENT.LANDSCAPE
+                s.page_width, s.page_height = Inches(11), Inches(8.5)
+            p = d.add_paragraph()
+            p.add_run("Table %d. " % n).bold = True
+            p.add_run(self.tbl_caps.get(base, base))
+            t = d.add_table(rows=len(rows), cols=len(rows[0]))
+            t.style = "Table Grid"
+            for i, row in enumerate(rows):
+                for j, val in enumerate(row):
+                    cell = t.cell(i, j)
+                    cell.text = ""
+                    r = cell.paragraphs[0].add_run(header_with_unit(val) if i == 0 else val)
+                    r.font.size = Pt(9)
+                    r.bold = i == 0
+                    cell.paragraphs[0].paragraph_format.line_spacing = 1.0
+            d.add_paragraph(TABLE_NOTE)
+            dst = "Table %d.docx" % n
+            d.save(os.path.join(SUB, dst))
+            written.add(dst)
+
+        cover = Document()
+        style_document(cover, line_numbers=False)
+        cover.add_heading(COVER["title"], level=0)
+        p = cover.add_paragraph()
+        for i, a in enumerate(COVER["authors"]):
+            p.add_run(("" if i == 0 else ", ") + a)
+            if i == 0:
+                p.add_run("1").font.superscript = True
+        p = cover.add_paragraph()
+        p.add_run("1").font.superscript = True
+        p.add_run(" " + COVER["affiliation"])
+        cover.add_paragraph("Corresponding author: " + COVER["corresponding"])
+        cover.save(os.path.join(SUB, "cover_page.docx"))
+        written.add("cover_page.docx")
+
+        stale = sorted(set(os.listdir(SUB)) - written)
+        return {"figures": figs, "tables": tbls, "stale": stale}
 
 
 def main():
-    info = Builder().build()
-    print("wrote paper/manuscript.docx: %d tables, %d figures, %d verified references"
-          % (info["tables"], info["figures"], info["references"]))
-    for (kind, n), f in info["order"]:
-        print("  %s %d <- %s" % (kind, n, f))
-    todo = [outline_heading(o, h) for h, p, o in SECTIONS + TRAILING
-            if not (p and os.path.isfile(os.path.join(DRAFT, p)))]
+    b = Builder()
+    info = b.build()
+    print("wrote paper/manuscript.docx (no embedded figures or tables), "
+          "%d cited verified references" % len(b.cited))
+    print("abstract: %d words (limit %d)" % (b.abstract_words, ABSTRACT_MAX_WORDS))
+    for kind in ("figures", "tables"):
+        for n, f in info[kind]:
+            print("  %s %d <- %s" % (kind[:-1].capitalize(), n, f))
+    todo = [outline_heading(o, h) for h, p, o in SECTIONS + TRAILING if not has_prose(p)]
     print("  [TO WRITE]: %s" % "; ".join(todo))
+    if info["stale"]:
+        print("WARNING: paper/submission/ holds files this build did not write: %s"
+              % ", ".join(info["stale"]))
+    if b.abstract_words > ABSTRACT_MAX_WORDS:
+        print("BUILD FAILED: abstract is %d words; the limit is %d"
+              % (b.abstract_words, ABSTRACT_MAX_WORDS))
+        return 1
     return 0
 
 

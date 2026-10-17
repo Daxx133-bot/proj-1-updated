@@ -1,4 +1,4 @@
-# 3. Method
+# 3. Methods
 
 > **Drafting note (strip before submission).** Trailing `%[id:...]` comments name the
 > `paper/numbers.csv` claim_id each number comes from. Two other marker forms appear:

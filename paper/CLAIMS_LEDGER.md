@@ -1,6 +1,6 @@
 # Claims ledger
 
-Every claim that could reasonably appear in the abstract or conclusion, one sentence each,
+Every claim that could reasonably appear in the Abstract or Conclusions, one sentence each,
 with its status and the `paper/numbers.csv` ids that carry its numbers. This is an audit
 artifact, not manuscript text — nothing here is written to be quoted.
 

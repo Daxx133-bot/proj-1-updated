@@ -6,7 +6,8 @@ build_all.py -- regenerate every artifact under paper/ in dependency order, then
     make_tables.py     analysis/final/*.csv        -> tables/*.csv, tables/*.md
     make_figures.py    analysis/final/*.csv, spans -> figures/*.png, *.pdf, *_data.csv
     check_ledger.py    CLAIMS_LEDGER.md + numbers.csv -> pass/fail
-    build_docx.py      draft/*.md, tables, figures, references.csv -> manuscript.docx
+    build_docx.py      draft/*.md, tables, figures, references.csv -> manuscript.docx,
+                       submission/ (figures, legends, tables, cover page)
     check_docx_numbers.py  manuscript.docx + numbers.csv -> number_audit.txt (report only)
 
 Finally writes paper/INDEX.csv, one row per file under paper/, naming the script that
@@ -63,6 +64,8 @@ def main() -> int:
                 produced_by = "paper/make_tables.py"
             elif base.startswith("figures/"):
                 produced_by = "paper/make_figures.py"
+            elif base.startswith("submission/"):
+                produced_by = "paper/build_docx.py"
             elif base.startswith("draft/"):
                 produced_by = ("hand-written, markers validated by "
                                "paper/check_draft_ids.py")

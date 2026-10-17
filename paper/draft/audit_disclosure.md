@@ -1,4 +1,4 @@
-# 7. Audit and Deviations
+# 7. Audit and Deviations from Preregistration
 
 > **Drafting note (strip before submission).** Trailing `%[id:...]` comments name the
 > `paper/numbers.csv` claim_id each number comes from. Table 8 is

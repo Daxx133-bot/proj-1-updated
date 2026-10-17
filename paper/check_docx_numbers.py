@@ -4,7 +4,7 @@ check_docx_numbers.py -- audit every numeric token in paper/manuscript.docx. Fix
 Each token is classified, in this order, as one of:
 
   section number      in a heading, or written as §n / §n.m
-  table/figure number in "Table N", "Tables N and M", "Figure N", or a caption label
+  table/figure number in "Table N", "Tables N and M", "Figure N", "Fig. N", or a caption label
   reference number    [n] where n is a rendered reference
   deviation number    in "Deviation N" / "deviations N, M and K" / "amendment N" (a label)
   year                a four-digit integer from 1900 to 2100
@@ -17,8 +17,9 @@ Each token is classified, in this order, as one of:
   WEAK MATCH          a token of absolute value below 10 that equals some numbers.csv value,
                       but not the value of any id marked in its sentence. Small numbers match
                       many unrelated values, so such a match is not evidence of a source.
-  table cell          a cell of a rendered table whose text is identical to the same cell of
-                      the paper/tables/*.csv file named by the table's caption
+  table cell          a data cell of paper/submission/Table N.docx whose text is identical
+                      to the same cell of the paper/tables/*.csv file named by its title
+  table header        a token in a table's header row (column names with units)
   UNMATCHED           none of the above
 
 The docx carries no markers, so the ids marked in each sentence are recovered from the
@@ -26,7 +27,8 @@ prose drafts: each draft paragraph is normalised the way paper/build_docx.py ren
 split into sentences with the same rule used here, and keyed by its text. A docx sentence
 with no draft counterpart (a caption, a placeholder) has no marked ids.
 
-UNMATCHED and WEAK MATCH tokens are written to paper/number_audit.txt with their sentence
+Audited files: paper/manuscript.docx, paper/submission/figure_legends.docx and every
+paper/submission/Table N.docx. UNMATCHED and WEAK MATCH tokens are written to paper/number_audit.txt with their sentence
 (prose) or table row (tables) and the section they sit in.
 
 Run: python paper/check_docx_numbers.py
@@ -50,7 +52,7 @@ DOCX = os.path.join(HERE, "manuscript.docx")
 OUT = os.path.join(HERE, "number_audit.txt")
 
 NUMBER = re.compile(r"(?<![\w.])[-+]?\d[\d,]*(?:\.\d+)?(?![\w])")
-MENTION = re.compile(r"\b(?:Tables?|Figures?)\s+\d+(?:\s*(?:,|and)\s*\d+)*")
+MENTION = re.compile(r"\b(?:Tables?|Figures?|Figs?\.)\s+\d+(?:\s*(?:,|and)\s*\d+)*")
 CAPTION = re.compile(r"^(?:Table|Figure)\s+\d+\.")
 DEVIATION = re.compile(r"\b(?:[Dd]eviations?|[Aa]mendments?)\s+\d+(?:\s*(?:,|and)\s*\d+)*")
 SECTION = re.compile(r"§\s*\d+(?:\.\d+)*")
@@ -195,16 +197,24 @@ def table_sources():
             for r in rows[1:]}
 
 
-def main():
-    d = docx.Document(DOCX)
-    nums, strings, by_id = load_numbers()
-    sent_ids = draft_sentence_ids()
-    shows = table_sources()
-    nref = 0
-    counts = collections.Counter()
-    flagged = {"UNMATCHED": [], "WEAK MATCH": []}
-    section = ""
+def audited_files():
+    sub = os.path.join(HERE, "submission")
+    files = [("manuscript", DOCX)]
+    legends = os.path.join(sub, "figure_legends.docx")
+    if os.path.isfile(legends):
+        files.append(("figure_legends.docx", legends))
+    tables = ([f for f in os.listdir(sub) if re.fullmatch(r"Table \d+\.docx", f)]
+              if os.path.isdir(sub) else [])
+    for f in sorted(tables, key=lambda f: int(re.findall(r"\d+", f)[0])):
+        files.append((f, os.path.join(sub, f)))
+    return files
+
+
+def audit_file(label, path, nums, strings, by_id, sent_ids, shows, counts, flagged):
+    d = docx.Document(path)
+    section = "" if label == "manuscript" else label
     last_caption = ""
+    nref = 0
     pmap = {p._p: p for p in d.paragraphs}
     tmap = {t._tbl: t for t in d.tables}
 
@@ -215,12 +225,10 @@ def main():
             if not txt:
                 continue
             heading = p.style.name.startswith("Heading") or p.style.name == "Title"
-            if heading:
+            if heading and label == "manuscript":
                 section = txt
             if CAPTION.match(txt):
                 last_caption = txt
-            if re.match(r"^\[\d+\] ", txt):
-                nref += 1
             for sent in ([txt] if heading else SENT.split(txt)):
                 marked = [by_id[i] for i in sent_ids.get(key(sent), ()) if i in by_id]
                 for tok, cat in classify_text(sent, heading, nums, strings, nref, marked):
@@ -242,20 +250,23 @@ def main():
                     same = (srows is not None and i < len(srows) and j < len(srows[i])
                             and srows[i][j] == ct)
                     for tok in toks:
-                        cat = "table cell" if same else "UNMATCHED"
+                        cat = ("table header" if i == 0 else
+                               "table cell" if same else "UNMATCHED")
                         counts[cat] += 1
                         if cat == "UNMATCHED":
-                            flagged[cat].append((section + " / " + last_caption.split(".")[0],
-                                                 tok, " | ".join(cells)))
+                            flagged[cat].append((section, tok, " | ".join(cells)))
 
-    L = ["number_audit.txt -- written by paper/check_docx_numbers.py from paper/manuscript.docx",
+
+def write_report(counts, flagged, files):
+    L = ["number_audit.txt -- written by paper/check_docx_numbers.py",
+         "Audited: " + ", ".join(f for f, _ in files),
          "Nothing was changed. A match means the number has a traced source of the kind",
          "named, not that it is attached to the right claim. Tokens below 10 count as sourced",
          "only if an id marked in the same draft sentence carries that value.",
          "", "Tokens by category:"]
     for cat in ("numbers.csv value", "numbers.csv value (string)", "marked in sentence",
-                "table cell", "section number", "table/figure number", "deviation number",
-                "year", "reference number", "WEAK MATCH", "UNMATCHED"):
+                "table cell", "table header", "section number", "table/figure number",
+                "deviation number", "year", "reference number", "WEAK MATCH", "UNMATCHED"):
         L.append("  %-28s %6d" % (cat, counts[cat]))
     for cat in ("UNMATCHED", "WEAK MATCH"):
         L += ["", "%s tokens (%d), each with its sentence or table row:"
@@ -265,6 +276,18 @@ def main():
             L.append("     %s" % ctx)
     with open(OUT, "w", encoding="utf-8") as fh:
         fh.write("\n".join(L) + "\n")
+
+
+def main():
+    nums, strings, by_id = load_numbers()
+    sent_ids = draft_sentence_ids()
+    shows = table_sources()
+    counts = collections.Counter()
+    flagged = {"UNMATCHED": [], "WEAK MATCH": []}
+    files = audited_files()
+    for label, path in files:
+        audit_file(label, path, nums, strings, by_id, sent_ids, shows, counts, flagged)
+    write_report(counts, flagged, files)
     print("wrote paper/number_audit.txt: %d tokens, %d unmatched, %d weak matches"
           % (sum(counts.values()), len(flagged["UNMATCHED"]), len(flagged["WEAK MATCH"])))
     return 0

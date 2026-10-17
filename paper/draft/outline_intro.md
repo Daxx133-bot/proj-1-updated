@@ -1,4 +1,4 @@
-# 1. Introduction — paragraph outline
+# 1. Background — paragraph outline
 
 Not prose. One line per paragraph: its job, and the evidence it draws on. Ledger references
 are section numbers in `paper/CLAIMS_LEDGER.md`; ids are `paper/numbers.csv` claim_ids.

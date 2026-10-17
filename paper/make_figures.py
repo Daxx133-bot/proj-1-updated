@@ -43,8 +43,9 @@ INDEX = []
 
 def save(fig, name, shows, data_file, source_file, source_script):
     os.makedirs(OUT, exist_ok=True)
+    # PNG at 400 dpi so every figure is at least 3000 px wide (PeerJ); the PDF is vector.
     for ext in ("png", "pdf"):
-        fig.savefig(os.path.join(OUT, "%s.%s" % (name, ext)), dpi=200,
+        fig.savefig(os.path.join(OUT, "%s.%s" % (name, ext)), dpi=400,
                     bbox_inches="tight")
     plt.close(fig)
     INDEX.append({"figure": name, "shows": shows, "data_file": data_file,
@@ -163,7 +164,12 @@ def fig_leave_one_out(loo):
 
     fig, ax = plt.subplots(figsize=(8.6, 5.0))
     colors = ["#c0392b" if s == "user-service" else "#7f8c8d" for s in d.service_excluded]
-    ax.barh(range(len(d)), d.rho, color=colors, height=0.66)
+    # The highlighted bar is also hatched, so it does not depend on colour alone.
+    hatches = ["///" if s == "user-service" else "" for s in d.service_excluded]
+    bars = ax.barh(range(len(d)), d.rho, color=colors, height=0.66, edgecolor="black",
+                   linewidth=0.6)
+    for b, h in zip(bars, hatches):
+        b.set_hatch(h)
     ax.axvline(full, color="#2c6fbb", ls="--", lw=1.6,
                label="full 11-service set (rho = %.3f)" % full)
     ax.set_yticks(range(len(d)))
@@ -265,8 +271,11 @@ def fig_q3():
              "OLD scope: end-to-end root span\n(every service charged the trace tail)"),
             ("new_baseline_p95_ms", "new_fault_p95_ms", "new_flagged",
              "CORRECTED scope: the service's own server spans")]):
-        ax.bar(x - 0.2, rep1[bcol], width=0.4, label="baseline p95", color="#8fb8de")
-        ax.bar(x + 0.2, rep1[fcol], width=0.4, label="fault p95", color="#c0392b")
+        ax.bar(x - 0.2, rep1[bcol], width=0.4, label="baseline p95", color="#8fb8de",
+               edgecolor="black", linewidth=0.6)
+        # Fault bars are hatched so the two series do not depend on colour alone.
+        ax.bar(x + 0.2, rep1[fcol], width=0.4, label="fault p95", color="#c0392b",
+               hatch="///", edgecolor="black", linewidth=0.6)
         ax.set_yscale("log")
         ax.set_xticks(x)
         ax.set_xticklabels([("%s *" % s) if f else s
