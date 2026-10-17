@@ -1,0 +1,7 @@
+label,architecture,x,x_description,y,n_services,x_distinct_values,spearman_rho_descriptive
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,weight_share,request-mix weight share,gateway_error_median,11,4,0.7880384293992557
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,hybrid_criticality,hybrid_criticality (all three terms),gateway_error_median,11,8,0.7857207100095148
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,hybrid_term_in_degree,hybrid term: weighted in-degree,gateway_error_median,11,3,0.7151332219343156
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,hybrid_term_fanout_out_degree,hybrid term: weighted fan-out-scaled out-degree,gateway_error_median,11,4,0.30970205508902704
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,hybrid_term_betweenness,hybrid term: weighted betweenness,gateway_error_median,11,6,0.22853352059553372
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,weight_share,request-mix weight share,gateway_error_median,7,5,0.9636241116594317

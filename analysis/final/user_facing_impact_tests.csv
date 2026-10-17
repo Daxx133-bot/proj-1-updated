@@ -1,0 +1,9 @@
+label,architecture,predictor,n_services,spearman_rho,p_permutation,p_method,p_bh_adjusted,significant_after_fdr,bh_family_size
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,ancestor_count,7,0.15811388300841897,0.8571428571428571,exact enumeration of 5040 permutations,0.9588377723970944,False,66
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,descendant_count,7,-0.20412414523193148,0.8571428571428571,exact enumeration of 5040 permutations,0.9588377723970944,False,66
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,hybrid_criticality,7,-0.20412414523193148,0.8571428571428571,exact enumeration of 5040 permutations,0.9588377723970944,False,66
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,out_degree,7,-0.20412414523193148,0.8571428571428571,exact enumeration of 5040 permutations,0.9588377723970944,False,66
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,ancestor_count,11,0.026614807318895647,0.9411058894110589,10000 random permutations,1.0,False,66
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,descendant_count,11,0.3487121432137075,0.2977702229777022,10000 random permutations,0.7278827672788276,False,66
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,hybrid_criticality,11,0.7857207100095148,0.0065993400659934,10000 random permutations,0.0912908709129087,False,66
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,out_degree,11,0.30970205508902704,0.34556544345565443,10000 random permutations,0.7864592851059722,False,66

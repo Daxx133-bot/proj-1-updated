@@ -457,6 +457,61 @@ def supplementary_numbers(conf, h1b, devs, runs):
         ", ".join(only) if only else "differs between runs", F_Q3, "paper/make_figures.py")
 
 
+def user_facing_numbers():
+    """Ids for analysis/final/user_facing_impact.py (post hoc, descriptive; 2026-10-17)."""
+    S = "analysis/final/user_facing_impact.py"
+    F_S, F_T = "analysis/final/user_facing_impact.csv", "analysis/final/user_facing_impact_tests.csv"
+    F_C = "analysis/final/user_facing_impact_correlations.csv"
+    lab = {"socialnetwork": "sn", "hotelreservation": "hr"}
+    short = {"hybrid_criticality": "hybrid", "out_degree": "outdeg",
+             "ancestor_count": "ancestor", "descendant_count": "descendant"}
+
+    sv = pd.read_csv(os.path.join(REPO, F_S))
+    add("uf_kill_runs", "Kill runs in the user-facing impact analysis",
+        int(sv.kill_runs.sum()), F_S, S, "runs")
+    rl = pd.read_csv(os.path.join(FINAL, "run_level_data.csv"))
+    rk = rl[rl.fault_type == "kill"]
+    add("uf_kill_runs_baseline_error_zero", "Kill runs whose baseline error rate is 0.0 "
+        "(baseline uses the gateway's own spans; fault window is end-to-end)",
+        int((rk.baseline_error_rate == 0.0).sum()), "analysis/final/run_level_data.csv",
+        RCA, "runs")
+    t = pd.read_csv(os.path.join(REPO, F_T))
+    add("uf_test_bh_family_size", "Testable exploratory tests the delta_error_rate BH "
+        "adjustment runs over", int(t.bh_family_size.iloc[0]), F_T, S, "tests")
+    for _, r in t.iterrows():
+        k = f"uf_test_{lab[r.architecture]}_{short[r.predictor]}"
+        what = f"delta_error_rate (kill) vs {r.predictor}, {r.architecture} (exploratory)"
+        add(f"{k}_rho", f"{what}: rho", r.spearman_rho, F_T, S, "", "%.3f")
+        add(f"{k}_p", f"{what}: raw p", r.p_permutation, F_T, S, "", "%.4f")
+        add(f"{k}_bh_p", f"{what}: BH-adjusted p", r.p_bh_adjusted, F_T, S, "", "%.4f")
+    for _, r in sv.iterrows():
+        k = f"uf_{lab[r.architecture]}_{r.service.replace('-', '_')}"
+        what = f"{r.service} ({r.architecture}), kill faults (post-hoc descriptive)"
+        add(f"{k}_err_median", f"Median gateway error rate, {what}", r.gateway_error_median,
+            F_S, S, "", "%.4f")
+        add(f"{k}_err_min", f"Minimum gateway error rate, {what}", r.gateway_error_min,
+            F_S, S, "", "%.4f")
+        add(f"{k}_err_max", f"Maximum gateway error rate, {what}", r.gateway_error_max,
+            F_S, S, "", "%.4f")
+        add(f"{k}_weight_share", f"Request-mix weight share, {r.service} ({r.architecture})",
+            r.weight_share, F_S, S, "", "%.3f")
+        if r.architecture == "socialnetwork":
+            for col, tag in (("hybrid_term_in_degree", "term_in"),
+                             ("hybrid_term_fanout_out_degree", "term_fanout"),
+                             ("hybrid_term_betweenness", "term_btw")):
+                add(f"{k}_{tag}", f"hybrid_criticality {col.replace('hybrid_term_', '')} "
+                    f"term, {r.service}", float(r[col]), F_S, S, "", "%.6f")
+    c = pd.read_csv(os.path.join(REPO, F_C))
+    names = {"weight_share": "weight_share", "hybrid_criticality": "hybrid",
+             "hybrid_term_in_degree": "term_in",
+             "hybrid_term_fanout_out_degree": "term_fanout",
+             "hybrid_term_betweenness": "term_btw"}
+    for _, r in c.iterrows():
+        add(f"uf_{lab[r.architecture]}_rho_err_{names[r.x]}", f"Descriptive rank "
+            f"correlation, median gateway error vs {r.x_description}, {r.architecture} "
+            f"(no p-value)", r.spearman_rho_descriptive, F_C, S, "", "%.3f")
+
+
 def main():
     conf = pd.read_csv(os.path.join(FINAL, "confirmatory_family_kill.csv"))
     repl = pd.read_csv(os.path.join(FINAL, "replication_family_latency.csv"))
@@ -872,6 +927,7 @@ def main():
 
     protocol_and_topology_numbers()
     supplementary_numbers(conf, h1b, devs, runs)
+    user_facing_numbers()
 
     df = pd.DataFrame(ROWS)
     dupes = df[df.claim_id.duplicated(keep=False)]

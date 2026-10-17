@@ -1,0 +1,27 @@
+number_audit.txt -- written by paper/check_docx_numbers.py from paper/manuscript.docx
+Nothing was changed. A match means the number has a traced source of the kind
+named, not that it is attached to the right claim; small integers match many values.
+
+Tokens by category:
+  numbers.csv value               265
+  numbers.csv value (string)        3
+  table cell                      706
+  section number                   59
+  table/figure number              27
+  deviation number                 18
+  year                              0
+  reference number                  0
+  UNMATCHED                         5
+
+UNMATCHED tokens (5), each with its sentence or table row:
+
+  1. [3.6 Blast radius classification] token 0.06
+     Several services in these applications have baseline p95 values in the hundredths of a millisecond, and at that scale a purely multiplicative rule responds to scheduler noise: a service moving from 0.02 ms to 0.06 ms between two consecutive fault-free windows, a threefold rise, satisfies a 2× test while representing no physically meaningful change.
+  2. [4.8 Recovery time] token 95
+     At run level, with standard errors clustered by service, the hazard ratio for ancestor_count on Social Network is 1.173 (95% CI 0.876 to 1.570, p = 0.2836) under kill faults and 0.998 (0.816 to 1.221, p = 0.9859) under latency faults.
+  3. [6.2 Deviations from the locked specification] token 0.06
+     The evidence was direct: a service moved from 0.02 ms to 0.06 ms between two consecutive fault-free baseline windows, a factor of three, and the rehearsal duly flagged it as degraded.
+  4. [6.2 Deviations from the locked specification] token 79
+     The first, found 79 minutes in, was in how the runner resolved a service name to a container.
+  5. [6.2 Deviations from the locked specification] token 2.5
+     The reference implementation of the rank statistic costs roughly 1.4 ms per call, and the analysis requires on the order of 2.5 million evaluations, so we reimplemented the statistic, the permutation test and the bootstrap in vectorised form, reducing a run from about an hour to 25 seconds.

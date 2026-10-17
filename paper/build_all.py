@@ -6,9 +6,12 @@ build_all.py -- regenerate every artifact under paper/ in dependency order, then
     make_tables.py     analysis/final/*.csv        -> tables/*.csv, tables/*.md
     make_figures.py    analysis/final/*.csv, spans -> figures/*.png, *.pdf, *_data.csv
     check_ledger.py    CLAIMS_LEDGER.md + numbers.csv -> pass/fail
+    build_docx.py      draft/*.md, tables, figures, references.csv -> manuscript.docx
+    check_docx_numbers.py  manuscript.docx + numbers.csv -> number_audit.txt (report only)
 
 Finally writes paper/INDEX.csv, one row per file under paper/, naming the script that
-produced it. A failing ledger check fails the build.
+produced it. A failing ledger check fails the build. The number audit never fails the
+build; its findings are in number_audit.txt.
 
 Run: python paper/build_all.py
 """
@@ -24,7 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 
 STEPS = ["build_numbers.py", "emit_macros.py", "make_tables.py", "make_figures.py",
-         "check_ledger.py"]
+         "check_ledger.py", "build_docx.py", "check_docx_numbers.py"]
 
 PRODUCER = {
     "numbers.csv": "paper/build_numbers.py",
@@ -32,6 +35,9 @@ PRODUCER = {
     "numbers.json": "paper/emit_macros.py",
     "INDEX.csv": "paper/build_all.py",
     "CLAIMS_LEDGER.md": "hand-written, validated by paper/check_ledger.py",
+    "manuscript.docx": "paper/build_docx.py",
+    "number_audit.txt": "paper/check_docx_numbers.py",
+    "references.csv": "hand-maintained; only rows with status VERIFIED are rendered",
 }
 
 

@@ -1,6 +1,6 @@
 %% paper/numbers.tex -- AUTO-GENERATED from paper/numbers.csv. DO NOT EDIT.
 %% Regenerate: python paper/build_numbers.py && python paper/emit_macros.py
-% Generated at repository commit 176e6b8. 340 macros.
+% Generated at repository commit 556821a. 478 macros.
 
 % Total fault-injection runs in the final campaign (analysis/final/run_level_data.csv)
 \newcommand{\NumCampaignRunsTotal}{180}
@@ -682,3 +682,279 @@
 \newcommand{\NumQThreeIdenticalBaselineServices}{3}
 % Which services share it (paper/figures/fig_q3_artifact_data.csv)
 \newcommand{\NumQThreeIdenticalBaselineNames}{geo, rate, search}
+% Kill runs in the user-facing impact analysis (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfKillRuns}{90}
+% Kill runs whose baseline error rate is 0.0 (baseline uses the gateway's own spans; fault window is end-to-end) (analysis/final/run_level_data.csv)
+\newcommand{\NumUfKillRunsBaselineErrorZero}{90}
+% Testable exploratory tests the delta_error_rate BH adjustment runs over (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestBhFamilySize}{66}
+% delta_error_rate (kill) vs ancestor_count, hotelreservation (exploratory): rho (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrAncestorRho}{0.158}
+% delta_error_rate (kill) vs ancestor_count, hotelreservation (exploratory): raw p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrAncestorP}{0.8571}
+% delta_error_rate (kill) vs ancestor_count, hotelreservation (exploratory): BH-adjusted p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrAncestorBhP}{0.9588}
+% delta_error_rate (kill) vs descendant_count, hotelreservation (exploratory): rho (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrDescendantRho}{-0.204}
+% delta_error_rate (kill) vs descendant_count, hotelreservation (exploratory): raw p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrDescendantP}{0.8571}
+% delta_error_rate (kill) vs descendant_count, hotelreservation (exploratory): BH-adjusted p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrDescendantBhP}{0.9588}
+% delta_error_rate (kill) vs hybrid_criticality, hotelreservation (exploratory): rho (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrHybridRho}{-0.204}
+% delta_error_rate (kill) vs hybrid_criticality, hotelreservation (exploratory): raw p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrHybridP}{0.8571}
+% delta_error_rate (kill) vs hybrid_criticality, hotelreservation (exploratory): BH-adjusted p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrHybridBhP}{0.9588}
+% delta_error_rate (kill) vs out_degree, hotelreservation (exploratory): rho (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrOutdegRho}{-0.204}
+% delta_error_rate (kill) vs out_degree, hotelreservation (exploratory): raw p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrOutdegP}{0.8571}
+% delta_error_rate (kill) vs out_degree, hotelreservation (exploratory): BH-adjusted p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestHrOutdegBhP}{0.9588}
+% delta_error_rate (kill) vs ancestor_count, socialnetwork (exploratory): rho (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnAncestorRho}{0.027}
+% delta_error_rate (kill) vs ancestor_count, socialnetwork (exploratory): raw p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnAncestorP}{0.9411}
+% delta_error_rate (kill) vs ancestor_count, socialnetwork (exploratory): BH-adjusted p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnAncestorBhP}{1.0000}
+% delta_error_rate (kill) vs descendant_count, socialnetwork (exploratory): rho (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnDescendantRho}{0.349}
+% delta_error_rate (kill) vs descendant_count, socialnetwork (exploratory): raw p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnDescendantP}{0.2978}
+% delta_error_rate (kill) vs descendant_count, socialnetwork (exploratory): BH-adjusted p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnDescendantBhP}{0.7279}
+% delta_error_rate (kill) vs hybrid_criticality, socialnetwork (exploratory): rho (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnHybridRho}{0.786}
+% delta_error_rate (kill) vs hybrid_criticality, socialnetwork (exploratory): raw p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnHybridP}{0.0066}
+% delta_error_rate (kill) vs hybrid_criticality, socialnetwork (exploratory): BH-adjusted p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnHybridBhP}{0.0913}
+% delta_error_rate (kill) vs out_degree, socialnetwork (exploratory): rho (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnOutdegRho}{0.310}
+% delta_error_rate (kill) vs out_degree, socialnetwork (exploratory): raw p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnOutdegP}{0.3456}
+% delta_error_rate (kill) vs out_degree, socialnetwork (exploratory): BH-adjusted p (analysis/final/user_facing_impact_tests.csv)
+\newcommand{\NumUfTestSnOutdegBhP}{0.7865}
+% Median gateway error rate, compose-post-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnComposePostServiceErrMedian}{0.2571}
+% Minimum gateway error rate, compose-post-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnComposePostServiceErrMin}{0.2360}
+% Maximum gateway error rate, compose-post-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnComposePostServiceErrMax}{0.2706}
+% Request-mix weight share, compose-post-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnComposePostServiceWeightShare}{0.300}
+% hybrid_criticality in_degree term, compose-post-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnComposePostServiceTermIn}{0.036364}
+% hybrid_criticality fanout_out_degree term, compose-post-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnComposePostServiceTermFanout}{0.254545}
+% hybrid_criticality betweenness term, compose-post-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnComposePostServiceTermBtw}{0.010606}
+% Median gateway error rate, home-timeline-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnHomeTimelineServiceErrMedian}{0.5741}
+% Minimum gateway error rate, home-timeline-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnHomeTimelineServiceErrMin}{0.5098}
+% Maximum gateway error rate, home-timeline-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnHomeTimelineServiceErrMax}{0.6170}
+% Request-mix weight share, home-timeline-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnHomeTimelineServiceWeightShare}{0.800}
+% hybrid_criticality in_degree term, home-timeline-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnHomeTimelineServiceTermIn}{0.072727}
+% hybrid_criticality fanout_out_degree term, home-timeline-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnHomeTimelineServiceTermFanout}{0.020779}
+% hybrid_criticality betweenness term, home-timeline-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnHomeTimelineServiceTermBtw}{0.002424}
+% Median gateway error rate, media-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnMediaServiceErrMedian}{0.2373}
+% Minimum gateway error rate, media-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnMediaServiceErrMin}{0.1429}
+% Maximum gateway error rate, media-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnMediaServiceErrMax}{0.3091}
+% Request-mix weight share, media-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnMediaServiceWeightShare}{0.300}
+% hybrid_criticality in_degree term, media-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnMediaServiceTermIn}{0.036364}
+% hybrid_criticality fanout_out_degree term, media-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnMediaServiceTermFanout}{0.000000}
+% hybrid_criticality betweenness term, media-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnMediaServiceTermBtw}{0.000000}
+% Median gateway error rate, post-storage-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnPostStorageServiceErrMedian}{0.7143}
+% Minimum gateway error rate, post-storage-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnPostStorageServiceErrMin}{0.5682}
+% Maximum gateway error rate, post-storage-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnPostStorageServiceErrMax}{0.7500}
+% Request-mix weight share, post-storage-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnPostStorageServiceWeightShare}{1.000}
+% hybrid_criticality in_degree term, post-storage-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnPostStorageServiceTermIn}{0.109091}
+% hybrid_criticality fanout_out_degree term, post-storage-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnPostStorageServiceTermFanout}{0.000000}
+% hybrid_criticality betweenness term, post-storage-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnPostStorageServiceTermBtw}{0.000000}
+% Median gateway error rate, social-graph-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnSocialGraphServiceErrMedian}{0.2472}
+% Minimum gateway error rate, social-graph-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnSocialGraphServiceErrMin}{0.2125}
+% Maximum gateway error rate, social-graph-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnSocialGraphServiceErrMax}{0.2745}
+% Request-mix weight share, social-graph-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnSocialGraphServiceWeightShare}{0.300}
+% hybrid_criticality in_degree term, social-graph-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnSocialGraphServiceTermIn}{0.072727}
+% hybrid_criticality fanout_out_degree term, social-graph-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnSocialGraphServiceTermFanout}{0.005195}
+% hybrid_criticality betweenness term, social-graph-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnSocialGraphServiceTermBtw}{0.002727}
+% Median gateway error rate, text-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnTextServiceErrMedian}{0.1695}
+% Minimum gateway error rate, text-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnTextServiceErrMin}{0.1250}
+% Maximum gateway error rate, text-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnTextServiceErrMax}{0.2909}
+% Request-mix weight share, text-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnTextServiceWeightShare}{0.300}
+% hybrid_criticality in_degree term, text-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnTextServiceTermIn}{0.036364}
+% hybrid_criticality fanout_out_degree term, text-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnTextServiceTermFanout}{0.020779}
+% hybrid_criticality betweenness term, text-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnTextServiceTermBtw}{0.007273}
+% Median gateway error rate, unique-id-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUniqueIdServiceErrMedian}{0.1692}
+% Minimum gateway error rate, unique-id-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUniqueIdServiceErrMin}{0.1266}
+% Maximum gateway error rate, unique-id-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUniqueIdServiceErrMax}{0.2333}
+% Request-mix weight share, unique-id-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUniqueIdServiceWeightShare}{0.300}
+% hybrid_criticality in_degree term, unique-id-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUniqueIdServiceTermIn}{0.036364}
+% hybrid_criticality fanout_out_degree term, unique-id-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUniqueIdServiceTermFanout}{0.000000}
+% hybrid_criticality betweenness term, unique-id-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUniqueIdServiceTermBtw}{0.000000}
+% Median gateway error rate, url-shorten-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUrlShortenServiceErrMedian}{0.2027}
+% Minimum gateway error rate, url-shorten-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUrlShortenServiceErrMin}{0.1912}
+% Maximum gateway error rate, url-shorten-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUrlShortenServiceErrMax}{0.2500}
+% Request-mix weight share, url-shorten-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUrlShortenServiceWeightShare}{0.300}
+% hybrid_criticality in_degree term, url-shorten-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUrlShortenServiceTermIn}{0.036364}
+% hybrid_criticality fanout_out_degree term, url-shorten-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUrlShortenServiceTermFanout}{0.000000}
+% hybrid_criticality betweenness term, url-shorten-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUrlShortenServiceTermBtw}{0.000000}
+% Median gateway error rate, user-mention-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserMentionServiceErrMedian}{0.2182}
+% Minimum gateway error rate, user-mention-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserMentionServiceErrMin}{0.2154}
+% Maximum gateway error rate, user-mention-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserMentionServiceErrMax}{0.2615}
+% Request-mix weight share, user-mention-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserMentionServiceWeightShare}{0.300}
+% hybrid_criticality in_degree term, user-mention-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserMentionServiceTermIn}{0.036364}
+% hybrid_criticality fanout_out_degree term, user-mention-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserMentionServiceTermFanout}{0.000000}
+% hybrid_criticality betweenness term, user-mention-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserMentionServiceTermBtw}{0.000000}
+% Median gateway error rate, user-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserServiceErrMedian}{0.2182}
+% Minimum gateway error rate, user-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserServiceErrMin}{0.1000}
+% Maximum gateway error rate, user-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserServiceErrMax}{0.3167}
+% Request-mix weight share, user-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserServiceWeightShare}{0.300}
+% hybrid_criticality in_degree term, user-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserServiceTermIn}{0.072727}
+% hybrid_criticality fanout_out_degree term, user-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserServiceTermFanout}{0.000000}
+% hybrid_criticality betweenness term, user-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserServiceTermBtw}{0.000000}
+% Median gateway error rate, user-timeline-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserTimelineServiceErrMedian}{0.4186}
+% Minimum gateway error rate, user-timeline-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserTimelineServiceErrMin}{0.4058}
+% Maximum gateway error rate, user-timeline-service (socialnetwork), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserTimelineServiceErrMax}{0.4815}
+% Request-mix weight share, user-timeline-service (socialnetwork) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserTimelineServiceWeightShare}{0.500}
+% hybrid_criticality in_degree term, user-timeline-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserTimelineServiceTermIn}{0.072727}
+% hybrid_criticality fanout_out_degree term, user-timeline-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserTimelineServiceTermFanout}{0.005195}
+% hybrid_criticality betweenness term, user-timeline-service (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfSnUserTimelineServiceTermBtw}{0.000606}
+% Median gateway error rate, geo (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrGeoErrMedian}{0.5520}
+% Minimum gateway error rate, geo (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrGeoErrMin}{0.5200}
+% Maximum gateway error rate, geo (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrGeoErrMax}{0.5600}
+% Request-mix weight share, geo (hotelreservation) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrGeoWeightShare}{0.545}
+% Median gateway error rate, profile (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrProfileErrMedian}{0.6320}
+% Minimum gateway error rate, profile (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrProfileErrMin}{0.6160}
+% Maximum gateway error rate, profile (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrProfileErrMax}{0.6500}
+% Request-mix weight share, profile (hotelreservation) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrProfileWeightShare}{0.636}
+% Median gateway error rate, rate (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrRateErrMedian}{0.5600}
+% Minimum gateway error rate, rate (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrRateErrMin}{0.5300}
+% Maximum gateway error rate, rate (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrRateErrMax}{0.5920}
+% Request-mix weight share, rate (hotelreservation) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrRateWeightShare}{0.545}
+% Median gateway error rate, recommendation (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrRecommendationErrMedian}{0.0860}
+% Minimum gateway error rate, recommendation (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrRecommendationErrMin}{0.0740}
+% Maximum gateway error rate, recommendation (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrRecommendationErrMax}{0.0920}
+% Request-mix weight share, recommendation (hotelreservation) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrRecommendationWeightShare}{0.091}
+% Median gateway error rate, reservation (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrReservationErrMedian}{0.7340}
+% Minimum gateway error rate, reservation (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrReservationErrMin}{0.6920}
+% Maximum gateway error rate, reservation (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrReservationErrMax}{0.7580}
+% Request-mix weight share, reservation (hotelreservation) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrReservationWeightShare}{0.727}
+% Median gateway error rate, search (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrSearchErrMedian}{0.5300}
+% Minimum gateway error rate, search (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrSearchErrMin}{0.5260}
+% Maximum gateway error rate, search (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrSearchErrMax}{0.5600}
+% Request-mix weight share, search (hotelreservation) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrSearchWeightShare}{0.545}
+% Median gateway error rate, user (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrUserErrMedian}{0.3600}
+% Minimum gateway error rate, user (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrUserErrMin}{0.3540}
+% Maximum gateway error rate, user (hotelreservation), kill faults (post-hoc descriptive) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrUserErrMax}{0.4200}
+% Request-mix weight share, user (hotelreservation) (analysis/final/user_facing_impact.csv)
+\newcommand{\NumUfHrUserWeightShare}{0.364}
+% Descriptive rank correlation, median gateway error vs request-mix weight share, socialnetwork (no p-value) (analysis/final/user_facing_impact_correlations.csv)
+\newcommand{\NumUfSnRhoErrWeightShare}{0.788}
+% Descriptive rank correlation, median gateway error vs hybrid_criticality (all three terms), socialnetwork (no p-value) (analysis/final/user_facing_impact_correlations.csv)
+\newcommand{\NumUfSnRhoErrHybrid}{0.786}
+% Descriptive rank correlation, median gateway error vs hybrid term: weighted in-degree, socialnetwork (no p-value) (analysis/final/user_facing_impact_correlations.csv)
+\newcommand{\NumUfSnRhoErrTermIn}{0.715}
+% Descriptive rank correlation, median gateway error vs hybrid term: weighted fan-out-scaled out-degree, socialnetwork (no p-value) (analysis/final/user_facing_impact_correlations.csv)
+\newcommand{\NumUfSnRhoErrTermFanout}{0.310}
+% Descriptive rank correlation, median gateway error vs hybrid term: weighted betweenness, socialnetwork (no p-value) (analysis/final/user_facing_impact_correlations.csv)
+\newcommand{\NumUfSnRhoErrTermBtw}{0.229}
+% Descriptive rank correlation, median gateway error vs request-mix weight share, hotelreservation (no p-value) (analysis/final/user_facing_impact_correlations.csv)
+\newcommand{\NumUfHrRhoErrWeightShare}{0.964}

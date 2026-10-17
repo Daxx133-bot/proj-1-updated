@@ -1,0 +1,26 @@
+label,architecture,root_operation,locust_task,task_weight,total_weight,service,traces_of_type,traversal_fraction
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/home-timeline/read,read_home_timeline,5,10,home-timeline-service,7697,0.999740158503313
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/home-timeline/read,read_home_timeline,5,10,post-storage-service,7697,0.9920748343510458
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,compose-post-service,4586,0.9986916703009159
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,home-timeline-service,4586,0.9989097252507632
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,media-service,4586,0.9967291757522896
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,post-storage-service,4586,0.9930222416048844
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,social-graph-service,4586,0.9917139119058003
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,text-service,4586,0.9943305713039686
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,unique-id-service,4586,0.9989097252507632
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,url-shorten-service,4586,0.9956389010030527
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,user-mention-service,4586,0.9971652856519843
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,user-service,4586,0.9962930658525948
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/post/compose,compose_post,3,10,user-timeline-service,4586,0.9991277802006105
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/user-timeline/read,read_user_timeline,2,10,post-storage-service,3103,0.9951659684176604
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,socialnetwork,/wrk2-api/user-timeline/read,read_user_timeline,2,10,user-timeline-service,3103,0.9993554624556881
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP GET /hotels,hotel_search,6,11,geo,17501,1.0
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP GET /hotels,hotel_search,6,11,profile,17501,1.0
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP GET /hotels,hotel_search,6,11,rate,17501,1.0
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP GET /hotels,hotel_search,6,11,reservation,17501,1.0
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP GET /hotels,hotel_search,6,11,search,17501,1.0
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP GET /recommendations,get_recommendations,1,11,profile,4514,1.0
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP GET /recommendations,get_recommendations,1,11,recommendation,4514,1.0
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP GET /user,get_user,2,11,user,8660,1.0
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP POST /reservation,make_reservation,2,11,reservation,8763,1.0
+POST-HOC DESCRIPTIVE -- not preregistered; no test added to any family,hotelreservation,HTTP POST /reservation,make_reservation,2,11,user,8763,1.0
