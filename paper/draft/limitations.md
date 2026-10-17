@@ -1,9 +1,9 @@
-# 5. Limitations
+# 6. Threats to Validity
 
 > **Drafting note (strip before submission).** Trailing `%[id:...]` comments name the
 > `paper/numbers.csv` claim_id each number comes from.
 
-## 5.1 Sample size and the ceiling on any attainable correlation
+## 6.1 Sample size and the ceiling on any attainable correlation
 
 The unit of analysis is the service, which puts the sample size at 11 %[id:power_sn_n] for
 Social Network and 7 %[id:power_hr_n] for Hotel Reservation. These are the sizes the
@@ -21,7 +21,7 @@ take the confirmatory null in that light: the design had limited room to produce
 significant result, and we registered these ceilings before collecting data rather than
 offering them afterwards as an explanation.
 
-## 5.2 Hotel Reservation could not have reached significance
+## 6.2 Hotel Reservation could not have reached significance
 
 The Hotel Reservation limitation is stronger than low power, and we want to be exact about
 it. Under the exact permutation test our analysis plan mandates, a *perfect* result on Hotel
@@ -39,7 +39,7 @@ or failing to replicate the Social Network result. Its value in this study is as
 structurally different topology on which the propagation-direction result of §4.5 also holds,
 not as a second test of the correlation.
 
-## 5.3 Two applications from one benchmark suite
+## 6.3 Two applications from one benchmark suite
 
 We studied two applications from a single benchmark suite, built from one pinned upstream
 commit %[id:dsb_commit]. Both are research benchmarks rather than production systems. They
@@ -56,7 +56,7 @@ reconstructed from observed traffic, a different mix would produce a different g
 same deployment, and both the predictors and the measured outcomes would shift with it. We
 return to this below.
 
-## 5.4 The primary predictor is close to definitional
+## 6.4 The primary predictor is close to definitional
 
 The most serious threat to the primary result is not statistical but conceptual. We define
 the outcome as the number of degraded transitive callers and the predictor as the number of
@@ -89,11 +89,11 @@ alone. **This explanation was generated after seeing the data and has not been t
 offer it as a hypothesis for future work, not as a finding.** Testing it would require a
 workload-weighted predictor and a fresh preregistration.
 
-## 5.5 Fault removal is inferred, not verified
+## 6.5 Fault removal is inferred, not verified
 
 For latency faults, the runner infers that the injected `tc netem` rule has been removed
 from the fact that the injecting process has exited. That inference proved unreliable at
-least once, and §6 describes the incident and the safeguards now in place. Those safeguards
+least once, and §7 describes the incident and the safeguards now in place. Those safeguards
 bound the damage rather than eliminating the possibility. The cross-run baseline gate
 detects a rule that outlives the run that created it, because the contamination then shows
 up in later runs' fault-free baselines. A rule that leaked and then cleared within a single
@@ -106,7 +106,7 @@ would flag it. Blast-radius counts are less exposed, since they are computed ove
 window itself. Closing this gap properly requires querying the container's queueing
 discipline directly rather than inferring its state, which we did not implement.
 
-## 5.6 The dependency graph is workload-dependent
+## 6.6 The dependency graph is workload-dependent
 
 Reconstructing the graph from traces gives us the calls the system actually makes, which we
 consider the right choice for this question, but it makes the graph a property of the
@@ -123,21 +123,21 @@ observed caller %[id:hr_user_observed_caller_count] here rather than the two the
 documentation implies. A different request mix would assign it a different predictor value
 without anything about the deployed system having changed. This limits how far any
 predictor–outcome relationship we report can be transported to a deployment under different
-traffic, and it is the same mechanism our post-hoc reading of `user-service` in §5.4
+traffic, and it is the same mechanism our post-hoc reading of `user-service` in §6.4
 invokes, which is a further reason to treat that reading as untested.
 
-## 5.7 Scope of the measurement
+## 6.7 Scope of the measurement
 
 Two further boundaries are worth stating. We measure whether a service degrades, by a
 preregistered threshold on its own latency or error rate, and not why it degrades; no causal
 mechanism for any individual service's degradation is established here. And we studied two
 fault types, process kill and a 500 ms %[id:fault_latency_delay_ms] network delay. CPU
 contention was evaluated during piloting and dropped before the campaign because its effect
-size was too small to classify reliably, which we record as a scope decision in §6. Resource
+size was too small to classify reliably, which we record as a scope decision in §7. Resource
 exhaustion, partial failures, and corrupted or slow responses are all outside what we
 measured.
 
-## 5.8 Social Network recovery times were not replayed
+## 6.8 Social Network recovery times were not replayed
 
 Social Network per-service latency used all of a service's spans rather than its server
 spans (§3.5, Deviation 11). The blast-radius outcomes could be replayed on server-only spans

@@ -28,7 +28,7 @@ without that verification.
 |---|---|---|
 | 7 | Models of cascading failure in networked systems, and specifically the direction such models assume propagation takes. This frames our §4.5 result. | `[CITATION NEEDED: cascading failure models in networked systems]` |
 | 8 | Mechanisms by which a dependency failure reaches a caller in practice: synchronous blocking, connection-pool and thread-pool exhaustion, timeout and retry amplification. Needed to explain why callers degrade and callees do not. | `[CITATION NEEDED: synchronous dependency failure / resource exhaustion in service meshes]` |
-| 9 | Resilience mechanisms that arrest propagation — circuit breakers, bulkheads, retries with backoff, load shedding — since their absence from our benchmarks is a stated limitation (§5.3). | `[CITATION NEEDED: circuit breakers and bulkhead patterns for failure isolation]` |
+| 9 | Resilience mechanisms that arrest propagation — circuit breakers, bulkheads, retries with backoff, load shedding — since their absence from our benchmarks is a stated limitation (§6.3). | `[CITATION NEEDED: circuit breakers and bulkhead patterns for failure isolation]` |
 
 ## 2.4 Chaos engineering and fault injection
 
@@ -43,7 +43,7 @@ without that verification.
 | ¶ | Must establish | Placeholder |
 |---|---|---|
 | 13 | Distributed tracing with propagated context and parent–child spans, which is what makes trace-based graph reconstruction possible. | `[CITATION NEEDED: distributed tracing — Dapper-style context propagation]` |
-| 14 | Prior work reconstructing service dependency graphs from traces, and any that notes the gap between documented and observed topology. Supports §3.1 and §5.6. | `[CITATION NEEDED: trace-derived service dependency graph extraction]` |
+| 14 | Prior work reconstructing service dependency graphs from traces, and any that notes the gap between documented and observed topology. Supports §3.1 and §6.6. | `[CITATION NEEDED: trace-derived service dependency graph extraction]` |
 | 15 | Work on latency attribution in traces, in particular the distinction between end-to-end request latency and a service's own service time. If prior work has documented the trace-cohort attribution artifact we describe in §3.5, it must be cited here; if it has not, that is a contribution and the section should say so carefully rather than claiming novelty by omission. | `[CITATION NEEDED: per-service latency attribution / critical path analysis in distributed traces]` |
 | 16 | Tail-latency characterisation and percentile-based SLO measurement, which motivates p95 as the indicator. | `[CITATION NEEDED: tail latency in large-scale online services]` |
 
@@ -57,7 +57,7 @@ without that verification.
 
 | ¶ | Must establish | Placeholder |
 |---|---|---|
-| 18 | Preregistration as a method for separating confirmatory from exploratory analysis, and the reasoning about researcher degrees of freedom that motivates it. Supports §3.8 and §6. | `[CITATION NEEDED: preregistration and researcher degrees of freedom]` |
+| 18 | Preregistration as a method for separating confirmatory from exploratory analysis, and the reasoning about researcher degrees of freedom that motivates it. Supports §3.8 and §7. | `[CITATION NEEDED: preregistration and researcher degrees of freedom]` |
 | 19 | The multiple-comparisons procedure used, and the rationale for controlling false discovery rate rather than family-wise error. | `[CITATION NEEDED: Benjamini–Hochberg false discovery rate control]` |
 | 20 | Permutation and bootstrap inference for small samples with heavy ties, justifying our departure from asymptotic p-values. | `[CITATION NEEDED: permutation tests and BCa bootstrap for small-sample rank statistics]` |
 

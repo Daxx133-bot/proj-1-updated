@@ -1,21 +1,21 @@
 file,produced_by,bytes
 paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",16656
-paper/INDEX.csv,paper/build_all.py,3419
+paper/INDEX.csv,paper/build_all.py,3687
 paper/build_all.py,source,3353
-paper/build_docx.py,source,13189
-paper/build_numbers.py,source,56203
-paper/check_docx_numbers.py,source,8232
+paper/build_docx.py,source,13424
+paper/build_numbers.py,source,58401
+paper/check_docx_numbers.py,source,11083
 paper/check_draft_ids.py,source,5341
 paper/check_ledger.py,source,3783
-paper/draft/audit_disclosure.md,"hand-written, markers validated by paper/check_draft_ids.py",13551
-paper/draft/limitations.md,"hand-written, markers validated by paper/check_draft_ids.py",9663
-paper/draft/method.md,"hand-written, markers validated by paper/check_draft_ids.py",23540
+paper/draft/audit_disclosure.md,"hand-written, markers validated by paper/check_draft_ids.py",13406
+paper/draft/limitations.md,"hand-written, markers validated by paper/check_draft_ids.py",9671
+paper/draft/method.md,"hand-written, markers validated by paper/check_draft_ids.py",23516
 paper/draft/outline_abstract.md,"hand-written, markers validated by paper/check_draft_ids.py",3810
 paper/draft/outline_conclusion.md,"hand-written, markers validated by paper/check_draft_ids.py",2816
 paper/draft/outline_discussion.md,"hand-written, markers validated by paper/check_draft_ids.py",6991
 paper/draft/outline_intro.md,"hand-written, markers validated by paper/check_draft_ids.py",5337
 paper/draft/outline_related_work.md,"hand-written, markers validated by paper/check_draft_ids.py",7480
-paper/draft/results.md,"hand-written, markers validated by paper/check_draft_ids.py",19627
+paper/draft/results.md,"hand-written, markers validated by paper/check_draft_ids.py",19650
 paper/emit_macros.py,source,3649
 paper/figures/fig_leave_one_out.pdf,paper/make_figures.py,18556
 paper/figures/fig_leave_one_out.png,paper/make_figures.py,148202
@@ -32,11 +32,11 @@ paper/figures/fig_rank_inversion_data.csv,paper/make_figures.py,470
 paper/figures/figures_index.csv,paper/make_figures.py,1085
 paper/make_figures.py,source,14750
 paper/make_tables.py,source,11901
-paper/manuscript.docx,paper/build_docx.py,679593
-paper/number_audit.txt,paper/check_docx_numbers.py,2152
-paper/numbers.csv,paper/build_numbers.py,96764
-paper/numbers.json,paper/emit_macros.py,162980
-paper/numbers.tex,paper/emit_macros.py,77327
+paper/manuscript.docx,paper/build_docx.py,679567
+paper/number_audit.txt,paper/check_docx_numbers.py,4158
+paper/numbers.csv,paper/build_numbers.py,97219
+paper/numbers.json,paper/emit_macros.py,163688
+paper/numbers.tex,paper/emit_macros.py,77725
 paper/references.csv,hand-maintained; only rows with status VERIFIED are rendered,57
 paper/tables/tables_index.csv,paper/make_tables.py,1772
 paper/tables/tbl_deviations.csv,paper/make_tables.py,19916

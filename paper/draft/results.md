@@ -261,7 +261,7 @@ either family %[id:trec_conf_significant] %[id:trec_repl_significant].
 The Cox and log-rank results that follow are secondary and are not corrected for
 multiplicity. Hazard ratios are per one unit of `ancestor_count`. At run level, with
 standard errors clustered by service, the hazard ratio for `ancestor_count` on Social
-Network is 1.173 %[id:trec_conf_sn_ancestor_cox_run_hr] (95% CI 0.876
+Network is 1.173 %[id:trec_conf_sn_ancestor_cox_run_hr] (95% %[id:cox_ci_level_pct] CI 0.876
 %[id:trec_conf_sn_ancestor_cox_run_ci_lo] to 1.570 %[id:trec_conf_sn_ancestor_cox_run_ci_hi],
 p = 0.2836 %[id:trec_conf_sn_ancestor_cox_run_p]) under kill faults and 0.998
 %[id:trec_repl_sn_ancestor_cox_run_hr] (0.816 %[id:trec_repl_sn_ancestor_cox_run_ci_lo] to

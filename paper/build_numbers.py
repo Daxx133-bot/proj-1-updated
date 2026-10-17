@@ -457,6 +457,45 @@ def supplementary_numbers(conf, h1b, devs, runs):
         ", ".join(only) if only else "differs between runs", F_Q3, "paper/make_figures.py")
 
 
+def number_audit_sources():
+    """Sources found for numbers the 2026-10-17 docx number audit flagged."""
+    import ast
+    from scipy.stats import norm
+    S_SELF = "paper/build_numbers.py"
+
+    # Deviation 2 was found when geo|latency|1 failed. Minutes from the main campaign's
+    # launch (the CAMPAIGN START line with all 180 runs to go) to the first FAILED line.
+    log = os.path.join(REPO, "data", "campaign", "progress.log")
+    start = failed = None
+    if os.path.isfile(log):
+        with open(log, encoding="utf-8") as fh:
+            for line in fh:
+                ts = line[1:line.index("]")] if line.startswith("[") else None
+                if start is None and "CAMPAIGN START  180 run(s) to go" in line:
+                    start = pd.Timestamp(ts)
+                elif start is not None and failed is None and "] FAILED " in line:
+                    failed = pd.Timestamp(ts)
+    ok = start is not None and failed is not None
+    add("deviation_2_found_after_min", "Minutes from the main campaign launch to the run "
+        "failure that exposed deviation 2 (first FAILED line in the progress log)",
+        (failed - start).total_seconds() / 60.0 if ok else "SOURCE NOT FOUND",
+        "data/campaign/progress.log", S_SELF, "min", "%.0f" if ok else None)
+
+    # Cox confidence level: the analysis forms exp(beta +/- z*se) with a literal z.
+    src = open(os.path.join(REPO, RCA), encoding="utf-8").read()
+    zs = set()
+    for node in ast.walk(ast.parse(src)):
+        if isinstance(node, ast.FunctionDef) and node.name in ("cox_runlevel",
+                                                                "cox_servicelevel"):
+            for c in ast.walk(node):
+                if isinstance(c, ast.BinOp) and isinstance(c.op, ast.Mult) and                         isinstance(c.left, ast.Constant) and isinstance(c.left.value, float):
+                    zs.add(c.left.value)
+    add("cox_ci_level_pct", "Confidence level of the Cox hazard-ratio intervals, from the "
+        "z multiplier in cox_runlevel and cox_servicelevel",
+        100.0 * (2 * norm.cdf(zs.pop()) - 1) if len(zs) == 1 else float("nan"),
+        RCA, S_SELF, "%", "%.0f")
+
+
 def user_facing_numbers():
     """Ids for analysis/final/user_facing_impact.py (post hoc, descriptive; 2026-10-17)."""
     S = "analysis/final/user_facing_impact.py"
@@ -928,6 +967,7 @@ def main():
     protocol_and_topology_numbers()
     supplementary_numbers(conf, h1b, devs, runs)
     user_facing_numbers()
+    number_audit_sources()
 
     df = pd.DataFrame(ROWS)
     dupes = df[df.claim_id.duplicated(keep=False)]

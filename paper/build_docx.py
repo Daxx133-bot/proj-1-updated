@@ -1,9 +1,9 @@
 """
 build_docx.py -- assemble paper/manuscript.docx from paper/draft/*.md. Writes no prose.
 
-Sections, in order: abstract, introduction, related work, method, results, discussion,
-limitations, audit and deviations, conclusion, data availability, AI-use statement,
-references. A section with a prose draft is rendered from it. A section that has only an
+Sections, in order: abstract, 1 introduction, 2 related work, 3 method, 4 results,
+5 discussion, 6 threats to validity, 7 audit and deviations, 8 conclusion, data
+availability, AI-use statement, references, appendix. A section with a prose draft is rendered from it. A section that has only an
 outline file, or no file at all, gets its heading followed by the visible placeholder
 [TO WRITE]; nothing is generated to fill it.
 
@@ -49,13 +49,15 @@ SECTIONS = [
     ("2. Related Work", None, "outline_related_work.md"),
     ("3. Method", "method.md", None),
     ("4. Results", "results.md", None),
-    ("7. Discussion", None, "outline_discussion.md"),
-    ("5. Limitations", "limitations.md", None),
-    ("6. Audit and deviations", "audit_disclosure.md", None),
+    ("5. Discussion", None, "outline_discussion.md"),
+    ("6. Threats to Validity", "limitations.md", None),
+    ("7. Audit and Deviations", "audit_disclosure.md", None),
     ("8. Conclusion", None, "outline_conclusion.md"),
-    ("Data availability", None, None),
+    ("Data Availability", None, None),
     ("AI-use statement", None, None),
 ]
+# Rendered after the references.
+TRAILING = [("Appendix", None, None)]
 
 MARKER = re.compile(r"\s*%\[[^\]]*\]")
 REF_MAP_ROW = re.compile(r"^>\s*\|\s*(Table|Figure)\s+(\d+)\s*\|\s*`([^`]+)`\s*\|")
@@ -314,6 +316,9 @@ class Builder:
                 i, e["authors"], e["year"], e["title"], e["venue"],
                 (" doi:%s" % e["doi"]) if e.get("doi") else ""))
 
+        for heading, prose, outline in TRAILING:
+            self.to_write(outline_heading(outline, heading))
+
         cp = self.doc.core_properties
         cp.author, cp.title, cp.comments = "", "", "built by paper/build_docx.py"
         self.doc.save(OUT)
@@ -329,7 +334,7 @@ def main():
           % (info["tables"], info["figures"], info["references"]))
     for (kind, n), f in info["order"]:
         print("  %s %d <- %s" % (kind, n, f))
-    todo = [outline_heading(o, h) for h, p, o in SECTIONS
+    todo = [outline_heading(o, h) for h, p, o in SECTIONS + TRAILING
             if not (p and os.path.isfile(os.path.join(DRAFT, p)))]
     print("  [TO WRITE]: %s" % "; ".join(todo))
     return 0
