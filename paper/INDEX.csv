@@ -1,9 +1,9 @@
 file,produced_by,bytes
 paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",19285
-paper/INDEX.csv,paper/build_all.py,6371
+paper/INDEX.csv,paper/build_all.py,6583
 paper/build_all.py,source,4057
 paper/build_docx.py,source,26311
-paper/build_numbers.py,source,59972
+paper/build_numbers.py,source,60284
 paper/check_docx_numbers.py,source,13273
 paper/check_draft_ids.py,source,5341
 paper/check_ledger.py,source,3783
@@ -19,7 +19,7 @@ paper/draft/data_availability.md,"hand-written, markers validated by paper/check
 paper/draft/discussion.md,"hand-written, markers validated by paper/check_draft_ids.py",8414
 paper/draft/funding.md,"hand-written, markers validated by paper/check_draft_ids.py",21
 paper/draft/limitations.md,"hand-written, markers validated by paper/check_draft_ids.py",8632
-paper/draft/method.md,"hand-written, markers validated by paper/check_draft_ids.py",21602
+paper/draft/method.md,"hand-written, markers validated by paper/check_draft_ids.py",21655
 paper/draft/outline_abstract.md,"hand-written, markers validated by paper/check_draft_ids.py",3810
 paper/draft/outline_conclusion.md,"hand-written, markers validated by paper/check_draft_ids.py",2826
 paper/draft/outline_discussion.md,"hand-written, markers validated by paper/check_draft_ids.py",6999
@@ -44,12 +44,12 @@ paper/figures/figures_index.csv,paper/make_figures.py,1085
 paper/make_checklist.py,source,7898
 paper/make_figures.py,source,15619
 paper/make_tables.py,source,16077
-paper/manuscript.docx,paper/build_docx.py,62738
-paper/manuscript.pdf,"exported from manuscript.docx by Microsoft Word, for reading only; not part of the submission",384394
+paper/manuscript.docx,paper/build_docx.py,62752
+paper/manuscript.pdf,"exported from manuscript.docx by Microsoft Word, for reading only; not part of the submission",384423
 paper/number_audit.txt,paper/check_docx_numbers.py,2304
-paper/numbers.csv,paper/build_numbers.py,98037
-paper/numbers.json,paper/emit_macros.py,165166
-paper/numbers.tex,paper/emit_macros.py,78442
+paper/numbers.csv,paper/build_numbers.py,98259
+paper/numbers.json,paper/emit_macros.py,165514
+paper/numbers.tex,paper/emit_macros.py,78644
 paper/references.csv,keys and DOIs hand-entered; bibliographic fields from Crossref via paper/check_references.py; only rows a person marks VERIFIED are rendered,5190
 paper/submission/Figure 1.pdf,paper/build_docx.py,21317
 paper/submission/Figure 1.png,paper/build_docx.py,603219
@@ -74,7 +74,7 @@ paper/submission/Table 9.docx,paper/build_docx.py,38083
 paper/submission/cover_letter.docx,paper/build_docx.py,37765
 paper/submission/cover_page.docx,paper/build_docx.py,36924
 paper/submission/figure_legends.docx,paper/build_docx.py,36993
-paper/submission/manuscript.docx,paper/build_docx.py,62738
+paper/submission/manuscript.docx,paper/build_docx.py,62752
 paper/tables/tables_index.csv,paper/make_tables.py,2670
 paper/tables/tbl_deviations.csv,paper/make_tables.py,19916
 paper/tables/tbl_deviations.md,paper/make_tables.py,20199

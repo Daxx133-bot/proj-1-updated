@@ -6,7 +6,7 @@ only if an id marked in the same draft sentence carries that value.
 
 Tokens by category:
   numbers.csv value               103
-  numbers.csv value (string)       10
+  numbers.csv value (string)       11
   URL                              10
   marked in sentence              140
   table cell                      797

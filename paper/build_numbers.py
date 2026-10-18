@@ -498,8 +498,8 @@ def number_audit_sources():
 
 def software_versions():
     """Versions of the tools named in the methods, read from where the repository records
-    them. A version with no record is SOURCE NOT FOUND; Pumba, tc netem and Docker have none
-    and are named without one."""
+    them. A version with no record is SOURCE NOT FOUND; Pumba and tc netem have none and are
+    named without one, and for Docker only the client version is recorded."""
     S_SELF = "paper/build_numbers.py"
 
     def grab(rel, pattern):
@@ -515,6 +515,10 @@ def software_versions():
          r"jaegertracing/all-in-one:(\d+\.\d+\.\d+)"),
         ("version_locust", "Locust version recorded when the load generator was installed",
          "data/environment/tool_versions.txt", r"(?m)^locust (\d+\.\d+\.\d+) "),
+        ("version_docker_client", "Docker client version (docker version output; the binary "
+         "predates the campaign, the engine version is not recorded)",
+         "data/environment/tool_versions.txt",
+         r"Client:\s*\n\s*Version:\s+(\d+\.\d+\.\d+)"),
         ("version_python", "Python version the pipeline was developed and verified on",
          "README.md", r"verified on (\d+\.\d+\.\d+)"),
         ("version_scipy", "SciPy version the pipeline was verified with", "README.md",

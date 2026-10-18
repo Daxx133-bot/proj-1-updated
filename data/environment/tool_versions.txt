@@ -1,5 +1,22 @@
 # Tool versions of the data-collection environment.
-# One line per tool: <tool> <version> | source | date recorded.
+# Each entry gives the tool, its version, the source and the date recorded.
 # Locust: extracted verbatim from the "Now" row of section 1 of _audit/ENVIRONMENT_STATUS.md
 # (that file is not in the public copy because it holds local paths).
 locust 2.46.3 on Python 3.13.2 | source: _audit/ENVIRONMENT_STATUS.md, section 1 | recorded 2026-09-23
+
+# docker version -- command output captured 2026-10-18 (after the campaign). The Docker engine
+# was not running, so only the client is recorded. The client binary (docker.exe in the
+# Docker Desktop install) was last written 2026-09-20, before the campaign began, so this
+# client is the one the campaign used. The engine (server) version is not recorded.
+# Pumba: not a local program; the runner starts the untagged image
+# ghcr.io/alexei-led/pumba (faultinjection/fault_config.py), whose version is not recorded.
+$ docker version
+Client:
+ Version:           29.8.0
+ API version:       1.56
+ Go version:        go1.26.8
+ Git commit:        88096ef
+ Built:             Thu Sep  3 21:53:38 2026
+ OS/Arch:           windows/amd64
+ Context:           desktop-linux
+failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.

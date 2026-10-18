@@ -105,7 +105,8 @@ then injected and held for 30 seconds %[id:protocol_fault_duration_s], the recov
 and a 20-second %[id:protocol_cooldown_s] cooldown separates one run from the next.
 
 Faults are injected with Pumba (https://github.com/alexei-led/pumba) against the target
-service's Docker (https://www.docker.com) container. A kill fault sends
+service's container, using the Docker 29.8.0 %[id:version_docker_client] client
+(https://www.docker.com). A kill fault sends
 SIGKILL %[id:fault_kill_signal], which ends the process without letting it drain connections
 or answer requests in flight. A latency fault applies a `tc netem` (https://wiki.linuxfoundation.org/networking/netem) rule that adds 500 ms
 %[id:fault_latency_delay_ms] of delay with 100 ms %[id:fault_latency_jitter_ms] of jitter to
