@@ -13,6 +13,7 @@ Written by `paper/make_checklist.py`. PASS means the build output meets the requ
 | Each figure supplied as a separate file (PNG and PDF) | PASS | 4 figures |
 | Figure legends supplied | PASS |  |
 | Each table supplied as a separate .docx with a title | PASS | 10 tables |
+| Supplementary data files named in table footnotes supplied | PASS | Supplementary_recovery_time_raw.csv |
 | Every reference in the list is cited in the text | PASS | 15 listed, 15 cited |
 | Every reference has a DOI or URL | PASS |  |
 | No drafting markers, unresolved citations or [TO WRITE] in the manuscript | PASS |  |
@@ -43,10 +44,10 @@ Drafts and `build_docx.py` are the sources; the `.docx` rows are where each one 
 | paper/draft/cover_letter.md:46 | `[TO FILL: corresponding author name, email and postal address]` |
 | paper/draft/data_availability.md:5 | `[TO FILL]` |
 | paper/draft/funding.md:3 | `[TO FILL]` |
-| paper/build_docx.py:95 (COVER) | `[TO FILL: other authors]` |
-| paper/build_docx.py:96 (COVER) | `[TO FILL department]` |
-| paper/build_docx.py:97 (COVER) | `[TO FILL name]` |
-| paper/build_docx.py:97 (COVER) | `[TO FILL email]` |
+| paper/build_docx.py:96 (COVER) | `[TO FILL: other authors]` |
+| paper/build_docx.py:97 (COVER) | `[TO FILL department]` |
+| paper/build_docx.py:98 (COVER) | `[TO FILL name]` |
+| paper/build_docx.py:98 (COVER) | `[TO FILL email]` |
 | paper/submission/cover_letter.docx, paragraph 1 | `[TO FILL: date]` |
 | paper/submission/cover_letter.docx, paragraph 10 | `[TO FILL: co-authors]` |
 | paper/submission/cover_letter.docx, paragraph 11 | `[TO FILL: department]` |

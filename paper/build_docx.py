@@ -10,6 +10,7 @@ Outputs
   paper/submission/cover_page.docx      title, authors, affiliation, corresponding author
   paper/submission/cover_letter.docx    the cover letter, from paper/draft/cover_letter.md
   paper/submission/manuscript.docx      a copy of paper/manuscript.docx
+  paper/submission/<SUPPLEMENTARY>      supplementary data files named in table footnotes
 
 Sections, in order: Abstract (run-in headings Background, Methods, Results, Conclusions);
 1 Background; 2 Related Work; 3 Methods; 4 Results; 5 Discussion; 6 Threats to Validity;
@@ -116,6 +117,18 @@ PER_UNIT = {c: "per unit of predictor" for c in ("cox_run_hr", "cox_run_ci_95",
                                                  "cox_service_hr", "cox_service_ci_95")}
 TABLE_NOTE = ("Units are given in parentheses in the column headers; columns without a "
               "unit are dimensionless or categorical.")
+
+# Footnotes for single tables, printed after TABLE_NOTE.
+TABLE_FOOTNOTES = {
+    "tbl_trec": ("Not estimable: the Cox fit did not converge or showed separation because "
+                 "the predictor takes few distinct values; raw estimates are in the "
+                 "supplementary file."),
+}
+# Supplementary data files copied into submission/: {published name: source under paper/}.
+SUPPLEMENTARY = {
+    "Supplementary_recovery_time_raw.csv": os.path.join("tables",
+                                                        "tbl_trec_supplementary.csv"),
+}
 
 MARKER = re.compile(r"\s*%\[[^\]]*\]")
 REF_MAP_ROW = re.compile(r"^>\s*\|\s*(Table|Figure)\s+(\d+)\s*\|\s*`([^`]+)`\s*\|")
@@ -531,6 +544,8 @@ class Builder:
                     r.bold = i == 0
                     cell.paragraphs[0].paragraph_format.line_spacing = 1.0
             d.add_paragraph(TABLE_NOTE)
+            if base in TABLE_FOOTNOTES:
+                d.add_paragraph(TABLE_FOOTNOTES[base])
             dst = "Table %d.docx" % n
             d.save(os.path.join(SUB, dst))
             written.add(dst)
@@ -564,6 +579,9 @@ class Builder:
 
         shutil.copyfile(OUT, os.path.join(SUB, "manuscript.docx"))
         written.add("manuscript.docx")
+        for dst, src in SUPPLEMENTARY.items():
+            shutil.copyfile(os.path.join(HERE, src), os.path.join(SUB, dst))
+            written.add(dst)
 
         stale = sorted(set(os.listdir(SUB)) - written - LATER_FILES)
         return {"figures": figs, "tables": tbls, "stale": stale}

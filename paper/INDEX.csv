@@ -1,9 +1,9 @@
 file,produced_by,bytes
 paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",19285
-paper/INDEX.csv,paper/build_all.py,6246
+paper/INDEX.csv,paper/build_all.py,6371
 paper/build_all.py,source,4057
-paper/build_docx.py,source,25409
-paper/build_numbers.py,source,59974
+paper/build_docx.py,source,26311
+paper/build_numbers.py,source,59972
 paper/check_docx_numbers.py,source,13273
 paper/check_draft_ids.py,source,5341
 paper/check_ledger.py,source,3783
@@ -41,15 +41,15 @@ paper/figures/fig_rank_inversion.pdf,paper/make_figures.py,25851
 paper/figures/fig_rank_inversion.png,paper/make_figures.py,590366
 paper/figures/fig_rank_inversion_data.csv,paper/make_figures.py,470
 paper/figures/figures_index.csv,paper/make_figures.py,1085
-paper/make_checklist.py,source,7667
+paper/make_checklist.py,source,7898
 paper/make_figures.py,source,15619
-paper/make_tables.py,source,14521
+paper/make_tables.py,source,16077
 paper/manuscript.docx,paper/build_docx.py,62738
 paper/manuscript.pdf,"exported from manuscript.docx by Microsoft Word, for reading only; not part of the submission",384394
 paper/number_audit.txt,paper/check_docx_numbers.py,2304
-paper/numbers.csv,paper/build_numbers.py,98031
-paper/numbers.json,paper/emit_macros.py,165160
-paper/numbers.tex,paper/emit_macros.py,78436
+paper/numbers.csv,paper/build_numbers.py,98037
+paper/numbers.json,paper/emit_macros.py,165166
+paper/numbers.tex,paper/emit_macros.py,78442
 paper/references.csv,keys and DOIs hand-entered; bibliographic fields from Crossref via paper/check_references.py; only rows a person marks VERIFIED are rendered,5190
 paper/submission/Figure 1.pdf,paper/build_docx.py,21317
 paper/submission/Figure 1.png,paper/build_docx.py,603219
@@ -59,7 +59,8 @@ paper/submission/Figure 3.pdf,paper/build_docx.py,19090
 paper/submission/Figure 3.png,paper/build_docx.py,360934
 paper/submission/Figure 4.pdf,paper/build_docx.py,25851
 paper/submission/Figure 4.png,paper/build_docx.py,590366
-paper/submission/SUBMISSION_CHECKLIST.md,paper/make_checklist.py,3834
+paper/submission/SUBMISSION_CHECKLIST.md,paper/make_checklist.py,3943
+paper/submission/Supplementary_recovery_time_raw.csv,paper/build_docx.py,3523
 paper/submission/Table 1.docx,paper/build_docx.py,37856
 paper/submission/Table 10.docx,paper/build_docx.py,45569
 paper/submission/Table 2.docx,paper/build_docx.py,37600
@@ -69,12 +70,12 @@ paper/submission/Table 5.docx,paper/build_docx.py,37236
 paper/submission/Table 6.docx,paper/build_docx.py,37912
 paper/submission/Table 7.docx,paper/build_docx.py,37466
 paper/submission/Table 8.docx,paper/build_docx.py,37421
-paper/submission/Table 9.docx,paper/build_docx.py,38030
+paper/submission/Table 9.docx,paper/build_docx.py,38083
 paper/submission/cover_letter.docx,paper/build_docx.py,37765
 paper/submission/cover_page.docx,paper/build_docx.py,36924
 paper/submission/figure_legends.docx,paper/build_docx.py,36993
 paper/submission/manuscript.docx,paper/build_docx.py,62738
-paper/tables/tables_index.csv,paper/make_tables.py,2366
+paper/tables/tables_index.csv,paper/make_tables.py,2670
 paper/tables/tbl_deviations.csv,paper/make_tables.py,19916
 paper/tables/tbl_deviations.md,paper/make_tables.py,20199
 paper/tables/tbl_family_summary.csv,paper/make_tables.py,315
@@ -93,5 +94,7 @@ paper/tables/tbl_primary_by_family.csv,paper/make_tables.py,829
 paper/tables/tbl_primary_by_family.md,paper/make_tables.py,1038
 paper/tables/tbl_primary_exact_p_supplementary.csv,paper/make_tables.py,349
 paper/tables/tbl_primary_exact_p_supplementary.md,paper/make_tables.py,442
-paper/tables/tbl_trec.csv,paper/make_tables.py,1321
-paper/tables/tbl_trec.md,paper/make_tables.py,1628
+paper/tables/tbl_trec.csv,paper/make_tables.py,1334
+paper/tables/tbl_trec.md,paper/make_tables.py,1641
+paper/tables/tbl_trec_supplementary.csv,paper/make_tables.py,3523
+paper/tables/tbl_trec_supplementary.md,paper/make_tables.py,4012

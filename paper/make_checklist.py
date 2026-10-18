@@ -79,6 +79,10 @@ def main():
     req("Each table supplied as a separate .docx with a title", len(tbls) > 0,
         "%d tables" % len(tbls))
 
+    missing = [f for f in bd.SUPPLEMENTARY if not os.path.isfile(os.path.join(SUB, f))]
+    req("Supplementary data files named in table footnotes supplied", not missing,
+        ", ".join(missing) or ", ".join(bd.SUPPLEMENTARY))
+
     refs = bd.load_refs()
     req("Every reference in the list is cited in the text", set(refs) == set(b.cited),
         "%d listed, %d cited" % (len(refs), len(b.cited)))

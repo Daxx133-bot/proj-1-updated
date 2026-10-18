@@ -9,7 +9,7 @@ Tokens by category:
   numbers.csv value (string)       10
   URL                              10
   marked in sentence              140
-  table cell                      810
+  table cell                      797
   table header                      0
   reference entry                  90
   section number                   89

@@ -514,7 +514,7 @@ def software_versions():
          "override)", "infra/docker-compose.override.yml",
          r"jaegertracing/all-in-one:(\d+\.\d+\.\d+)"),
         ("version_locust", "Locust version recorded when the load generator was installed",
-         "_audit/ENVIRONMENT_STATUS.md", r"locust (\d+\.\d+\.\d+)\*\* on Python"),
+         "data/environment/tool_versions.txt", r"(?m)^locust (\d+\.\d+\.\d+) "),
         ("version_python", "Python version the pipeline was developed and verified on",
          "README.md", r"verified on (\d+\.\d+\.\d+)"),
         ("version_scipy", "SciPy version the pipeline was verified with", "README.md",

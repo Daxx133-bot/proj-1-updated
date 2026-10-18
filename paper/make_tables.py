@@ -229,26 +229,45 @@ def main():
     # ---- 6b. recovery time (T_rec) ------------------------------------------
     # Spearman is primary for T_rec (no censoring, deviation 6). Cox and log-rank are
     # secondary and uncorrected. Hazard ratios are per one-unit increase of the predictor.
-    rows = []
+    # A Cox fit is shown as "not estimable" when it failed (NaN estimate or a "failed: ..."
+    # note; the analysis stores no separate convergence flag) or its CI upper bound exceeds
+    # COX_CI_HI_MAX. Every raw value stays in tbl_trec_supplementary.
+    COX_CI_HI_MAX = 1e6
+
+    def estimable(r, lvl):
+        hi, note = r["cox_%s_ci_hi" % lvl], str(r["cox_%s_note" % lvl])
+        return not (pd.isna(r["cox_%s_hr" % lvl]) or note.startswith("failed")
+                    or hi > COX_CI_HI_MAX)
+
+    rows, raw, changed = [], [], []
     for fam, df in (("confirmatory (kill)", conf), ("replication (latency)", repl)):
         t = df[(df.outcome == "T_rec") &
                (df.predictor.isin(["ancestor_count", "hybrid_criticality"]))]
         for _, r in t.sort_values(["architecture", "predictor"],
                                   ascending=[False, True]).iterrows():
-            rows.append({
+            row = {
                 "family": fam, "architecture": r.architecture_label,
                 "predictor": r.predictor,
                 "spearman_rho": f(r.spearman_rho, 3), "p_raw": f(r.p_permutation, 4),
-                "p_bh_adjusted": f(r.p_bh_adjusted, 4),
-                "cox_run_hr": hr(r.cox_run_hr),
-                "cox_run_ci_95": "%s to %s" % (hr(r.cox_run_ci_lo), hr(r.cox_run_ci_hi)),
-                "cox_run_p": pv(r.cox_run_p),
-                "cox_service_hr": hr(r.cox_service_hr),
-                "cox_service_ci_95": "%s to %s" % (hr(r.cox_service_ci_lo),
-                                                   hr(r.cox_service_ci_hi)),
-                "cox_service_p": pv(r.cox_service_p),
-                "logrank_p": "undefined" if pd.isna(r.logrank_p) else f(r.logrank_p, 4),
-            })
+                "p_bh_adjusted": f(r.p_bh_adjusted, 4)}
+            for lvl in ("run", "service"):
+                if estimable(r, lvl):
+                    row["cox_%s_hr" % lvl] = hr(r["cox_%s_hr" % lvl])
+                    row["cox_%s_ci_95" % lvl] = "%s to %s" % (hr(r["cox_%s_ci_lo" % lvl]),
+                                                              hr(r["cox_%s_ci_hi" % lvl]))
+                    row["cox_%s_p" % lvl] = pv(r["cox_%s_p" % lvl])
+                else:
+                    for k in ("hr", "ci_95", "p"):
+                        row["cox_%s_%s" % (lvl, k)] = "not estimable"
+                    changed.append("%s | %s | %s | %s level"
+                                   % (fam, r.architecture_label, r.predictor, lvl))
+            row["logrank_p"] = "undefined" if pd.isna(r.logrank_p) else f(r.logrank_p, 4)
+            rows.append(row)
+            raw.append({"family": fam, "architecture": r.architecture_label,
+                        "predictor": r.predictor, "spearman_rho": r.spearman_rho,
+                        "p_raw": r.p_permutation, "p_bh_adjusted": r.p_bh_adjusted,
+                        **{c: r[c] for c in r.index
+                           if c.startswith(("cox_run_", "cox_service_", "logrank_"))}})
     emit("tbl_trec", pd.DataFrame(rows),
          "Recovery time: Spearman (primary, BH-corrected within family), Cox and log-rank "
          "(secondary, uncorrected) for ancestor_count and hybrid_criticality. Cox hazard "
@@ -257,6 +276,12 @@ def main():
          "its hazard ratios extrapolate beyond the observed range. Log-rank is undefined "
          "where the predictor has fewer than two distinct terciles",
          "analysis/final/confirmatory_family_kill.csv + replication_family_latency.csv", RCA)
+    emit("tbl_trec_supplementary", pd.DataFrame(raw),
+         "Supplementary: unrounded recovery-time Spearman, Cox and log-rank estimates and "
+         "notes for ancestor_count and hybrid_criticality, as stored by the analysis",
+         "analysis/final/confirmatory_family_kill.csv + replication_family_latency.csv", RCA)
+    for c in changed:
+        print("  tbl_trec not estimable: %s" % c)
 
     # ---- 7. deviations ------------------------------------------------------
     d = devs.sort_values("n")[["n", "date", "title", "stage", "what_happened",
