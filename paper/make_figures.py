@@ -179,7 +179,8 @@ def fig_leave_one_out(loo):
     ax.set_xlim(0, 1.06)
     for i, v in enumerate(d.rho):
         ax.text(v + 0.012, i, "%.3f" % v, va="center", fontsize=8.5)
-    ax.legend(loc="lower right", fontsize=9, frameon=False)
+    # Outside the plot area, so it cannot cover bars, value labels or the reference line.
+    ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0), fontsize=9, frameon=False)
     ax.grid(axis="x", alpha=0.25, lw=0.6)
     ax.set_title("POST-HOC robustness check (not part of the preregistered family).\n"
                  "Excluding user-service drives rho to 1.000: it is the only service whose "
@@ -285,7 +286,10 @@ def fig_q3():
                      fontsize=10)
         ax.grid(axis="y", alpha=0.25, lw=0.6, which="both")
     axes[0].set_ylabel("p95 latency (ms, log scale)")
-    axes[0].legend(fontsize=9, frameon=False)
+    # One legend for both panels, outside the plot area so it covers no bar.
+    h, l = axes[0].get_legend_handles_labels()
+    fig.legend(h, l, loc="center left", bbox_to_anchor=(1.0, 0.5), fontsize=9,
+               frameon=False)
     # Counts are read off the data, never asserted: exclude the faulted service itself,
     # which is expected to be flagged under either scope.
     nf = rep1[~rep1.faulted]

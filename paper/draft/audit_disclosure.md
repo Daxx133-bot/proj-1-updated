@@ -57,7 +57,7 @@ much they could have influenced a result.
 during the pre-launch rehearsal. The blast-radius rule as locked flagged a service purely on
 a multiplicative condition, with no absolute floor. That was defensible while per-service
 percentiles were still end-to-end values in the tens of milliseconds, but the corrected
-per-service definition of §3.5 moved 8 of 20 services into the range below 0.6 ms
+per-service definition of §3.5 moved several services into the sub-millisecond range
 %[tbl:tbl_deviations — deviation 1], where a multiplicative threshold responds to scheduler
 noise rather than to anything physical. The
 evidence was direct: a service's p95 rose threefold between two consecutive

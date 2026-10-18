@@ -204,3 +204,10 @@ for the full analysis narrative, then `paper/draft/` for the manuscript sections
 `paper/numbers.csv` connects any number in those documents back to the file and script that
 produced it, and `share_manifest.txt` connects every file present at this copy's first
 commit to the script that needs it.
+
+## Licence
+
+Code is released under the MIT licence (`LICENSE`), copyright 2026 Dakshrajsinh Tank.
+The contents of `data/` and `paper/figures/` are released under the Creative Commons
+Attribution 4.0 International licence (CC BY 4.0; `LICENSE-DATA`). To cite this work,
+see `CITATION.cff`.

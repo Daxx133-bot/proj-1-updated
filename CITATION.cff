@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software or data, please cite it using these metadata."
+type: software
+title: "[TITLE TO WRITE]"
+authors:
+  - family-names: "Tank"
+    given-names: "Dakshrajsinh"
+    affiliation: "Vellore Institute of Technology"
+  - name: "[TO FILL: other authors]"
+license: MIT
+repository-code: "https://github.com/Daxx133-bot/proj-1-updated"
+keywords:
+  - microservices
+  - fault injection
+  - dependency graph
+  - preregistration

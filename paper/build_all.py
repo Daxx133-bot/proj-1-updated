@@ -38,7 +38,9 @@ PRODUCER = {
     "CLAIMS_LEDGER.md": "hand-written, validated by paper/check_ledger.py",
     "manuscript.docx": "paper/build_docx.py",
     "number_audit.txt": "paper/check_docx_numbers.py",
-    "references.csv": "hand-maintained; only rows with status VERIFIED are rendered",
+    "references.csv": ("keys and DOIs hand-entered; bibliographic fields from Crossref via "
+                       "paper/check_references.py; only rows a person marks VERIFIED "
+                       "are rendered"),
 }
 
 

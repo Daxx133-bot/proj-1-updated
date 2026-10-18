@@ -7,6 +7,7 @@ name = "microservice-failure-analysis"
 version = "0.1.0"
 description = "Identifying failure-prone microservices using graph centrality metrics"
 requires-python = ">=3.11"
+license = {text = "MIT"}
 dependencies = [
     "networkx>=3.1",
     "numpy>=1.26",

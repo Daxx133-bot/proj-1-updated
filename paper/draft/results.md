@@ -68,7 +68,7 @@ this paper as directional only. It cannot confirm the hypothesis and it cannot d
 it.
 
 Social Network is not fully saturated, at 0.909 %[id:saturation_sn_kill_run] under kill
-faults, which is what makes ρ = 0.785 rather than 1.0. Figure 1 shows why. Ten of the eleven
+faults, which is what makes ρ = 0.785 %[id:primary_rho] rather than 1.0. Figure 1 shows why. Ten of the eleven
 services lie exactly on the line *y = x*, and a single service departs from it:
 `user-service`, which has 4 %[id:userservice_ancestor_count] graph ancestors but registers 2
 %[id:userservice_measured] degraded ancestors, in all five of its kill repetitions
