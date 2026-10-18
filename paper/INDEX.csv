@@ -1,10 +1,10 @@
 file,produced_by,bytes
 paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",16657
-paper/INDEX.csv,paper/build_all.py,4784
+paper/INDEX.csv,paper/build_all.py,4905
 paper/build_all.py,source,3663
-paper/build_docx.py,source,23028
+paper/build_docx.py,source,23424
 paper/build_numbers.py,source,58401
-paper/check_docx_numbers.py,source,12144
+paper/check_docx_numbers.py,source,12556
 paper/check_draft_ids.py,source,5341
 paper/check_ledger.py,source,3783
 paper/check_references.py,source,5206
@@ -15,7 +15,7 @@ paper/draft/outline_abstract.md,"hand-written, markers validated by paper/check_
 paper/draft/outline_conclusion.md,"hand-written, markers validated by paper/check_draft_ids.py",2826
 paper/draft/outline_discussion.md,"hand-written, markers validated by paper/check_draft_ids.py",6999
 paper/draft/outline_intro.md,"hand-written, markers validated by paper/check_draft_ids.py",5335
-paper/draft/outline_related_work.md,"hand-written, markers validated by paper/check_draft_ids.py",7480
+paper/draft/outline_related_work.md,"hand-written, markers validated by paper/check_draft_ids.py",7197
 paper/draft/results.md,"hand-written, markers validated by paper/check_draft_ids.py",19668
 paper/emit_macros.py,source,3649
 paper/figures/fig_leave_one_out.pdf,paper/make_figures.py,19090
@@ -33,12 +33,12 @@ paper/figures/fig_rank_inversion_data.csv,paper/make_figures.py,470
 paper/figures/figures_index.csv,paper/make_figures.py,1085
 paper/make_figures.py,source,15619
 paper/make_tables.py,source,11901
-paper/manuscript.docx,paper/build_docx.py,56640
-paper/number_audit.txt,paper/check_docx_numbers.py,3412
+paper/manuscript.docx,paper/build_docx.py,58415
+paper/number_audit.txt,paper/check_docx_numbers.py,3451
 paper/numbers.csv,paper/build_numbers.py,97219
 paper/numbers.json,paper/emit_macros.py,163688
 paper/numbers.tex,paper/emit_macros.py,77725
-paper/references.csv,keys and DOIs hand-entered; bibliographic fields from Crossref via paper/check_references.py; only rows a person marks VERIFIED are rendered,3472
+paper/references.csv,keys and DOIs hand-entered; bibliographic fields from Crossref via paper/check_references.py; only rows a person marks VERIFIED are rendered,4808
 paper/submission/Figure 1.pdf,paper/build_docx.py,21317
 paper/submission/Figure 1.png,paper/build_docx.py,603219
 paper/submission/Figure 2.pdf,paper/build_docx.py,22664

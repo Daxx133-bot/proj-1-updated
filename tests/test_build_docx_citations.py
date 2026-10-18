@@ -68,3 +68,10 @@ def test_only_verified_rows_load(tmp_path):
                  "a,\"Alpha, A.\",T,V,2010,,,,,VERIFIED,yes\n"
                  "b,\"Beta, B.\",T,V,2011,,,,,UNVERIFIED,\n", encoding="utf-8")
     assert set(bd.load_refs(str(p))) == {"a"}
+
+
+def test_reference_without_doi_shows_url():
+    e = ref("Alpha, A.", "2010", title="Example report", venue="Example Technical Report",
+            url="https://example.org/report")
+    assert bd.format_reference(e, "2010") == \
+        "Alpha A. 2010. Example report. Example Technical Report. Available at https://example.org/report."

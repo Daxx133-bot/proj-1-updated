@@ -20,6 +20,8 @@ Each token is classified, in this order, as one of:
   table cell          a data cell of paper/submission/Table N.docx whose text is identical
                       to the same cell of the paper/tables/*.csv file named by its title
   table header        a token in a table's header row (column names with units)
+  reference entry     a token in the manuscript's reference list (volume, issue, pages,
+                      DOI, year), which is rendered from paper/references.csv
   UNMATCHED           none of the above
 
 The docx carries no markers, so the ids marked in each sentence are recovered from the
@@ -229,6 +231,10 @@ def audit_file(label, path, nums, strings, by_id, sent_ids, shows, counts, flagg
                 section = txt
             if CAPTION.match(txt):
                 last_caption = txt
+            if label == "manuscript" and section == "References" and not heading:
+                for m in NUMBER.finditer(norm(txt)):
+                    counts["reference entry"] += 1
+                continue
             for sent in ([txt] if heading else SENT.split(txt)):
                 marked = [by_id[i] for i in sent_ids.get(key(sent), ()) if i in by_id]
                 for tok, cat in classify_text(sent, heading, nums, strings, nref, marked):
@@ -265,7 +271,8 @@ def write_report(counts, flagged, files):
          "only if an id marked in the same draft sentence carries that value.",
          "", "Tokens by category:"]
     for cat in ("numbers.csv value", "numbers.csv value (string)", "marked in sentence",
-                "table cell", "table header", "section number", "table/figure number",
+                "table cell", "table header", "reference entry", "section number",
+                "table/figure number",
                 "deviation number", "year", "reference number", "WEAK MATCH", "UNMATCHED"):
         L.append("  %-28s %6d" % (cat, counts[cat]))
     for cat in ("UNMATCHED", "WEAK MATCH"):

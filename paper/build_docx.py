@@ -28,7 +28,9 @@ Rendering rules
     (Smith et al., 2010), several separated by semicolons in chronological order. A
     citation renders only if every key in it is a row of paper/references.csv with status
     VERIFIED; otherwise the bracket, like any [CITATION NEEDED: ...], stays as visible
-    text. The reference list holds the cited VERIFIED rows, alphabetically, with DOIs.
+    text. The reference list holds every VERIFIED row, alphabetically by first author,
+    with its DOI, or its URL where it has no DOI. The build reports VERIFIED rows the
+    rendered text does not cite.
   * Format: US Letter, 2.5 cm margins, Times New Roman 12 pt, 1.5 line spacing, left
     aligned, continuous line numbering, Word's built-in Title/Heading styles, Normal style
     for body text.
@@ -236,6 +238,8 @@ def format_reference(entry, year):
     s += "."
     if entry.get("doi"):
         s += " DOI %s." % entry["doi"]
+    elif entry.get("url"):
+        s += " Available at %s." % entry["url"]
     return s
 
 
@@ -253,7 +257,7 @@ def resolve_citations(text, refs, cited):
             for k in ks:
                 if k not in cited:
                     cited.append(k)
-    years = year_suffixes(refs, cited)
+    years = year_suffixes(refs, list(refs))
 
     def sub(m):
         ks = keys_of(m)
@@ -433,13 +437,13 @@ class Builder:
                 self.to_write(outline_heading(outline, heading))
 
         self.doc.add_heading("References", level=1)
-        if not self.cited:
+        if not self.refs:
             placeholder(self.doc.add_paragraph(),
                         "[TO WRITE: no reference in paper/references.csv has status "
-                        "VERIFIED and is cited]")
-        years = year_suffixes(self.refs, self.cited)
-        for k in sorted(self.cited, key=lambda k: (surnames(self.refs[k])[0].lower(),
-                                                   years[k], self.refs[k]["title"])):
+                        "VERIFIED]")
+        years = year_suffixes(self.refs, list(self.refs))
+        for k in sorted(self.refs, key=lambda k: (surnames(self.refs[k])[0].lower(),
+                                                  years[k], self.refs[k]["title"])):
             self.doc.add_paragraph(format_reference(self.refs[k], years[k]))
         for heading, prose, outline in TRAILING:
             self.to_write(outline_heading(outline, heading))
@@ -534,8 +538,12 @@ class Builder:
 def main():
     b = Builder()
     info = b.build()
-    print("wrote paper/manuscript.docx (no embedded figures or tables), "
-          "%d cited verified references" % len(b.cited))
+    print("wrote paper/manuscript.docx (no embedded figures or tables): %d verified "
+          "references listed, %d cited in the rendered text"
+          % (len(b.refs), len(b.cited)))
+    uncited = sorted(set(b.refs) - set(b.cited))
+    if uncited:
+        print("  listed but not cited in the rendered text: %s" % ", ".join(uncited))
     print("abstract: %d words (limit %d)" % (b.abstract_words, ABSTRACT_MAX_WORDS))
     for kind in ("figures", "tables"):
         for n, f in info[kind]:

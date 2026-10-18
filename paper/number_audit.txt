@@ -10,6 +10,7 @@ Tokens by category:
   marked in sentence              168
   table cell                      706
   table header                      0
+  reference entry                  87
   section number                   59
   table/figure number              27
   deviation number                 18

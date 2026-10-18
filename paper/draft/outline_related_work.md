@@ -34,7 +34,7 @@ without that verification.
 
 | ¶ | Must establish | Placeholder |
 |---|---|---|
-| 10 | The chaos-engineering methodology of deliberate fault injection into running systems, and its use for empirical resilience assessment. | `[CITATION NEEDED: chaos engineering — principles and practice]` |
+| 10 | The chaos-engineering methodology of deliberate fault injection into running systems, and its use for empirical resilience assessment. | `[@basiri2016]` |
 | 11 | Fault-injection tooling and the specific fault models we use, process kill and network delay via traffic control. | `[CITATION NEEDED: container fault injection tooling / netem-based network fault emulation]` |
 | 12 | Prior fault-injection studies that quantify blast radius, and how they define and measure it. Needed to position our three-way ancestor/descendant/unrelated classification. | `[CITATION NEEDED: empirical blast-radius measurement in microservice fault injection]` |
 
@@ -42,7 +42,7 @@ without that verification.
 
 | ¶ | Must establish | Placeholder |
 |---|---|---|
-| 13 | Distributed tracing with propagated context and parent–child spans, which is what makes trace-based graph reconstruction possible. | `[CITATION NEEDED: distributed tracing — Dapper-style context propagation]` |
+| 13 | Distributed tracing with propagated context and parent–child spans, which is what makes trace-based graph reconstruction possible. | `[@sigelman2010]` |
 | 14 | Prior work reconstructing service dependency graphs from traces, and any that notes the gap between documented and observed topology. Supports §3.1 and §6.6. | `[CITATION NEEDED: trace-derived service dependency graph extraction]` |
 | 15 | Work on latency attribution in traces, in particular the distinction between end-to-end request latency and a service's own service time. If prior work has documented the trace-cohort attribution artifact we describe in §3.5, it must be cited here; if it has not, that is a contribution and the section should say so carefully rather than claiming novelty by omission. | `[CITATION NEEDED: per-service latency attribution / critical path analysis in distributed traces]` |
 | 16 | Tail-latency characterisation and percentile-based SLO measurement, which motivates p95 as the indicator. | `[CITATION NEEDED: tail latency in large-scale online services]` |
@@ -51,14 +51,14 @@ without that verification.
 
 | ¶ | Must establish | Placeholder |
 |---|---|---|
-| 17 | The benchmark suite the two applications come from, its design goals and its representativeness claims, plus the specific commit we pinned. | `[CITATION NEEDED: microservice benchmark suite used for both applications]` |
+| 17 | The benchmark suite the two applications come from, its design goals and its representativeness claims, plus the specific commit we pinned. | `[@gan2019]` |
 
 ## 2.7 Research methodology
 
 | ¶ | Must establish | Placeholder |
 |---|---|---|
-| 18 | Preregistration as a method for separating confirmatory from exploratory analysis, and the reasoning about researcher degrees of freedom that motivates it. Supports §3.8 and §7. | `[CITATION NEEDED: preregistration and researcher degrees of freedom]` |
-| 19 | The multiple-comparisons procedure used, and the rationale for controlling false discovery rate rather than family-wise error. | `[CITATION NEEDED: Benjamini–Hochberg false discovery rate control]` |
+| 18 | Preregistration as a method for separating confirmatory from exploratory analysis, and the reasoning about researcher degrees of freedom that motivates it. Supports §3.8 and §7. | `[@nosek2018]` |
+| 19 | The multiple-comparisons procedure used, and the rationale for controlling false discovery rate rather than family-wise error. | `[@benjamini1995]` |
 | 20 | Permutation and bootstrap inference for small samples with heavy ties, justifying our departure from asymptotic p-values. | `[CITATION NEEDED: permutation tests and BCa bootstrap for small-sample rank statistics]` |
 
 ## Leads to verify, not citations
