@@ -20,42 +20,31 @@ Written by `paper/make_checklist.py`. PASS means the build output meets the requ
 | Number audit: every number traced to numbers.csv (0 unmatched) | PASS | paper/number_audit.txt, 0 unmatched |
 | Cover page: authors, affiliations, corresponding author | TO DO | cover_page.docx has [TO FILL] |
 | Cover letter | TO DO | cover_letter.docx has [TO FILL] |
-| Funding statement | TO DO | has [TO FILL] |
-| Acknowledgments statement | TO DO | has [TO FILL] |
+| Funding statement | PASS |  |
+| Competing Interests statement | PASS |  |
 | Data Availability statement | TO DO | has [TO FILL] |
 | AI-Use Statement | PASS |  |
 | Code licence (LICENSE) and data licence (LICENSE-DATA) in the repository | PASS |  |
 | Raw data archived with a DOI (Zenodo) | TO DO | Data Availability names a Zenodo DOI to fill |
 | Preregistration uploaded as supplementary material (_audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md) | TO DO | done at submission |
-| Competing interests declared in the submission system | TO DO | done at submission |
-| Author contributions declared in the submission system | TO DO | done at submission |
+| Competing interests declared in the submission system | TO DO | answer in FORM_ANSWERS.md |
+| Funding declared in the submission system | TO DO | answer in FORM_ANSWERS.md |
+| Author contributions declared in the submission system | TO DO | draft in FORM_ANSWERS.md, awaiting [Guide to confirm] |
 | All authors listed and ORCIDs entered in the submission system | TO DO | done at submission |
 
-## [TO FILL] placeholders (22)
+## Placeholders (10)
 
 Drafts and `build_docx.py` are the sources; the `.docx` rows are where each one appears after the build.
 
 | Location | Placeholder |
 |---|---|
-| paper/draft/acknowledgments.md:3 | `[TO FILL]` |
-| paper/draft/cover_letter.md:7 | `[TO FILL: date]` |
-| paper/draft/cover_letter.md:42 | `[TO FILL: co-authors]` |
-| paper/draft/cover_letter.md:44 | `[TO FILL: department]` |
-| paper/draft/cover_letter.md:46 | `[TO FILL: corresponding author name, email and postal address]` |
+| paper/draft/cover_letter.md:8 | `[TO FILL: date]` |
+| paper/draft/cover_letter.md:49 | `[TO FILL: corresponding author name and email]` |
 | paper/draft/data_availability.md:5 | `[TO FILL]` |
-| paper/draft/funding.md:3 | `[TO FILL]` |
-| paper/build_docx.py:96 (COVER) | `[TO FILL: other authors]` |
-| paper/build_docx.py:97 (COVER) | `[TO FILL department]` |
-| paper/build_docx.py:98 (COVER) | `[TO FILL name]` |
-| paper/build_docx.py:98 (COVER) | `[TO FILL email]` |
+| paper/build_docx.py:101 | `[TO FILL: corresponding author name and email]` |
+| paper/submission/FORM_ANSWERS.md:7 | `[Guide to confirm]` |
+| paper/submission/FORM_ANSWERS.md:21 | `[TO FILL]` |
 | paper/submission/cover_letter.docx, paragraph 1 | `[TO FILL: date]` |
-| paper/submission/cover_letter.docx, paragraph 10 | `[TO FILL: co-authors]` |
-| paper/submission/cover_letter.docx, paragraph 11 | `[TO FILL: department]` |
-| paper/submission/cover_letter.docx, paragraph 12 | `[TO FILL: corresponding author name, email and postal address]` |
-| paper/submission/cover_page.docx, paragraph 2 | `[TO FILL: other authors]` |
-| paper/submission/cover_page.docx, paragraph 3 | `[TO FILL department]` |
-| paper/submission/cover_page.docx, paragraph 4 | `[TO FILL name]` |
-| paper/submission/cover_page.docx, paragraph 4 | `[TO FILL email]` |
-| paper/submission/manuscript.docx, paragraph 169 | `[TO FILL]` |
-| paper/submission/manuscript.docx, paragraph 171 | `[TO FILL]` |
+| paper/submission/cover_letter.docx, paragraph 13 | `[TO FILL: corresponding author name and email]` |
+| paper/submission/cover_page.docx, paragraph 4 | `[TO FILL: corresponding author name and email]` |
 | paper/submission/manuscript.docx, paragraph 173 | `[TO FILL]` |

@@ -14,7 +14,7 @@ Outputs
 
 Sections, in order: Abstract (run-in headings Background, Methods, Results, Conclusions);
 1 Background; 2 Related Work; 3 Methods; 4 Results; 5 Discussion; 6 Threats to Validity;
-7 Audit and Deviations from Preregistration; 8 Conclusions; Acknowledgments; Funding;
+7 Audit and Deviations from Preregistration; 8 Conclusions; Funding; Competing Interests;
 Data Availability; AI-Use Statement; References. Markdown "- " items render as bullets. A section with a prose draft
 is rendered from it. A section with only an outline file, or no file, gets its heading and
 the visible placeholder [TO WRITE]; nothing is generated to fill it.
@@ -69,7 +69,7 @@ MIN_FIGURE_PX = 3000
 ABSTRACT_FILE = "abstract.md"          # prose abstract, when it exists
 COVER_LETTER = "cover_letter.md"       # rendered to submission/, not into the manuscript
 # Written into submission/ by a later step (paper/make_checklist.py), not stale.
-LATER_FILES = {"SUBMISSION_CHECKLIST.md"}
+LATER_FILES = {"SUBMISSION_CHECKLIST.md", "FORM_ANSWERS.md"}
 ABSTRACT_PARTS = ["Background.", "Methods.", "Results.", "Conclusions."]
 
 # (heading used when there is no prose, prose draft, outline draft)
@@ -83,19 +83,22 @@ SECTIONS = [
     ("6. Threats to Validity", "limitations.md", None),
     ("7. Audit and Deviations from Preregistration", "audit_disclosure.md", None),
     ("8. Conclusions", "conclusions.md", "outline_conclusion.md"),
-    ("Acknowledgments", "acknowledgments.md", None),
     ("Funding", "funding.md", None),
+    ("Competing Interests", "competing_interests.md", None),
     ("Data Availability", "data_availability.md", None),
     ("AI-Use Statement", "ai_statement.md", None),
 ]
 TRAILING: list = []                     # sections after the references (none)
 
+AFFILIATION = ("School of Computer Science and Engineering (SCOPE), Vellore Institute of "
+               "Technology, Vellore, Tamil Nadu 632014, India")
 COVER = {
     "title": ("Does Call-Graph Fan-Out Predict Failure Impact in Microservices? "
               "A Preregistered Fault-Injection Study"),
-    "authors": ["Dakshrajsinh Tank", "[TO FILL: other authors]"],
-    "affiliation": "Vellore Institute of Technology, [TO FILL department]",
-    "corresponding": "[TO FILL name], [TO FILL email]",
+    # (name, affiliation number)
+    "authors": [("Dakshrajsinh Tank", 1), ("Badrinath N", 1)],
+    "affiliations": [AFFILIATION],
+    "corresponding": "[TO FILL: corresponding author name and email]",
 }
 
 # Units shown in table headers. Time and percentage units come from the column-name suffix
@@ -554,13 +557,13 @@ class Builder:
         style_document(cover, line_numbers=False)
         cover.add_heading(COVER["title"], level=0)
         p = cover.add_paragraph()
-        for i, a in enumerate(COVER["authors"]):
-            p.add_run(("" if i == 0 else ", ") + a)
-            if i == 0:
-                p.add_run("1").font.superscript = True
-        p = cover.add_paragraph()
-        p.add_run("1").font.superscript = True
-        p.add_run(" " + COVER["affiliation"])
+        for i, (name, aff) in enumerate(COVER["authors"]):
+            p.add_run(("" if i == 0 else ", ") + name)
+            p.add_run(str(aff)).font.superscript = True
+        for n, aff in enumerate(COVER["affiliations"], 1):
+            p = cover.add_paragraph()
+            p.add_run(str(n)).font.superscript = True
+            p.add_run(" " + aff)
         cover.add_paragraph("Corresponding author: " + COVER["corresponding"])
         cover.save(os.path.join(SUB, "cover_page.docx"))
         written.add("cover_page.docx")
@@ -571,7 +574,8 @@ class Builder:
             letter.styles["Normal"].paragraph_format.line_spacing = 1.0
             for kind, text in blocks(read(COVER_LETTER)):
                 if kind == "p":
-                    text = MARKER.sub("", text).strip().replace("{title}", COVER["title"])
+                    text = (MARKER.sub("", text).strip().replace("{title}", COVER["title"])
+                            .replace("{affiliation}", AFFILIATION))
                     add_runs(letter.add_paragraph(), text)
             letter.core_properties.author = ""
             letter.save(os.path.join(SUB, "cover_letter.docx"))

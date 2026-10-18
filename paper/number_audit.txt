@@ -8,6 +8,7 @@ Tokens by category:
   numbers.csv value               103
   numbers.csv value (string)       11
   URL                              10
+  affiliation                       1
   marked in sentence              140
   table cell                      797
   table header                      0

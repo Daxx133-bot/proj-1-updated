@@ -4,8 +4,10 @@ make_checklist.py -- write paper/submission/SUBMISSION_CHECKLIST.md.
 Each PeerJ Computer Science requirement is checked against the files the build wrote and
 marked PASS or TO DO. A requirement that is met outside these files (an entry in the
 submission system, an upload) is TO DO until a person does it. The checklist then lists
-every [TO FILL] placeholder with its file and line (paragraph number for .docx files).
-Writes no prose for the paper.
+every placeholder ([TO FILL ...] or [Guide to confirm]) with its file and line (paragraph
+number for .docx files). It also writes paper/submission/FORM_ANSWERS.md, the answers for the
+PeerJ submission form, which is not part of the manuscript; its Data Availability answer is
+the manuscript's Data Availability text. Writes no prose for the paper.
 
 Run after build_docx.py and check_docx_numbers.py: python paper/make_checklist.py
 """
@@ -25,9 +27,38 @@ import build_docx as bd  # noqa: E402
 HERE = bd.HERE
 SUB = bd.SUB
 OUT = os.path.join(SUB, "SUBMISSION_CHECKLIST.md")
+FORM = os.path.join(SUB, "FORM_ANSWERS.md")
 AUDIT = os.path.join(HERE, "number_audit.txt")
 TITLE_MAX = 250
-PLACEHOLDER = re.compile(r"\[TO FILL[^\]]*\]")
+PLACEHOLDER = re.compile(r"\[(?:TO FILL[^\]]*|Guide to confirm)\]")
+
+# Answers for the submission form, as the authors gave them (2026-10-18).
+CONTRIBUTIONS = ("Dakshrajsinh Tank conceived the study, performed the experiments, analysed "
+                 "the data, prepared figures and tables, and drafted the manuscript. "
+                 "Badrinath N supervised the work and reviewed the manuscript. "
+                 "[Guide to confirm]")
+COMPETING = "None."
+FUNDING = "None."
+
+
+def plain(md_name):
+    """A draft's paragraphs as plain text: markers and inline markdown removed."""
+    paras = [bd.MARKER.sub("", t).strip() for k, t in bd.blocks(bd.read(md_name)) if k == "p"]
+    return "\n\n".join(re.sub(r"[`*]", "", p) for p in paras)
+
+
+def write_form():
+    L = ["# PeerJ submission form answers", "",
+         "Written by `paper/make_checklist.py`. For the submission form only; not part of "
+         "the manuscript.", "",
+         "## Author contributions", "", CONTRIBUTIONS, "",
+         "## Competing interests", "", COMPETING, "",
+         "## Funding", "", FUNDING, "",
+         "## Data availability", "",
+         "From the manuscript's Data Availability section (`paper/draft/data_availability.md`).",
+         "", plain("data_availability.md")]
+    with open(FORM, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(L) + "\n")
 
 
 def doc_text(path):
@@ -109,7 +140,8 @@ def main():
         not placeholders_in("cover_page.docx"), "cover_page.docx has [TO FILL]")
     req("Cover letter", os.path.isfile(os.path.join(SUB, "cover_letter.docx"))
         and not placeholders_in("cover_letter.docx"), "cover_letter.docx has [TO FILL]")
-    for heading in ("Funding", "Acknowledgments", "Data Availability", "AI-Use Statement"):
+    for heading in ("Funding", "Competing Interests", "Data Availability",
+                    "AI-Use Statement"):
         i = text.find("\n" + heading + "\n")
         nxt = text[i + len(heading) + 2:].split("\n", 1)[0] if i >= 0 else ""
         label = heading if heading.endswith("Statement") else heading + " statement"
@@ -120,12 +152,19 @@ def main():
         all(os.path.isfile(os.path.join(bd.REPO, f)) for f in ("LICENSE", "LICENSE-DATA")))
     req("Raw data archived with a DOI (Zenodo)", "Zenodo (DOI: [TO FILL" not in text,
         "Data Availability names a Zenodo DOI to fill")
-    for name in ("Preregistration uploaded as supplementary material "
-                 "(_audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md)",
-                 "Competing interests declared in the submission system",
-                 "Author contributions declared in the submission system",
-                 "All authors listed and ORCIDs entered in the submission system"):
-        req(name, False, "done at submission")
+    write_form()
+    for name, detail in (
+            ("Preregistration uploaded as supplementary material "
+             "(_audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md)",
+             "done at submission"),
+            ("Competing interests declared in the submission system",
+             "answer in FORM_ANSWERS.md"),
+            ("Funding declared in the submission system", "answer in FORM_ANSWERS.md"),
+            ("Author contributions declared in the submission system",
+             "draft in FORM_ANSWERS.md, awaiting [Guide to confirm]"),
+            ("All authors listed and ORCIDs entered in the submission system",
+             "done at submission")):
+        req(name, False, detail)
 
     todo = []
     for fn in sorted(os.listdir(bd.DRAFT)):
@@ -135,7 +174,10 @@ def main():
                     todo.append(("paper/draft/%s:%d" % (fn, n), m.group(0)))
     for n, line in enumerate(open(os.path.join(HERE, "build_docx.py"), encoding="utf-8"), 1):
         for m in PLACEHOLDER.finditer(line):
-            todo.append(("paper/build_docx.py:%d (COVER)" % n, m.group(0)))
+            todo.append(("paper/build_docx.py:%d" % n, m.group(0)))
+    for n, line in enumerate(open(FORM, encoding="utf-8"), 1):
+        for m in PLACEHOLDER.finditer(line):
+            todo.append(("paper/submission/FORM_ANSWERS.md:%d" % n, m.group(0)))
     for fn in sorted(f for f in os.listdir(SUB) if f.endswith(".docx")):
         for n, p in enumerate(doc_text(os.path.join(SUB, fn)), 1):
             for m in PLACEHOLDER.finditer(p):
@@ -146,13 +188,14 @@ def main():
          "requirement; TO DO means a person still has to act.", "",
          "| Requirement | Status | Detail |", "|---|---|---|"]
     L += ["| %s | %s | %s |" % r for r in rows]
-    L += ["", "## [TO FILL] placeholders (%d)" % len(todo), "",
+    L += ["", "## Placeholders (%d)" % len(todo), "",
           "Drafts and `build_docx.py` are the sources; the `.docx` rows are where each one "
           "appears after the build.", "", "| Location | Placeholder |", "|---|---|"]
     L += ["| %s | `%s` |" % t for t in todo]
     with open(OUT, "w", encoding="utf-8") as fh:
         fh.write("\n".join(L) + "\n")
-    print("wrote paper/submission/SUBMISSION_CHECKLIST.md: %d PASS, %d TO DO, %d [TO FILL]"
+    print("wrote paper/submission/SUBMISSION_CHECKLIST.md and FORM_ANSWERS.md: %d PASS, "
+          "%d TO DO, %d placeholders"
           % (sum(r[1] == "PASS" for r in rows), sum(r[1] == "TO DO" for r in rows),
              len(todo)))
     return 0

@@ -1,7 +1,8 @@
 # Cover letter
 
 > **Drafting note (strip before submission).** Rendered by `paper/build_docx.py` to
-> `paper/submission/cover_letter.docx`. `{title}` is replaced by the title in `COVER`.
+> `paper/submission/cover_letter.docx`. `{title}` and `{affiliation}` are replaced from `COVER` and
+> `AFFILIATION` in `build_docx.py`.
 > Trailing `%[id:...]` comments name the `paper/numbers.csv` claim_id each number comes from.
 
 [TO FILL: date]
@@ -39,8 +40,10 @@ language editing, as set out in the AI-Use Statement.
 
 Sincerely,
 
-Dakshrajsinh Tank, on behalf of all authors [TO FILL: co-authors]
+Dakshrajsinh Tank, B.Tech student
 
-Vellore Institute of Technology, [TO FILL: department]
+Dr. Badrinath N, Assistant Professor
 
-[TO FILL: corresponding author name, email and postal address]
+{affiliation}
+
+Corresponding author: [TO FILL: corresponding author name and email]

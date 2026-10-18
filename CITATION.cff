@@ -1,12 +1,14 @@
 cff-version: 1.2.0
 message: "If you use this software or data, please cite it using these metadata."
 type: software
-title: "[TITLE TO WRITE]"
+title: "Does Call-Graph Fan-Out Predict Failure Impact in Microservices? A Preregistered Fault-Injection Study"
 authors:
   - family-names: "Tank"
     given-names: "Dakshrajsinh"
-    affiliation: "Vellore Institute of Technology"
-  - name: "[TO FILL: other authors]"
+    affiliation: "School of Computer Science and Engineering (SCOPE), Vellore Institute of Technology, Vellore, Tamil Nadu 632014, India"
+  - family-names: "N"
+    given-names: "Badrinath"
+    affiliation: "School of Computer Science and Engineering (SCOPE), Vellore Institute of Technology, Vellore, Tamil Nadu 632014, India"
 license: MIT
 repository-code: "https://github.com/Daxx133-bot/proj-1-updated"
 keywords:

@@ -4,6 +4,7 @@ check_docx_numbers.py -- audit every numeric token in paper/manuscript.docx. Fix
 Each token is classified, in this order, as one of:
 
   URL                 a web address (its digits are not numbers of the paper)
+  affiliation         the authors' postal address (build_docx.AFFILIATION)
   section number      in a heading, or written as §n / §n.m / Section n
   table/figure number in "Table N", "Tables N and M", "Figure N", "Fig. N", or a caption label
   reference number    [n] where n is a rendered reference
@@ -167,6 +168,10 @@ def classify_text(text, is_heading, nums, strings, nref, marked_values):
     for u in URL.findall(masked):
         out.append((u, "URL"))
         masked = masked.replace(u, " " * len(u))
+    aff = norm(bd.AFFILIATION)
+    if aff in masked:
+        out.append((aff, "affiliation"))
+        masked = masked.replace(aff, " " * len(aff))
     if is_heading:
         for m in NUMBER.finditer(masked):
             out.append((m.group(0), "section number"))
@@ -284,7 +289,7 @@ def write_report(counts, flagged, files):
          "named, not that it is attached to the right claim. Tokens below 10 count as sourced",
          "only if an id marked in the same draft sentence carries that value.",
          "", "Tokens by category:"]
-    for cat in ("numbers.csv value", "numbers.csv value (string)", "URL", "marked in sentence",
+    for cat in ("numbers.csv value", "numbers.csv value (string)", "URL", "affiliation", "marked in sentence",
                 "table cell", "table header", "reference entry", "section number",
                 "table/figure number",
                 "deviation number", "year", "reference number", "WEAK MATCH", "UNMATCHED"):

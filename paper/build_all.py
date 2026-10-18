@@ -10,7 +10,8 @@ build_all.py -- regenerate every artifact under paper/ in dependency order, then
                        submission/ (manuscript copy, figures, legends, tables, cover
                        page, cover letter)
     check_docx_numbers.py  manuscript.docx + numbers.csv -> number_audit.txt (report only)
-    make_checklist.py  submission/, number_audit.txt -> submission/SUBMISSION_CHECKLIST.md
+    make_checklist.py  submission/, number_audit.txt -> submission/SUBMISSION_CHECKLIST.md,
+                       submission/FORM_ANSWERS.md
 
 Finally writes paper/INDEX.csv, one row per file under paper/, naming the script that
 produced it. A failing ledger check fails the build. The number audit never fails the
@@ -41,6 +42,7 @@ PRODUCER = {
     "manuscript.docx": "paper/build_docx.py",
     "number_audit.txt": "paper/check_docx_numbers.py",
     "SUBMISSION_CHECKLIST.md": "paper/make_checklist.py",
+    "FORM_ANSWERS.md": "paper/make_checklist.py",
     "manuscript.pdf": ("exported from manuscript.docx by Microsoft Word, for reading only; "
                        "not part of the submission"),
     "references.csv": ("keys and DOIs hand-entered; bibliographic fields from Crossref via "
