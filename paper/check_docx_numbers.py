@@ -3,6 +3,7 @@ check_docx_numbers.py -- audit every numeric token in paper/manuscript.docx. Fix
 
 Each token is classified, in this order, as one of:
 
+  URL                 a web address (its digits are not numbers of the paper)
   section number      in a heading, or written as §n / §n.m
   table/figure number in "Table N", "Tables N and M", "Figure N", "Fig. N", or a caption label
   reference number    [n] where n is a rendered reference
@@ -68,9 +69,16 @@ def norm(s):
     return s.replace("−", "-").replace(" ", " ").replace(" ", " ")
 
 
+CITATION = re.compile(r"\[@[^\]]+\]|\((?:[A-Z][^()]*?, (?:19|20)\d\d[a-z]?(?:; )?)+\)")
+URL = re.compile(r"https?://\S+")
+
+
 def key(s):
+    """Sentence key shared by the draft side and the docx side. Citations are dropped,
+    since the draft writes [@key] where the docx shows (Author, Year)."""
     s = norm(s)
     s = MENTION.sub("#REF#", s)
+    s = CITATION.sub("", s)
     return re.sub(r"\s+", " ", s).strip()
 
 
@@ -87,7 +95,7 @@ def draft_sentence_ids():
         if not (prose and os.path.isfile(os.path.join(bd.DRAFT, prose))):
             continue
         for kind, raw in bd.blocks(bd.read(prose)):
-            if kind not in ("p", "quote"):
+            if kind not in ("p", "quote", "li"):
                 continue
             ids = []
 
@@ -156,6 +164,9 @@ def classify_text(text, is_heading, nums, strings, nref, marked_values):
         if s in masked:
             out.append((s, "numbers.csv value (string)"))
             masked = masked.replace(s, " " * len(s))
+    for u in URL.findall(masked):
+        out.append((u, "URL"))
+        masked = masked.replace(u, " " * len(u))
     if is_heading:
         for m in NUMBER.finditer(masked):
             out.append((m.group(0), "section number"))
@@ -270,7 +281,7 @@ def write_report(counts, flagged, files):
          "named, not that it is attached to the right claim. Tokens below 10 count as sourced",
          "only if an id marked in the same draft sentence carries that value.",
          "", "Tokens by category:"]
-    for cat in ("numbers.csv value", "numbers.csv value (string)", "marked in sentence",
+    for cat in ("numbers.csv value", "numbers.csv value (string)", "URL", "marked in sentence",
                 "table cell", "table header", "reference entry", "section number",
                 "table/figure number",
                 "deviation number", "year", "reference number", "WEAK MATCH", "UNMATCHED"):

@@ -11,8 +11,8 @@ Outputs
 
 Sections, in order: Abstract (run-in headings Background, Methods, Results, Conclusions);
 1 Background; 2 Related Work; 3 Methods; 4 Results; 5 Discussion; 6 Threats to Validity;
-7 Audit and Deviations from Preregistration; 8 Conclusions; Acknowledgments; Funding
-Statement; Data Availability; AI-Use Statement; References. A section with a prose draft
+7 Audit and Deviations from Preregistration; 8 Conclusions; Acknowledgments; Funding;
+Data Availability; AI-Use Statement; References. Markdown "- " items render as bullets. A section with a prose draft
 is rendered from it. A section with only an outline file, or no file, gets its heading and
 the visible placeholder [TO WRITE]; nothing is generated to fill it.
 
@@ -69,18 +69,18 @@ ABSTRACT_PARTS = ["Background.", "Methods.", "Results.", "Conclusions."]
 # (heading used when there is no prose, prose draft, outline draft)
 SECTIONS = [
     ("Abstract", ABSTRACT_FILE, "outline_abstract.md"),
-    ("1. Background", None, "outline_intro.md"),
-    ("2. Related Work", None, "outline_related_work.md"),
+    ("1. Background", "background.md", "outline_intro.md"),
+    ("2. Related Work", "related_work.md", "outline_related_work.md"),
     ("3. Methods", "method.md", None),
     ("4. Results", "results.md", None),
-    ("5. Discussion", None, "outline_discussion.md"),
+    ("5. Discussion", "discussion.md", "outline_discussion.md"),
     ("6. Threats to Validity", "limitations.md", None),
     ("7. Audit and Deviations from Preregistration", "audit_disclosure.md", None),
-    ("8. Conclusions", None, "outline_conclusion.md"),
-    ("Acknowledgments", None, None),
-    ("Funding Statement", None, None),
-    ("Data Availability", None, None),
-    ("AI-Use Statement", None, None),
+    ("8. Conclusions", "conclusions.md", "outline_conclusion.md"),
+    ("Acknowledgments", "acknowledgments.md", None),
+    ("Funding", "funding.md", None),
+    ("Data Availability", "data_availability.md", None),
+    ("AI-Use Statement", "ai_statement.md", None),
 ]
 TRAILING: list = []                     # sections after the references (none)
 
@@ -170,6 +170,15 @@ def blocks(text):
         if h:
             flush()
             out.append(("h%d" % len(h.group(1)), h.group(2).strip()))
+        elif line.startswith("- "):
+            flush()
+            item = [line[2:].strip()]
+            i += 1
+            while i < len(lines) and lines[i].startswith("  ") and lines[i].strip():
+                item.append(lines[i].strip())
+                i += 1
+            out.append(("li", " ".join(item)))
+            continue
         elif not line.strip():
             flush()
         else:
@@ -432,7 +441,8 @@ class Builder:
                         self.doc.add_heading(MARKER.sub("", text).strip(),
                                              level=int(kind[1]))
                     else:
-                        self.paragraph(text, style="Quote" if kind == "quote" else None)
+                        self.paragraph(text, style={"quote": "Quote",
+                                                    "li": "List Bullet"}.get(kind))
             else:
                 self.to_write(outline_heading(outline, heading))
 

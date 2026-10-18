@@ -300,3 +300,45 @@ These were not tested. Do not assert or deny them.
 - Any causal claim about *why* a service degrades; the study measures whether it degrades.
 - Any claim about recovery time as a function of criticality: every such test is inside the
   null families of §1.
+
+---
+
+## 11. Post-hoc descriptive analyses — usable only with that label
+
+Added 2026-10-18. Each was specified after the confirmatory results were known and runs no
+test that enters any family.
+
+**11.1 POST-HOC** — The gateway was among the degraded ancestors in every one of the 180
+runs, and it is a graph ancestor of every analysis-set service in both architectures, so
+every measured ancestor count includes the gateway. For `compose-post-service` the gateway
+was the only degraded ancestor in all ten runs.
+`gw_runs_gateway_degraded_all`, `gw_runs_all`, `gw_sn_services_gateway_ancestor`,
+`gw_hr_services_gateway_ancestor`, `composepost_runs_only_gateway_ancestor`,
+`composepost_runs_total`
+*Source: `analysis/final/gateway_decomposition.md`. Descriptive; no test.*
+
+**11.2 POST-HOC, EXPLORATORY** — Under kill faults, the gateway's end-to-end error rate
+follows the share of the request mix whose path passes through the faulted service
+(descriptive rank correlation 0.788 on Social Network, 0.964 on Hotel Reservation). On
+Social Network, the exploratory association between `hybrid_criticality` and gateway error,
+which is not significant after correction, tracks the metric's in-degree term (0.715) more
+closely than its fan-out term (0.310).
+`uf_sn_rho_err_weight_share`, `uf_hr_rho_err_weight_share`, `uf_test_sn_hybrid_rho`,
+`uf_test_sn_hybrid_bh_p`, `uf_sn_rho_err_term_in`, `uf_sn_rho_err_term_fanout`,
+`uf_sn_rho_err_term_btw`, `uf_kill_runs_baseline_error_zero`
+*Source: `analysis/final/user_facing_impact.md`. The rank correlations with weight share
+carry no p-value. The baseline uses the gateway's own spans and the fault window is
+end-to-end; the baseline is 0.0 in all 90 kill runs, so this has no numerical effect.*
+
+**11.3 POST-HOC** — Restricting Social Network per-service latency to server spans changes
+2 of 110 run-level outcomes and no service-level median, and leaves the primary correlation
+and its exact p unchanged.
+`replay_runs`, `replay_runs_changed`, `replay_service_medians_changed`,
+`replay_primary_identical`, `replay_primary_rho_kill`, `replay_primary_p_kill`,
+`sn_span_samples_fallback`, `sn_span_samples`, `sn_spans_selected_client_pct`
+*Deviation 11. Social Network recovery times could not be replayed.*
+
+**11.4 UNSUPPORTED** — "The request mix explains which services degrade" or "explains why
+`user-service` departs." 11.2 concerns the gateway's error rate, not ancestor counts, and the
+`user-service` reading in 3.4 remains untested. **Say instead:** describe the gateway-error
+association as exploratory and descriptive, and keep 3.4 labelled as an untested hypothesis.
