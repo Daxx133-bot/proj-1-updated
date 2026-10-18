@@ -1,21 +1,21 @@
 number_audit.txt -- written by paper/check_docx_numbers.py
-Audited: manuscript, figure_legends.docx, Table 1.docx, Table 2.docx, Table 3.docx, Table 4.docx, Table 5.docx, Table 6.docx, Table 7.docx, Table 8.docx, Table 9.docx
+Audited: manuscript, figure_legends.docx, Table 1.docx, Table 2.docx, Table 3.docx, Table 4.docx, Table 5.docx, Table 6.docx, Table 7.docx, Table 8.docx, Table 9.docx, Table 10.docx, cover_letter.docx
 Nothing was changed. A match means the number has a traced source of the kind
 named, not that it is attached to the right claim. Tokens below 10 count as sourced
 only if an id marked in the same draft sentence carries that value.
 
 Tokens by category:
-  numbers.csv value               102
-  numbers.csv value (string)        4
-  URL                               1
-  marked in sentence              192
-  table cell                      706
+  numbers.csv value               103
+  numbers.csv value (string)       10
+  URL                              10
+  marked in sentence              140
+  table cell                      810
   table header                      0
-  reference entry                  87
-  section number                   85
-  table/figure number              27
+  reference entry                  90
+  section number                   89
+  table/figure number              29
   deviation number                 24
-  year                             25
+  year                             27
   reference number                  0
   WEAK MATCH                        7
   UNMATCHED                         0

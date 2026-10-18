@@ -19,7 +19,8 @@ gateway. That difference ended up deciding what each application could show at a
 
 We did not take the dependency graph from documentation. A diagram shows the calls a system
 can make, and our hypothesis concerns the calls it does make under the workload we perturb.
-We therefore rebuilt each graph from distributed traces collected with Jaeger, adding a
+We therefore rebuilt each graph from distributed traces collected with Jaeger 1.62.0 %[id:version_jaeger]
+(https://www.jaegertracing.io), adding a
 directed edge from caller to callee wherever a span from one service is the parent of a span
 from another [@sigelman2010]. The Social Network graph came from 2,449
 %[id:graph_sn_traces_examined] traces holding 32,847 %[id:graph_sn_spans_examined] spans, and
@@ -63,7 +64,7 @@ degree, in-degree, out-degree, betweenness, closeness, eigenvector centrality, P
 composite rank, descendant count and dominator subtree size %[prereg:§5]. The plan forbade
 dropping any of them once results were seen, and none was dropped. Centralities follow the
 standard definitions [@freeman1978], and betweenness is computed with the algorithm of Brandes
-as implemented in NetworkX [@brandes2001].
+as implemented in NetworkX [@brandes2001; @hagberg2008].
 
 The hybrid criticality metric is the measure this project set out to evaluate. It adds three
 weighted terms: in-degree centrality with weight 0.4 %[id:hybrid_w_in], out-degree centrality
@@ -86,12 +87,10 @@ considered.
 
 ## 3.4 Fault injection protocol
 
-Every run follows the same sequence. We start the application and drive it with Locust at 25
+Every run follows the same sequence. We start the application and drive it with Locust 2.46.3 %[id:version_locust] (https://locust.io) at 25
 %[id:protocol_load_users] concurrent users. Each simulated user waits between 0.5
 %[id:protocol_sn_wait_min_s] %[id:protocol_hr_wait_min_s] and 1.5 seconds
-%[id:protocol_sn_wait_max_s] %[id:protocol_hr_wait_max_s] between requests, drawn from a fixed
-weighted mix defined in `infra/_locustfile_baseline.py` for Social Network and
-`infra/_locustfile_hotel.py` for Hotel Reservation. On Social Network the weights are 3
+%[id:protocol_sn_wait_max_s] %[id:protocol_hr_wait_max_s] between requests, and each request is drawn from a fixed weighted mix of tasks. On Social Network the weights are 3
 %[id:protocol_sn_task_weight_compose_post] for composing a post, 5
 %[id:protocol_sn_task_weight_read_home_timeline] for reading a home timeline and 2
 %[id:protocol_sn_task_weight_read_user_timeline] for reading a user timeline. On Hotel
@@ -105,9 +104,10 @@ all 180 %[id:campaign_runs_total] runs %[id:protocol_baseline_window_distinct]. 
 then injected and held for 30 seconds %[id:protocol_fault_duration_s], the recovery probe runs,
 and a 20-second %[id:protocol_cooldown_s] cooldown separates one run from the next.
 
-Faults are injected with Pumba against the target service's container. A kill fault sends
+Faults are injected with Pumba (https://github.com/alexei-led/pumba) against the target
+service's Docker (https://www.docker.com) container. A kill fault sends
 SIGKILL %[id:fault_kill_signal], which ends the process without letting it drain connections
-or answer requests in flight. A latency fault applies a `tc netem` rule that adds 500 ms
+or answer requests in flight. A latency fault applies a `tc netem` (https://wiki.linuxfoundation.org/networking/netem) rule that adds 500 ms
 %[id:fault_latency_delay_ms] of delay with 100 ms %[id:fault_latency_jitter_ms] of jitter to
 the container's network interface. The kill asks what happens when a dependency vanishes; the
 delay asks what happens when it stays up but stops being timely. Because `pumba netem` blocks
@@ -243,12 +243,22 @@ the reporting commitments. It is supplied as
 supplementary material, and every later change to it is logged with a date and a note of
 whether campaign data had been analysed at the time (§7).
 
+The hypotheses under test are H1 and H1b %[prereg:§1.4]. H1 states that
+`ancestor_affected_count`, the number of degraded transitive callers, is predicted by
+`ancestor_count`, the number of transitive callers, and not by out-degree or descendant
+count, nor by the fan-out-corrected hybrid metric. H1b, which is directional, states that the
+hybrid metric's Spearman ρ against `ancestor_affected_count` is at most zero.
+
 Associations between a graph predictor and a measured outcome are tested with Spearman's ρ at
 the service level, after taking the median over each service's repetitions. Significance comes
 from permutation tests. The asymptotic approximation is unreliable at these sample sizes and
 with the ties these graphs produce. Confidence intervals are bias-corrected and accelerated
 bootstrap intervals, with a percentile interval used, and disclosed, where the ties leave the
-bias correction undefined.
+bias correction undefined. The analysis was developed and verified on Python 3.13.2
+%[id:version_python] (https://www.python.org), with SciPy 1.14.1 %[id:version_scipy]
+(https://scipy.org) supplying ranks and the reference Spearman implementation, and
+statsmodels 0.14.6 %[id:version_statsmodels] (https://www.statsmodels.org) the Cox and
+log-rank models.
 
 Tests fall into three families, each corrected separately with the Benjamini-Hochberg
 procedure at q = 0.05 %[id:fdr_q] [@benjamini1995]. The confirmatory family holds 44

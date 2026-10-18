@@ -6,8 +6,9 @@ Centrality has well-established definitions. Freeman's treatment separated sever
 ideas of what makes a node central, some based on a node's direct ties and some on the
 shortest paths that pass through it, and gave them normalised forms that are still in use
 [@freeman1978]. Path-based measures were expensive to compute on large graphs until Brandes
-published a fast algorithm for betweenness, which is the one NetworkX, the library we use,
-implements [@brandes2001].
+published a fast algorithm for betweenness [@brandes2001]. NetworkX 3.6.1
+%[id:version_networkx] (https://networkx.org), the graph library we use [@hagberg2008],
+implements that algorithm.
 
 Software engineering adopted these measures early. Zimmermann and Nagappan computed network
 measures on the dependency graph of a software system and found that they helped predict

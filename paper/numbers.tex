@@ -1,6 +1,6 @@
 %% paper/numbers.tex -- AUTO-GENERATED from paper/numbers.csv. DO NOT EDIT.
 %% Regenerate: python paper/build_numbers.py && python paper/emit_macros.py
-% Generated at repository commit b07201b. 480 macros.
+% Generated at repository commit 3399118. 486 macros.
 
 % Total fault-injection runs in the final campaign (analysis/final/run_level_data.csv)
 \newcommand{\NumCampaignRunsTotal}{180}
@@ -962,3 +962,15 @@
 \newcommand{\NumDeviationTwoFoundAfterMin}{79}
 % Confidence level of the Cox hazard-ratio intervals, from the z multiplier in cox_runlevel and cox_servicelevel (analysis/final/run_confirmatory_analysis.py)
 \newcommand{\NumCoxCiLevelPct}{95}
+% Jaeger version (all-in-one image tag pinned in the compose override) (infra/docker-compose.override.yml)
+\newcommand{\NumVersionJaeger}{1.62.0}
+% Locust version recorded when the load generator was installed (_audit/ENVIRONMENT_STATUS.md)
+\newcommand{\NumVersionLocust}{2.46.3}
+% Python version the pipeline was developed and verified on (README.md)
+\newcommand{\NumVersionPython}{3.13.2}
+% SciPy version the pipeline was verified with (README.md)
+\newcommand{\NumVersionScipy}{1.14.1}
+% statsmodels version the pipeline was verified with (README.md)
+\newcommand{\NumVersionStatsmodels}{0.14.6}
+% NetworkX version the pipeline was verified with (README.md)
+\newcommand{\NumVersionNetworkx}{3.6.1}

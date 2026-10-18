@@ -47,6 +47,21 @@ def f(x, n=3):
     return "" if x is None or (isinstance(x, float) and np.isnan(x)) else format(x, ".%df" % n)
 
 
+def hr(x):
+    """Hazard ratio or interval bound: three decimals, scientific notation outside
+    [0.001, 1000) so degenerate fits stay readable."""
+    if x is None or (isinstance(x, float) and np.isnan(x)):
+        return ""
+    return format(x, ".3f") if 0.001 <= abs(x) < 1000 else format(x, ".2e")
+
+
+def pv(x):
+    """p-value to four decimals, '<0.0001' below that."""
+    if x is None or (isinstance(x, float) and np.isnan(x)):
+        return ""
+    return "<0.0001" if x < 0.00005 else format(x, ".4f")
+
+
 def main():
     preds = pd.read_csv(os.path.join(FINAL, "predictors.csv"))
     svc = pd.read_csv(os.path.join(FINAL, "service_level_data.csv"))
@@ -210,6 +225,38 @@ def main():
     emit("tbl_power", p,
          "Preregistered power table reproduced from the actual analysis sets",
          "analysis/final/power_table.csv", RCA)
+
+    # ---- 6b. recovery time (T_rec) ------------------------------------------
+    # Spearman is primary for T_rec (no censoring, deviation 6). Cox and log-rank are
+    # secondary and uncorrected. Hazard ratios are per one-unit increase of the predictor.
+    rows = []
+    for fam, df in (("confirmatory (kill)", conf), ("replication (latency)", repl)):
+        t = df[(df.outcome == "T_rec") &
+               (df.predictor.isin(["ancestor_count", "hybrid_criticality"]))]
+        for _, r in t.sort_values(["architecture", "predictor"],
+                                  ascending=[False, True]).iterrows():
+            rows.append({
+                "family": fam, "architecture": r.architecture_label,
+                "predictor": r.predictor,
+                "spearman_rho": f(r.spearman_rho, 3), "p_raw": f(r.p_permutation, 4),
+                "p_bh_adjusted": f(r.p_bh_adjusted, 4),
+                "cox_run_hr": hr(r.cox_run_hr),
+                "cox_run_ci_95": "%s to %s" % (hr(r.cox_run_ci_lo), hr(r.cox_run_ci_hi)),
+                "cox_run_p": pv(r.cox_run_p),
+                "cox_service_hr": hr(r.cox_service_hr),
+                "cox_service_ci_95": "%s to %s" % (hr(r.cox_service_ci_lo),
+                                                   hr(r.cox_service_ci_hi)),
+                "cox_service_p": pv(r.cox_service_p),
+                "logrank_p": "undefined" if pd.isna(r.logrank_p) else f(r.logrank_p, 4),
+            })
+    emit("tbl_trec", pd.DataFrame(rows),
+         "Recovery time: Spearman (primary, BH-corrected within family), Cox and log-rank "
+         "(secondary, uncorrected) for ancestor_count and hybrid_criticality. Cox hazard "
+         "ratios are per one-unit increase of the predictor, at run level with SEs clustered "
+         "by service and at service level; hybrid_criticality spans less than one unit, so "
+         "its hazard ratios extrapolate beyond the observed range. Log-rank is undefined "
+         "where the predictor has fewer than two distinct terciles",
+         "analysis/final/confirmatory_family_kill.csv + replication_family_latency.csv", RCA)
 
     # ---- 7. deviations ------------------------------------------------------
     d = devs.sort_values("n")[["n", "date", "title", "stage", "what_happened",

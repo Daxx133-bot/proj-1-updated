@@ -4,7 +4,7 @@ check_docx_numbers.py -- audit every numeric token in paper/manuscript.docx. Fix
 Each token is classified, in this order, as one of:
 
   URL                 a web address (its digits are not numbers of the paper)
-  section number      in a heading, or written as §n / §n.m
+  section number      in a heading, or written as §n / §n.m / Section n
   table/figure number in "Table N", "Tables N and M", "Figure N", "Fig. N", or a caption label
   reference number    [n] where n is a rendered reference
   deviation number    in "Deviation N" / "deviations N, M and K" / "amendment N" (a label)
@@ -58,7 +58,7 @@ NUMBER = re.compile(r"(?<![\w.])[-+]?\d[\d,]*(?:\.\d+)?(?![\w])")
 MENTION = re.compile(r"\b(?:Tables?|Figures?|Figs?\.)\s+\d+(?:\s*(?:,|and)\s*\d+)*")
 CAPTION = re.compile(r"^(?:Table|Figure)\s+\d+\.")
 DEVIATION = re.compile(r"\b(?:[Dd]eviations?|[Aa]mendments?)\s+\d+(?:\s*(?:,|and)\s*\d+)*")
-SECTION = re.compile(r"§\s*\d+(?:\.\d+)*")
+SECTION = re.compile(r"(?:§\s*|\bSections?\s+)\d+(?:\.\d+)*")
 REFNUM = re.compile(r"\[\d+\]")
 SENT = re.compile(r"(?<=[.!?])\s+(?=[A-Z(`*\[])")
 PH = re.compile("(\\d+)")
@@ -91,7 +91,7 @@ def unformat(s):
 def draft_sentence_ids():
     """{normalised sentence text: set of ids marked in that sentence}."""
     out = collections.defaultdict(set)
-    for _, prose, _ in bd.SECTIONS + bd.TRAILING:
+    for prose in [p for _, p, _ in bd.SECTIONS + bd.TRAILING] + [bd.COVER_LETTER]:
         if not (prose and os.path.isfile(os.path.join(bd.DRAFT, prose))):
             continue
         for kind, raw in bd.blocks(bd.read(prose)):
@@ -220,6 +220,9 @@ def audited_files():
               if os.path.isdir(sub) else [])
     for f in sorted(tables, key=lambda f: int(re.findall(r"\d+", f)[0])):
         files.append((f, os.path.join(sub, f)))
+    letter = os.path.join(sub, "cover_letter.docx")
+    if os.path.isfile(letter):
+        files.append(("cover_letter.docx", letter))
     return files
 
 

@@ -38,9 +38,7 @@ differently shaped topology on which the propagation-direction result of §4.5 a
 Both applications come from one benchmark suite, built from one pinned upstream commit
 %[id:dsb_commit]. They are research benchmarks. We chose them because they are instrumented
 and reproducible, which makes the experiment repeatable, but they do not sample the space of
-microservice architectures in any principled way. Neither has the retries with back-off or
-circuit breakers that production deployments use to stop a failure spreading, and those
-mechanisms would be expected to change how far a failure travels. Nothing here describes
+microservice architectures in any principled way. We did not configure or study containment mechanisms such as retries with back-off or circuit breakers, which could change how far a failure travels. Nothing here describes
 production behaviour.
 
 The workload is synthetic as well, fixed at 25 %[id:protocol_load_users] concurrent users with

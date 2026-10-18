@@ -7,8 +7,10 @@ build_all.py -- regenerate every artifact under paper/ in dependency order, then
     make_figures.py    analysis/final/*.csv, spans -> figures/*.png, *.pdf, *_data.csv
     check_ledger.py    CLAIMS_LEDGER.md + numbers.csv -> pass/fail
     build_docx.py      draft/*.md, tables, figures, references.csv -> manuscript.docx,
-                       submission/ (figures, legends, tables, cover page)
+                       submission/ (manuscript copy, figures, legends, tables, cover
+                       page, cover letter)
     check_docx_numbers.py  manuscript.docx + numbers.csv -> number_audit.txt (report only)
+    make_checklist.py  submission/, number_audit.txt -> submission/SUBMISSION_CHECKLIST.md
 
 Finally writes paper/INDEX.csv, one row per file under paper/, naming the script that
 produced it. A failing ledger check fails the build. The number audit never fails the
@@ -28,7 +30,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 
 STEPS = ["build_numbers.py", "emit_macros.py", "make_tables.py", "make_figures.py",
-         "check_ledger.py", "build_docx.py", "check_docx_numbers.py"]
+         "check_ledger.py", "build_docx.py", "check_docx_numbers.py", "make_checklist.py"]
 
 PRODUCER = {
     "numbers.csv": "paper/build_numbers.py",
@@ -38,6 +40,9 @@ PRODUCER = {
     "CLAIMS_LEDGER.md": "hand-written, validated by paper/check_ledger.py",
     "manuscript.docx": "paper/build_docx.py",
     "number_audit.txt": "paper/check_docx_numbers.py",
+    "SUBMISSION_CHECKLIST.md": "paper/make_checklist.py",
+    "manuscript.pdf": ("exported from manuscript.docx by Microsoft Word, for reading only; "
+                       "not part of the submission"),
     "references.csv": ("keys and DOIs hand-entered; bibliographic fields from Crossref via "
                        "paper/check_references.py; only rows a person marks VERIFIED "
                        "are rendered"),
@@ -66,7 +71,7 @@ def main() -> int:
                 produced_by = "paper/make_tables.py"
             elif base.startswith("figures/"):
                 produced_by = "paper/make_figures.py"
-            elif base.startswith("submission/"):
+            elif base.startswith("submission/") and fn not in PRODUCER:
                 produced_by = "paper/build_docx.py"
             elif base.startswith("draft/"):
                 produced_by = ("hand-written, markers validated by "

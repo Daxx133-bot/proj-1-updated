@@ -496,6 +496,37 @@ def number_audit_sources():
         RCA, S_SELF, "%", "%.0f")
 
 
+def software_versions():
+    """Versions of the tools named in the methods, read from where the repository records
+    them. A version with no record is SOURCE NOT FOUND; Pumba, tc netem and Docker have none
+    and are named without one."""
+    S_SELF = "paper/build_numbers.py"
+
+    def grab(rel, pattern):
+        p = os.path.join(REPO, rel)
+        if not os.path.isfile(p):
+            return "SOURCE NOT FOUND"
+        m = re.search(pattern, open(p, encoding="utf-8").read())
+        return m.group(1) if m else "SOURCE NOT FOUND"
+
+    for cid, desc, rel, pat in (
+        ("version_jaeger", "Jaeger version (all-in-one image tag pinned in the compose "
+         "override)", "infra/docker-compose.override.yml",
+         r"jaegertracing/all-in-one:(\d+\.\d+\.\d+)"),
+        ("version_locust", "Locust version recorded when the load generator was installed",
+         "_audit/ENVIRONMENT_STATUS.md", r"locust (\d+\.\d+\.\d+)\*\* on Python"),
+        ("version_python", "Python version the pipeline was developed and verified on",
+         "README.md", r"verified on (\d+\.\d+\.\d+)"),
+        ("version_scipy", "SciPy version the pipeline was verified with", "README.md",
+         r"scipy (\d+\.\d+\.\d+)"),
+        ("version_statsmodels", "statsmodels version the pipeline was verified with",
+         "README.md", r"statsmodels (\d+\.\d+\.\d+)"),
+        ("version_networkx", "NetworkX version the pipeline was verified with", "README.md",
+         r"networkx (\d+\.\d+\.\d+)"),
+    ):
+        add(cid, desc, grab(rel, pat), rel, S_SELF)
+
+
 def user_facing_numbers():
     """Ids for analysis/final/user_facing_impact.py (post hoc, descriptive; 2026-10-17)."""
     S = "analysis/final/user_facing_impact.py"
@@ -968,6 +999,7 @@ def main():
     supplementary_numbers(conf, h1b, devs, runs)
     user_facing_numbers()
     number_audit_sources()
+    software_versions()
 
     df = pd.DataFrame(ROWS)
     dupes = df[df.claim_id.duplicated(keep=False)]

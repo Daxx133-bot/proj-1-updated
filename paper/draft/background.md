@@ -29,8 +29,7 @@ ranks last %[id:composepost_rank_ancestor_count].
 
 We tested the caller-based prediction, and the fan-out metric alongside it, in a
 preregistered fault-injection campaign [@nosek2018] on two applications from the
-DeathStarBench suite [@gan2019]. Every hypothesis and analysis choice was fixed and locked before any campaign data
-existed. The
+DeathStarBench suite [@gan2019]. We formulated the caller-based hypothesis after a pilot study (preregistration, §1.3) %[prereg:§1.3] and locked it, together with every analysis choice, before any campaign data existed, keeping the fan-out metric as a comparator. The
 campaign completed all 180 %[id:campaign_runs_total] planned runs. Every analysable service
 received both fault types, a process kill and an injected network delay, with 5
 %[id:campaign_reps_per_cell] repetitions per cell. We rebuilt each dependency graph from
@@ -55,9 +54,9 @@ This paper makes four contributions.
 - A preregistered test of whether caller count, or a fan-out-weighted centrality metric,
   tracks measured failure impact in two benchmark applications, reported with its null result
   and with the power ceiling the design imposed.
-- A per-service latency attribution that keeps services on a shared request path
-  distinguishable, together with a pilot comparison showing how the common end-to-end
-  shortcut flags unrelated services as a block.
+- Documentation of a measurement pitfall, in which a request's end-to-end latency is charged
+  to every service on its path, and of its effect in the pilot, where it flagged services
+  unrelated to the faulted one in the graph.
 - An observation on the direction of propagation that held in both applications and under
   both fault types.
 - An artifact in which every number in the paper is produced by a script from logged

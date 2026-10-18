@@ -8,6 +8,8 @@ Outputs
   paper/submission/figure_legends.docx  one title per figure
   paper/submission/Table N.docx         one table per file, title and units in the headers
   paper/submission/cover_page.docx      title, authors, affiliation, corresponding author
+  paper/submission/cover_letter.docx    the cover letter, from paper/draft/cover_letter.md
+  paper/submission/manuscript.docx      a copy of paper/manuscript.docx
 
 Sections, in order: Abstract (run-in headings Background, Methods, Results, Conclusions);
 1 Background; 2 Related Work; 3 Methods; 4 Results; 5 Discussion; 6 Threats to Validity;
@@ -64,6 +66,9 @@ ABSTRACT_MAX_WORDS = 500
 MIN_FIGURE_PX = 3000
 
 ABSTRACT_FILE = "abstract.md"          # prose abstract, when it exists
+COVER_LETTER = "cover_letter.md"       # rendered to submission/, not into the manuscript
+# Written into submission/ by a later step (paper/make_checklist.py), not stale.
+LATER_FILES = {"SUBMISSION_CHECKLIST.md"}
 ABSTRACT_PARTS = ["Background.", "Methods.", "Results.", "Conclusions."]
 
 # (heading used when there is no prose, prose draft, outline draft)
@@ -85,7 +90,8 @@ SECTIONS = [
 TRAILING: list = []                     # sections after the references (none)
 
 COVER = {
-    "title": "[TITLE TO WRITE]",
+    "title": ("Does Call-Graph Fan-Out Predict Failure Impact in Microservices? "
+              "A Preregistered Fault-Injection Study"),
     "authors": ["Dakshrajsinh Tank", "[TO FILL: other authors]"],
     "affiliation": "Vellore Institute of Technology, [TO FILL department]",
     "corresponding": "[TO FILL name], [TO FILL email]",
@@ -105,6 +111,9 @@ COUNT_UNITS = {
     "distinct_arrangements": "arrangements", "ancestor_count_levels_actual": "levels",
     "ancestor_count_levels_preregistered": "levels",
 }
+# Hazard ratios and their intervals are per one-unit increase of the predictor.
+PER_UNIT = {c: "per unit of predictor" for c in ("cox_run_hr", "cox_run_ci_95",
+                                                 "cox_service_hr", "cox_service_ci_95")}
 TABLE_NOTE = ("Units are given in parentheses in the column headers; columns without a "
               "unit are dimensionless or categorical.")
 
@@ -345,7 +354,7 @@ def captions(index_file, key_col):
 
 
 def header_with_unit(col):
-    unit = COUNT_UNITS.get(col)
+    unit = COUNT_UNITS.get(col) or PER_UNIT.get(col)
     if unit is None:
         for suf, u in SUFFIX_UNITS.items():
             if col.endswith(suf):
@@ -541,7 +550,22 @@ class Builder:
         cover.save(os.path.join(SUB, "cover_page.docx"))
         written.add("cover_page.docx")
 
-        stale = sorted(set(os.listdir(SUB)) - written)
+        if has_prose(COVER_LETTER):
+            letter = Document()
+            style_document(letter, line_numbers=False)
+            letter.styles["Normal"].paragraph_format.line_spacing = 1.0
+            for kind, text in blocks(read(COVER_LETTER)):
+                if kind == "p":
+                    text = MARKER.sub("", text).strip().replace("{title}", COVER["title"])
+                    add_runs(letter.add_paragraph(), text)
+            letter.core_properties.author = ""
+            letter.save(os.path.join(SUB, "cover_letter.docx"))
+            written.add("cover_letter.docx")
+
+        shutil.copyfile(OUT, os.path.join(SUB, "manuscript.docx"))
+        written.add("manuscript.docx")
+
+        stale = sorted(set(os.listdir(SUB)) - written - LATER_FILES)
         return {"figures": figs, "tables": tbls, "stale": stale}
 
 

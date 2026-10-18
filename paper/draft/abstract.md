@@ -1,8 +1,6 @@
 # Abstract
 
-**Background.** Operators of microservice systems often rank services for hardening by
-their position in the dependency graph, and a common intuition treats a service that calls
-many others as the riskiest. When a service fails, however, the services left waiting are its
+**Background.** One way to decide which services of a microservice system to harden first is to rank them by their position in the dependency graph. An intuitive version of that ranking treats a service that calls many others as the riskiest. When a service fails, however, the services left waiting are its
 callers. We tested whether the number of transitive callers of a service tracks how many
 services degrade when it fails, and whether a fan-out-weighted centrality metric does.
 

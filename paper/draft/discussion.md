@@ -107,8 +107,6 @@ impact. In both applications, the post-hoc breakdown of §5.2 found the gateway 
 callers by the traffic they carry may therefore be worth testing, as a new preregistered
 hypothesis. We did not test it.
 
-The applications are benchmarks. They lack the containment mechanisms production systems
-rely on, such as retries with back-off and circuit breakers. Those mechanisms could change how far a failure
-travels, and nothing here speaks to them. Larger applications would also lift the ceiling
+The applications are benchmarks, and we did not configure or study containment mechanisms such as retries with back-off or circuit breakers, which could change how far a failure travels. Larger applications would also lift the ceiling
 that eleven services place on any correlation, and a direct check that injected faults have
 been removed would close the gap described in §6.5.
