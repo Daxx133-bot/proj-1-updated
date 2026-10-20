@@ -1,5 +1,6 @@
 """
-check_draft_ids.py -- verify the drafting markers in paper/draft/*.md.
+check_draft_ids.py -- verify the drafting markers in paper/draft/*.md and
+paper/draft_ieee/*.md.
 
 Three checks:
 
@@ -32,6 +33,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DRAFT = os.path.join(HERE, "draft")
+DRAFT_DIRS = [DRAFT, os.path.join(HERE, "draft_ieee")]
 NUMBERS = os.path.join(HERE, "numbers.csv")
 
 MARKER = re.compile(r"%\[id:([a-z0-9_]+)\]")
@@ -50,13 +52,14 @@ def main() -> int:
     df = pd.read_csv(NUMBERS, dtype=str).fillna("")
     values = dict(zip(df.claim_id, df.value))
 
-    files = sorted(f for f in os.listdir(DRAFT)
-                   if f.endswith(".md") and not f.startswith("outline_"))
+    files = [os.path.join(os.path.basename(d), f) for d in DRAFT_DIRS if os.path.isdir(d)
+             for f in sorted(os.listdir(d))
+             if f.endswith(".md") and not f.startswith("outline_")]
     dangling, mismatched, untraced = [], [], []
     total, cited = 0, set()
 
     for fn in files:
-        text = open(os.path.join(DRAFT, fn), encoding="utf-8").read()
+        text = open(os.path.join(HERE, fn), encoding="utf-8").read()
         body = "\n".join(l for l in text.splitlines() if not l.startswith(">"))
         body = body.replace("−", "-")        # prose uses the Unicode minus sign
 

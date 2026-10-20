@@ -342,3 +342,112 @@ and its exact p unchanged.
 `user-service` departs." 11.2 concerns the gateway's error rate, not ancestor counts, and the
 `user-service` reading in 3.4 remains untested. **Say instead:** describe the gateway-error
 association as exploratory and descriptive, and keep 3.4 labelled as an untested hypothesis.
+
+---
+
+## 12. Post-hoc weight sensitivity — usable only with that label
+
+Added 2026-10-20. `analysis/final/weight_sensitivity.py` was written and run after the
+confirmatory results were known. It recomputes `hybrid_criticality` for all 231 weight
+triplets on the 0.05 grid with the producing code and correlates each with the outcomes,
+exact permutation p where enumeration is feasible, BH within each family of 231. No triplet
+is selected, recommended or adopted; the reported metric keeps 0.4/0.4/0.2.
+
+**12.1 POST-HOC** — Against `ancestor_affected_count` on Social Network, rho ranges from
+-0.544 to 0.337 (median -0.167) over the 231 triplets; 28 are positive; none has an
+uncorrected p below 0.05 and none survives BH within the 231. Kill and latency faults give
+identical results. On Hotel Reservation every defined triplet gives -0.258 (230 defined, the
+in-degree-only triplet is constant) and none is significant. At the reported weights rho is
+-0.144 (exact p 0.669); 47 triplets give a larger rho.
+`ws_triplets`, `ws_grid_step`, `ws_sn_kill_anc_rho_min`, `ws_sn_kill_anc_rho_median`,
+`ws_sn_kill_anc_rho_max`, `ws_sn_kill_anc_triplets_rho_positive`,
+`ws_sn_kill_anc_triplets_p_raw_below_05`, `ws_sn_kill_anc_triplets_significant_bh`,
+`ws_sn_kill_anc_p_raw_min`, `ws_sn_kill_anc_reported_rho`, `ws_sn_kill_anc_reported_p`,
+`ws_sn_kill_anc_triplets_rho_above_reported`, `ws_anc_identical_across_faults`,
+`ws_hr_kill_anc_triplets_defined`, `ws_hr_kill_anc_triplets_undefined`,
+`ws_hr_kill_anc_rho_min`, `ws_hr_kill_anc_rho_max`, `ws_hr_kill_anc_triplets_significant_bh`,
+`hybrid_weights_grid_evaluated_post_hoc`
+*Source: `analysis/final/weight_sensitivity_summary.csv`. The reported triplet reproduces the
+stored rho and exact p.*
+
+**12.2 POST-HOC, EXPLORATORY** — Against the gateway error rate under kill faults on Social
+Network, rho is positive for all 231 triplets (0.229 to 0.832, median 0.753); 145 have an
+uncorrected p below 0.05 and 128 pass BH within the 231; at the reported weights rho is
+0.786. On Hotel Reservation every defined triplet gives -0.204 and none is significant. The
+preregistered exploratory test at the reported weights was not significant after correction
+within its own family (adjusted p 0.0913).
+`ws_sn_kill_err_rho_min`, `ws_sn_kill_err_rho_median`, `ws_sn_kill_err_rho_max`,
+`ws_sn_kill_err_triplets_rho_positive`, `ws_sn_kill_err_triplets_p_raw_below_05`,
+`ws_sn_kill_err_triplets_significant_bh`, `ws_sn_kill_err_reported_rho`,
+`ws_hr_kill_err_rho_min`, `ws_hr_kill_err_triplets_significant_bh`,
+`uf_test_sn_hybrid_bh_p`, `ws_mc_permutations`
+*Social Network p-values for this outcome use 10,000 random permutations (11! orderings
+cannot be enumerated).*
+
+**12.3 UNSUPPORTED** — "Some weighting of the metric predicts failure impact", "the metric
+works with weights X", any recommended or adopted triplet, or reading 12.2's BH counts as a
+finding. The 231 triplets are correlated tries on one dataset, chosen after the results were
+known. **Say instead:** report the distribution, state that the analysis is post hoc and that
+the reported metric keeps 0.4/0.4/0.2, and call any extreme triplet the best (or worst) of
+231 tries.
+
+---
+
+## 13. Testbed, run protocol and fault injection
+
+Added 2026-10-20.
+
+**13.1 SUPPORTED** — Testbed. Host OS and CPU were queried on 2026-10-20, after the campaign;
+host RAM, the Docker Desktop WSL2 backend, the 7.598 GiB VM ceiling and the container counts
+(27 Social Network, 24 Hotel Reservation, one stack at a time) were recorded on 2026-09-24,
+before it. Jaeger 1.62.0 all-in-one ran with in-memory storage. Locust ran 25 users with a
+spawn rate of 10 users per second.
+`testbed_measured_on`, `testbed_host_os`, `testbed_host_os_version`, `testbed_cpu_model`,
+`testbed_cpu_cores`, `testbed_cpu_logical`, `testbed_vm_record_date`, `testbed_host_ram_gb`,
+`testbed_docker_backend`, `testbed_docker_vm_gib`, `testbed_containers_sn`,
+`testbed_containers_hr`, `version_docker_desktop`, `version_docker_compose`,
+`version_docker_client`, `version_jaeger`, `testbed_jaeger_storage`, `version_locust`,
+`protocol_load_users`, `protocol_spawn_rate`
+The Docker client binary was last written on 2026-09-20, before the campaign; no record from
+the campaign days confirms the host OS build or the Docker Desktop version.
+*Sources: `data/environment/testbed.txt` (queried by `tools/record_testbed.py`),
+`data/environment/tool_versions.txt` (Docker client),
+`data/environment/docker_vm.txt` (lines from the 2026-09-24 record).*
+
+**13.2 SUPPORTED** — Fault injection. Pumba runs as a container from the untagged image
+`ghcr.io/alexei-led/pumba`. A kill sends SIGKILL; a latency fault is `pumba netem` with a 30 s
+duration, 500 ms delay and 100 ms jitter. The target container is resolved by an exact match
+on the `com.docker.compose.service` label, and the runner stops if no container or more than
+one matches. The netem process is launched in the background and the fault-removal instant
+is taken when it exits; a killed service is restored with `docker compose up -d`, and after
+every non-kill run the target container is recreated (`--force-recreate`) after the recovery
+probe.
+`fault_kill_signal`, `fault_latency_delay_ms`, `fault_latency_jitter_ms`,
+`protocol_fault_duration_s`
+*Sources: `faultinjection/fault_config.py` (pumba_command), `tools/run_pilot.py` (one_run,
+container_for); the command lines in `paper/tables/tbl_commands.csv` are generated from that
+code.*
+
+**13.3 SUPPORTED (correction of earlier manuscript text)** — The baseline percentiles are
+computed over the 60 s window that ends when the pre-fault load period ends. That window is
+the load period itself, starting when the load generator starts; it is not a separate window
+after a warm-up. Manuscript text before 2026-10-20 described a 60 s warm-up followed by a
+60 s baseline, which the code does not do.
+`protocol_warmup_s`, `protocol_baseline_window_s`, `protocol_baseline_window_distinct`
+*Source: `tools/run_pilot.py` one_run (`baseline_start_us = baseline_end_us - warmup`), and
+the baseline-window timestamps stored in every run record. The preregistration lists "60 s warm-up →
+baseline"; whether the code's reading is a deviation is not settled here and it is not
+recorded as one.*
+
+---
+
+## 14. Problem statement and hypothesis labels
+
+Added 2026-10-20.
+
+**14.1 SUPPORTED** — The formal definitions in the manuscript's problem statement (directed
+call graph, fault types, the three disjoint outcome counts, `ancestor_count`, the hybrid
+formula with linear fan-out weight) and the hypotheses restate the locked preregistration.
+The manuscript's H2 is the preregistration's H1b; the preregistration's own H2 is a
+structural observation and is not tested.
+*There is no numbers.csv id: these are definitions, from PREREGISTRATION_v3_LOCKED.md §1.4, §2 and §6.2.*

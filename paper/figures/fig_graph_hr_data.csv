@@ -1,0 +1,8 @@
+caller,callee,call_count
+frontend,profile,1946
+frontend,recommendation,446
+frontend,reservation,2236
+frontend,search,1500
+frontend,user,1500
+search,geo,1500
+search,rate,1500

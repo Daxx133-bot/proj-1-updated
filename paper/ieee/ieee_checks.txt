@@ -1,0 +1,22 @@
+ieee_checks.txt -- written by paper/build_ieee.py
+IEEE manuscript: paper/ieee/manuscript_ieee.docx and .pdf (26 pages in Word)
+
+Number audit: URL 10, WEAK MATCH 12, affiliation 1, affiliation marker 1, algorithm number 2, deviation number 23, equation constant 2, equation number 8, marked in sentence 150, numbers.csv value 119, numbers.csv value (string) 15, reference entry 105, reference number 33, table cell 879, table header 4, table/figure number 18
+  WEAK MATCH [B. Applications and Dependency Graphs] 8 | Hotel Reservation dependency graph as observed in traces: 8 services and 7 caller-to-callee edges, gateway marked.
+  WEAK MATCH [B. Applications and Dependency Graphs] 7 | Hotel Reservation dependency graph as observed in traces: 8 services and 7 caller-to-callee edges, gateway marked.
+  WEAK MATCH [K. Data and Code Availability] 4.0 | Code is released under the MIT licence; data and figures are released under CC BY 4.0.
+  WEAK MATCH [B. The Confirmatory Test of H1] 0.05 | Family sizes and how many tests survive BH-FDR at q=0.05
+  WEAK MATCH [B. The Confirmatory Test of H1] 1.0 | If every service's measured blast radius equalled its graph ancestor count, a correlation of 1.0 would follow by construction and would test nothing.
+  WEAK MATCH [B. The Confirmatory Test of H1] 1.0 | Its run-level saturation is 0.909 under kill faults, which is why ρ is 0.785 and not 1.0.
+  WEAK MATCH [J. Post Hoc Weight Sensitivity] 0.4 | Post hoc weight sensitivity: Spearman rho of the hybrid metric against each outcome for all 231 weight triplets (kill faults; latency faults give iden
+  WEAK MATCH [J. Post Hoc Weight Sensitivity] 0.4 | Post hoc weight sensitivity: Spearman rho of the hybrid metric against each outcome for all 231 weight triplets (kill faults; latency faults give iden
+  WEAK MATCH [J. Post Hoc Weight Sensitivity] 0.2 | Post hoc weight sensitivity: Spearman rho of the hybrid metric against each outcome for all 231 weight triplets (kill faults; latency faults give iden
+  WEAK MATCH [B. Hotel Reservation Could Not Have Reached Significance] 1.0 | Under the exact permutation test the plan mandates, a perfect result with the observed ties, ρ = 1.0, yields p = 0.0952.
+  WEAK MATCH [B. Hotel Reservation Could Not Have Reached Significance] 0.05 | That is above the conventional 0.05 threshold before any correction for multiplicity.
+  WEAK MATCH [D. The Primary Predictor Is Close to Definitional] 1.0 | The whole gap between ρ = 0.785 and a correlation of exactly 1.0 therefore rests on one service.
+Floats: 9 figures and 14 tables, each once, numbered by first mention, after the paragraph that first cites it; problems: 0
+References: 15 VERIFIED, 15 cited, 15 listed; numbered by first appearance: yes
+First-person and gendered pronouns: 0
+Abstract: one paragraph, 239 words (limit 250)
+Layout: 26 pages; problems: 0
+Placeholders (highlighted): 6: [TO FILL: corresponding author name and email]; [TO FILL]; [TO FILL: author photograph, Dakshrajsinh Tank]; [TO FILL: biography]; [TO FILL: author photograph, Badrinath N]; [TO FILL: biography]

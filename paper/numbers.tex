@@ -1,6 +1,6 @@
 %% paper/numbers.tex -- AUTO-GENERATED from paper/numbers.csv. DO NOT EDIT.
 %% Regenerate: python paper/build_numbers.py && python paper/emit_macros.py
-% Generated at repository commit 6636590. 487 macros.
+% Generated at repository commit d55fee8. 601 macros.
 
 % Total fault-injection runs in the final campaign (analysis/final/run_level_data.csv)
 \newcommand{\NumCampaignRunsTotal}{180}
@@ -500,8 +500,10 @@
 \newcommand{\NumHybridWBtw}{0.2}
 % Whether the cross-arch weight lockfile exists (it would exist only if the preregistered tuning protocol had been run) (centrality/output/tuned_weights.lock.json)
 \newcommand{\NumHybridWeightsLockfileExists}{no}
-% Whether the hybrid metric's weights were re-optimised on campaign data (check: centrality/output/tuned_weights.lock.json absent AND no file under data/campaign/ or analysis/final/ whose name matches weight|tuned|grid|optimi or whose CSV header has a w_in/w_out/w_btw column)
+% Whether the hybrid metric's weights were re-optimised on campaign data (check: centrality/output/tuned_weights.lock.json absent AND no file under data/campaign/ or analysis/final/ whose name matches weight|tuned|grid|optimi or whose CSV header has a w_in/w_out/w_btw column, other than the post-hoc weight_sensitivity files (which select no triplet))
 \newcommand{\NumHybridWeightsReoptimisedOnCampaign}{no}
+% Whether all grid triplets were evaluated against campaign data after the confirmatory results (post-hoc sensitivity analysis; no triplet adopted) (analysis/final/weight_sensitivity.py)
+\newcommand{\NumHybridWeightsGridEvaluatedPostHoc}{yes}
 % Warm-up before the baseline window (tools/run_campaign.py)
 \newcommand{\NumProtocolWarmupS}{60}
 % Fault hold duration (tools/run_campaign.py)
@@ -976,3 +978,229 @@
 \newcommand{\NumVersionStatsmodels}{0.14.6}
 % NetworkX version the pipeline was verified with (README.md)
 \newcommand{\NumVersionNetworkx}{3.6.1}
+% NumPy version the pipeline was verified with (README.md)
+\newcommand{\NumVersionNumpy}{2.1.2}
+% pandas version the pipeline was verified with (README.md)
+\newcommand{\NumVersionPandas}{2.2.3}
+% matplotlib version the pipeline was verified with (README.md)
+\newcommand{\NumVersionMatplotlib}{3.9.2}
+% Date the host facts were queried (data/environment/testbed.txt)
+\newcommand{\NumTestbedMeasuredOn}{2026-10-20}
+% Host operating system (queried) (data/environment/testbed.txt)
+\newcommand{\NumTestbedHostOs}{Microsoft Windows 11 Home Single Language}
+% Host OS version (queried) (data/environment/testbed.txt)
+\newcommand{\NumTestbedHostOsVersion}{10.0.26300}
+% Host CPU model (queried) (data/environment/testbed.txt)
+\newcommand{\NumTestbedCpuModel}{12th Gen Intel(R) Core(TM) i7-1255U}
+% Host CPU physical cores (queried) (data/environment/testbed.txt)
+\newcommand{\NumTestbedCpuCores}{10}
+% Host CPU logical processors (queried) (data/environment/testbed.txt)
+\newcommand{\NumTestbedCpuLogical}{12}
+% Docker Desktop version (install record, queried) (data/environment/testbed.txt)
+\newcommand{\NumVersionDockerDesktop}{4.91.0}
+% Docker Compose client version (queried) (data/environment/testbed.txt)
+\newcommand{\NumVersionDockerCompose}{5.5.1}
+% Date the Docker VM memory record was made (data/environment/docker_vm.txt)
+\newcommand{\NumTestbedVmRecordDate}{2026-09-24}
+% Host RAM as recorded with the Docker VM ceiling (data/environment/docker_vm.txt)
+\newcommand{\NumTestbedHostRamGb}{15.7}
+% Docker VM memory ceiling (WSL2 default, recorded) (data/environment/docker_vm.txt)
+\newcommand{\NumTestbedDockerVmGib}{7.598}
+% Containers in the Social Network stack (recorded) (data/environment/docker_vm.txt)
+\newcommand{\NumTestbedContainersSn}{27}
+% Containers in the Hotel Reservation stack (recorded) (data/environment/docker_vm.txt)
+\newcommand{\NumTestbedContainersHr}{24}
+% Docker Desktop backend (recorded) (data/environment/docker_vm.txt)
+\newcommand{\NumTestbedDockerBackend}{WSL2}
+% Locust spawn rate passed by the runner (tools/run_pilot.py)
+\newcommand{\NumProtocolSpawnRate}{10}
+% Jaeger storage mode (all-in-one image, in-memory) (tools/run_pilot.py)
+\newcommand{\NumTestbedJaegerStorage}{in-memory}
+% Weight triplets on the 0.05 grid summing to 1 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsTriplets}{231}
+% Grid step of the weight sensitivity analysis (analysis/final/weight_sensitivity.py)
+\newcommand{\NumWsGridStep}{0.05}
+% Random permutations where exact enumeration is infeasible (analysis/final/weight_sensitivity.py)
+\newcommand{\NumWsMcPermutations}{10000}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: triplets with a defined rho (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncTripletsDefined}{231}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: triplets with the metric constant (rho undefined) (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncTripletsUndefined}{0}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: smallest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncRhoMin}{-0.544}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: median rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncRhoMedian}{-0.167}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: largest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncRhoMax}{0.337}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: triplets with rho > 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncTripletsRhoPositive}{28}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: triplets with rho < 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncTripletsRhoNegative}{203}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: triplets with uncorrected p < 0.05 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncTripletsPRawBelowZeroFive}{0}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: triplets significant after BH within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncTripletsSignificantBh}{0}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: smallest uncorrected p over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncPRawMin}{0.0952}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: smallest BH-adjusted p within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncPBhMin}{0.7507}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: rho at the reported weights 0.4/0.4/0.2 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncReportedRho}{-0.144}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: uncorrected p at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncReportedP}{0.6695}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: BH-adjusted p (family of 231) at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncReportedPBhWithinTwoThreeOne}{0.7507}
+% Weight sensitivity (post hoc), Social Network, kill faults, ancestor_affected_count: triplets with rho above the reported weights' (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillAncTripletsRhoAboveReported}{47}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: triplets with a defined rho (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncTripletsDefined}{231}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: triplets with the metric constant (rho undefined) (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncTripletsUndefined}{0}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: smallest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncRhoMin}{-0.544}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: median rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncRhoMedian}{-0.167}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: largest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncRhoMax}{0.337}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: triplets with rho > 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncTripletsRhoPositive}{28}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: triplets with rho < 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncTripletsRhoNegative}{203}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: triplets with uncorrected p < 0.05 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncTripletsPRawBelowZeroFive}{0}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: triplets significant after BH within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncTripletsSignificantBh}{0}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: smallest uncorrected p over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncPRawMin}{0.0952}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: smallest BH-adjusted p within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncPBhMin}{0.7507}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: rho at the reported weights 0.4/0.4/0.2 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncReportedRho}{-0.144}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: uncorrected p at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncReportedP}{0.6695}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: BH-adjusted p (family of 231) at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncReportedPBhWithinTwoThreeOne}{0.7507}
+% Weight sensitivity (post hoc), Social Network, latency faults, ancestor_affected_count: triplets with rho above the reported weights' (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnLatAncTripletsRhoAboveReported}{47}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: triplets with a defined rho (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncTripletsDefined}{230}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: triplets with the metric constant (rho undefined) (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncTripletsUndefined}{1}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: smallest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncRhoMin}{-0.258}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: median rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncRhoMedian}{-0.258}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: largest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncRhoMax}{-0.258}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: triplets with rho > 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncTripletsRhoPositive}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: triplets with rho < 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncTripletsRhoNegative}{230}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: triplets with uncorrected p < 0.05 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncTripletsPRawBelowZeroFive}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: triplets significant after BH within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncTripletsSignificantBh}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: smallest uncorrected p over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncPRawMin}{1.0000}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: smallest BH-adjusted p within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncPBhMin}{1.0000}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: rho at the reported weights 0.4/0.4/0.2 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncReportedRho}{-0.258}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: uncorrected p at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncReportedP}{1.0000}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: BH-adjusted p (family of 231) at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncReportedPBhWithinTwoThreeOne}{1.0000}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, ancestor_affected_count: triplets with rho above the reported weights' (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillAncTripletsRhoAboveReported}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: triplets with a defined rho (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncTripletsDefined}{230}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: triplets with the metric constant (rho undefined) (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncTripletsUndefined}{1}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: smallest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncRhoMin}{-0.258}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: median rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncRhoMedian}{-0.258}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: largest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncRhoMax}{-0.258}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: triplets with rho > 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncTripletsRhoPositive}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: triplets with rho < 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncTripletsRhoNegative}{230}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: triplets with uncorrected p < 0.05 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncTripletsPRawBelowZeroFive}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: triplets significant after BH within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncTripletsSignificantBh}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: smallest uncorrected p over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncPRawMin}{1.0000}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: smallest BH-adjusted p within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncPBhMin}{1.0000}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: rho at the reported weights 0.4/0.4/0.2 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncReportedRho}{-0.258}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: uncorrected p at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncReportedP}{1.0000}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: BH-adjusted p (family of 231) at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncReportedPBhWithinTwoThreeOne}{1.0000}
+% Weight sensitivity (post hoc), Hotel Reservation, latency faults, ancestor_affected_count: triplets with rho above the reported weights' (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrLatAncTripletsRhoAboveReported}{0}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: triplets with a defined rho (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrTripletsDefined}{231}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: triplets with the metric constant (rho undefined) (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrTripletsUndefined}{0}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: smallest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrRhoMin}{0.229}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: median rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrRhoMedian}{0.753}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: largest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrRhoMax}{0.832}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: triplets with rho > 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrTripletsRhoPositive}{231}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: triplets with rho < 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrTripletsRhoNegative}{0}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: triplets with uncorrected p < 0.05 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrTripletsPRawBelowZeroFive}{145}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: triplets significant after BH within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrTripletsSignificantBh}{128}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: smallest uncorrected p over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrPRawMin}{0.0021}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: smallest BH-adjusted p within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrPBhMin}{0.0177}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: rho at the reported weights 0.4/0.4/0.2 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrReportedRho}{0.786}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: uncorrected p at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrReportedP}{0.0064}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: BH-adjusted p (family of 231) at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrReportedPBhWithinTwoThreeOne}{0.0177}
+% Weight sensitivity (post hoc), Social Network, kill faults, delta_error_rate: triplets with rho above the reported weights' (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsSnKillErrTripletsRhoAboveReported}{39}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: triplets with a defined rho (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrTripletsDefined}{230}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: triplets with the metric constant (rho undefined) (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrTripletsUndefined}{1}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: smallest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrRhoMin}{-0.204}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: median rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrRhoMedian}{-0.204}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: largest rho over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrRhoMax}{-0.204}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: triplets with rho > 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrTripletsRhoPositive}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: triplets with rho < 0 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrTripletsRhoNegative}{230}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: triplets with uncorrected p < 0.05 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrTripletsPRawBelowZeroFive}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: triplets significant after BH within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrTripletsSignificantBh}{0}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: smallest uncorrected p over the triplets (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrPRawMin}{0.8571}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: smallest BH-adjusted p within the 231 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrPBhMin}{0.8571}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: rho at the reported weights 0.4/0.4/0.2 (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrReportedRho}{-0.204}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: uncorrected p at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrReportedP}{0.8571}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: BH-adjusted p (family of 231) at the reported weights (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrReportedPBhWithinTwoThreeOne}{0.8571}
+% Weight sensitivity (post hoc), Hotel Reservation, kill faults, delta_error_rate: triplets with rho above the reported weights' (analysis/final/weight_sensitivity_summary.csv)
+\newcommand{\NumWsHrKillErrTripletsRhoAboveReported}{0}
+% Weight sensitivity: ancestor_affected_count results identical under kill and latency faults (Social Network) (analysis/final/weight_sensitivity.csv)
+\newcommand{\NumWsAncIdenticalAcrossFaults}{yes}

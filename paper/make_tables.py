@@ -175,11 +175,11 @@ def main():
             lambda b: "yes" if b else "no"),
         "distinguishable_from_zero_after_fdr": h1b.distinguishable_from_zero_after_fdr.map(
             lambda b: "yes" if b else "no"),
-        "verdict": h1b.h1b_verdict,
     })
     emit("tbl_h1b", h,
-         "H1b: hybrid_criticality vs ancestor_affected_count in all four "
-         "architecture-by-fault cells", "analysis/final/h1b_hybrid_metric.csv", RCA)
+         "hybrid_criticality vs ancestor_affected_count in all four architecture-by-fault "
+         "cells (the preregistration's H1b)", "analysis/final/h1b_hybrid_metric.csv",
+         RCA)
 
     # ---- 5. leave-one-out ---------------------------------------------------
     l = loo.copy()
@@ -291,8 +291,174 @@ def main():
          "Every deviation from the preregistration, ready for the deviations section",
          "analysis/final/deviations.csv", RCA)
 
+    # ---- 7b. deviations, appendix view (2026-10-20) ---------------------------
+    # The columns that summarise each deviation and its consequence. The full record,
+    # with the descriptive what_happened / what_changed / record columns, stays in
+    # analysis/final/deviations.csv and in tbl_deviations.
+    emit("tbl_deviations_appendix",
+         devs.sort_values("n")[["n", "date", "title", "stage", "outcome_affected",
+                                "runs_invalidated", "runs_disposition"]],
+         "Deviations from the preregistered plan: when each arose, what it affected and "
+         "what happened to the affected runs", "analysis/final/deviations.csv", RCA)
+
+    testbed_tables()
+    ws_table()
+
     pd.DataFrame(INDEX).to_csv(os.path.join(OUT, "tables_index.csv"), index=False)
     print("wrote %d tables (csv + md) and tables_index.csv" % len(INDEX))
+
+
+def numbers():
+    df = pd.read_csv(os.path.join(HERE, "numbers.csv"), dtype=str, keep_default_na=False)
+    return dict(zip(df.claim_id, df.value))
+
+
+def literal_commands(path):
+    """Command lists written literally in a source file, rendered as shell text. A name
+    or expression in the list is shown as <name>; docker_exe as docker, sys.executable
+    as python."""
+    import ast
+    src = open(os.path.join(REPO, path), encoding="utf-8").read()
+    out = []
+
+    def part(e):
+        if isinstance(e, ast.Constant):
+            return str(e.value).replace("\t", "\\t")
+        if isinstance(e, ast.Name):
+            return {"docker_exe": "docker"}.get(e.id, "<%s>" % e.id)
+        if isinstance(e, ast.Attribute) and ast.unparse(e) == "sys.executable":
+            return "python"
+        if isinstance(e, ast.JoinedStr):
+            return "".join(str(v.value) if isinstance(v, ast.Constant)
+                           else "<%s>" % ast.unparse(v.value) for v in e.values)
+        if isinstance(e, ast.Call) and ast.unparse(e.func) == "str" and e.args:
+            return part(e.args[0])
+        if isinstance(e, ast.Subscript):
+            return "<%s>" % ast.unparse(e.slice).strip("'\"")
+        return "<%s>" % ast.unparse(e)
+    for node in ast.walk(ast.parse(src)):
+        if isinstance(node, ast.List) and node.elts and all(
+                not isinstance(e, ast.Starred) for e in node.elts):
+            toks = [part(e) for e in node.elts]
+            out.append(" ".join("'%s'" % t if (" " in t and not t.startswith("<"))
+                                else t for t in toks))
+    return out
+
+
+def testbed_tables():
+    """Testbed table and the exact command lines the runner issued (2026-10-20)."""
+    import sys
+    from dataclasses import replace
+    sys.path.insert(0, REPO)
+    from faultinjection.fault_config import DEFAULT_SPECS, FaultType
+    n = numbers()
+
+    rows = [
+        ("Host OS", "%s (%s)" % (n["testbed_host_os"], n["testbed_host_os_version"]),
+         "measured on %s" % n["testbed_measured_on"]),
+        ("Host CPU", "%s, %s cores, %s threads" % (n["testbed_cpu_model"],
+                                                   n["testbed_cpu_cores"],
+                                                   n["testbed_cpu_logical"]),
+         "measured on %s" % n["testbed_measured_on"]),
+        ("Host RAM", "%s GB" % n["testbed_host_ram_gb"],
+         "recorded %s" % n["testbed_vm_record_date"]),
+        ("Docker Desktop", "%s, %s backend" % (n["version_docker_desktop"],
+                                               n["testbed_docker_backend"]),
+         "version measured on %s; backend recorded %s" % (n["testbed_measured_on"],
+                                                          n["testbed_vm_record_date"])),
+        ("Docker VM memory", "%s GiB (WSL2 default)" % n["testbed_docker_vm_gib"],
+         "recorded %s" % n["testbed_vm_record_date"]),
+        ("Docker client / Compose", "%s / %s" % (n["version_docker_client"],
+                                                 n["version_docker_compose"]),
+         "client recorded 2026-10-18; Compose measured on %s" % n["testbed_measured_on"]),
+        ("Containers per stack", "Social Network %s, Hotel Reservation %s"
+         % (n["testbed_containers_sn"], n["testbed_containers_hr"]),
+         "recorded %s; one stack ran at a time" % n["testbed_vm_record_date"]),
+        ("DeathStarBench commit", n["dsb_commit"], "pinned upstream commit"),
+        ("Jaeger", "%s all-in-one, %s storage" % (n["version_jaeger"],
+                                                  n["testbed_jaeger_storage"]),
+         "compose override"),
+        ("Pumba", "ghcr.io/alexei-led/pumba (untagged image)",
+         "faultinjection/fault_config.py; version not recorded"),
+        ("Python", n["version_python"], "README"),
+        ("Python libraries", "NumPy %s, pandas %s, SciPy %s, statsmodels %s, NetworkX %s, "
+         "matplotlib %s" % (n["version_numpy"], n["version_pandas"], n["version_scipy"],
+                            n["version_statsmodels"], n["version_networkx"],
+                            n["version_matplotlib"]), "README"),
+        ("Locust", "%s; %s users, spawn rate %s users/s, wait %s-%s s between requests"
+         % (n["version_locust"], n["protocol_load_users"], n["protocol_spawn_rate"],
+            n["protocol_sn_wait_min_s"], n["protocol_sn_wait_max_s"]),
+         "runner and locustfiles"),
+        ("Request mix, Social Network", "compose post %s, home timeline %s, user timeline %s"
+         % (n["protocol_sn_task_weight_compose_post"],
+            n["protocol_sn_task_weight_read_home_timeline"],
+            n["protocol_sn_task_weight_read_user_timeline"]), "task weights"),
+        ("Request mix, Hotel Reservation", "search %s, reservation %s, user %s, "
+         "recommendation %s" % (n["protocol_hr_task_weight_hotel_search"],
+                                n["protocol_hr_task_weight_make_reservation"],
+                                n["protocol_hr_task_weight_get_user"],
+                                n["protocol_hr_task_weight_get_recommendations"]),
+         "task weights"),
+        ("Load before the fault (s)", "%s; the baseline is computed over this window"
+         % n["protocol_warmup_s"], "runner"),
+        ("Fault hold (s)", n["protocol_fault_duration_s"], "runner"),
+        ("Recovery probe (s)", "poll %s, confirmation %s, window lag %s, cap %s"
+         % (n["trec_poll_interval_nominal_s"], n["protocol_confirm_s"],
+            n["protocol_probe_lag_s"], n["protocol_recovery_cap_s"]), "runner"),
+        ("Cooldown (s)", n["protocol_cooldown_s"], "runner"),
+    ]
+    emit("tbl_testbed", pd.DataFrame(rows, columns=["item", "value", "source"]),
+         "Testbed and run protocol. Host values marked measured were queried after the "
+         "campaign; all others were recorded before or during it",
+         "paper/numbers.csv (testbed_*, version_*, protocol_* ids)", "paper/make_tables.py")
+
+    lists = literal_commands("tools/run_pilot.py")
+    pick = lambda *keys: next(c for c in lists if all(k in c for k in keys))  # noqa: E731
+    lat = replace(DEFAULT_SPECS[FaultType.LATENCY],
+                  duration_seconds=int(n["protocol_fault_duration_s"]))
+    cmd = lambda spec: " ".join(["docker"] + spec.pumba_command("<container>")[1:])  # noqa
+    rows = [
+        ("Load generation", pick("locust", "--users"), "tools/run_pilot.py: start_load"),
+        ("Target resolution", pick("ps", "--filter"), "tools/run_pilot.py: container_for"),
+        ("Kill fault", cmd(DEFAULT_SPECS[FaultType.KILL]),
+         "faultinjection/fault_config.py: pumba_command"),
+        ("Latency fault", cmd(lat), "faultinjection/fault_config.py: pumba_command"),
+        ("Restore after a kill", next(c for c in lists if c.startswith("docker compose up")
+                                      and "--force-recreate" not in c),
+         "tools/run_pilot.py: one_run"),
+        ("Clean-up after a latency fault", pick("--force-recreate"),
+         "tools/run_pilot.py: one_run"),
+    ]
+    emit("tbl_commands", pd.DataFrame(rows, columns=["step", "command", "source"]),
+         "Command lines issued for each run, generated from the runner code (the runner "
+         "starts load, resolves the target container, injects the fault and restores the "
+         "service)", "tools/run_pilot.py + faultinjection/fault_config.py",
+         "paper/make_tables.py")
+
+
+def ws_table():
+    p = os.path.join(FINAL, "weight_sensitivity_summary.csv")
+    if not os.path.isfile(p):
+        return
+    s = pd.read_csv(p)
+    rows = []
+    for _, r in s.iterrows():
+        rows.append({
+            "architecture": r.architecture_label, "fault_type": r.fault_type,
+            "outcome": r.outcome, "triplets_defined": int(r.triplets_defined),
+            "rho_min": f(r.rho_min, 3), "rho_median": f(r.rho_median, 3),
+            "rho_max": f(r.rho_max, 3), "rho_positive": int(r.triplets_rho_positive),
+            "p_raw_below_05": int(r.triplets_p_raw_below_05),
+            "significant_bh_231": int(r.triplets_significant_bh),
+            "rho_at_0.4/0.4/0.2": f(r.reported_rho, 3),
+            "p_at_0.4/0.4/0.2": f(r.reported_p, 4),
+        })
+    emit("tbl_weight_sensitivity", pd.DataFrame(rows),
+         "Post hoc weight sensitivity of the hybrid metric over 231 weight triplets: "
+         "distribution of Spearman rho, counts of positive and significant correlations "
+         "(BH within each family of 231), and the values at the reported weights",
+         "analysis/final/weight_sensitivity_summary.csv",
+         "analysis/final/weight_sensitivity.py")
 
 
 if __name__ == "__main__":

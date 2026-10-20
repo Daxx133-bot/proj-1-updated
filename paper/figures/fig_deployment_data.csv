@@ -1,0 +1,10 @@
+element,value
+host,Microsoft Windows 11 Home Single Language
+cpu_cores,10
+vm_gib,7.598
+containers_sn,27
+containers_hr,24
+gateway_port_sn,8080
+gateway_port_hr,5000
+jaeger_port_sn,16686
+jaeger_port_hr,16687

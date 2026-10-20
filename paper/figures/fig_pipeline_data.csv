@@ -1,0 +1,13 @@
+step,name,files
+1,Deploy stack,tools/run_campaign.py; infra/docker-compose.override.yml; infra/hotel-compose.override.yml
+2,Locust workload,infra/_locustfile_baseline.py; infra/_locustfile_hotel.py; tools/run_pilot.py
+3,Trace collection (Jaeger),measurement/metrics_collector.py
+4,Graph reconstruction,tools/extract_graph.py; data/graphs/sn_CANONICAL.json; data/graphs/hr_CANONICAL.json
+5,Predictor computation,tools/build_predictor_table.py; centrality/compute_centrality.py; centrality/hybrid_weight_optimizer.py
+6,Preregistration lock,_audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md
+7,Fault injection (Pumba kill / netem),faultinjection/fault_config.py; tools/run_pilot.py
+8,Per-service metric extraction,measurement/metrics_collector.py
+9,Blast-radius classification,measurement/blast_radius.py
+10,Recovery probe,measurement/recovery_probe.py
+11,Integrity gates,tools/audit_run_topology.py; tools/audit_baseline_sanity.py
+12,Statistical analysis,analysis/final/run_confirmatory_analysis.py; analysis/final/fast_stats.py

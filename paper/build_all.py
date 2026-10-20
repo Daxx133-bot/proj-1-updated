@@ -10,6 +10,8 @@ build_all.py -- regenerate every artifact under paper/ in dependency order, then
                        submission/ (manuscript copy, figures, legends, tables, cover
                        page, cover letter)
     check_docx_numbers.py  manuscript.docx + numbers.csv -> number_audit.txt (report only)
+    build_ieee.py      draft_ieee/*.md, tables, figures, references.csv -> ieee/
+                       (IEEE Access manuscript .docx, .pdf where Word is available, checks)
     make_checklist.py  submission/, number_audit.txt -> submission/SUBMISSION_CHECKLIST.md,
                        submission/FORM_ANSWERS.md
 
@@ -31,7 +33,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 
 STEPS = ["build_numbers.py", "emit_macros.py", "make_tables.py", "make_figures.py",
-         "check_ledger.py", "build_docx.py", "check_docx_numbers.py", "make_checklist.py"]
+         "check_ledger.py", "build_docx.py", "check_docx_numbers.py", "make_checklist.py",
+         "build_ieee.py"]
 
 PRODUCER = {
     "numbers.csv": "paper/build_numbers.py",
@@ -73,6 +76,11 @@ def main() -> int:
                 produced_by = "paper/make_tables.py"
             elif base.startswith("figures/"):
                 produced_by = "paper/make_figures.py"
+            elif base.startswith("ieee/"):
+                produced_by = "paper/build_ieee.py"
+            elif base.startswith("draft_ieee/"):
+                produced_by = ("hand-written, markers validated by "
+                               "paper/check_draft_ids.py")
             elif base.startswith("review/"):
                 produced_by = "paper/build_review_pdf.py (run separately; needs Microsoft Word)"
             elif base.startswith("submission/") and fn not in PRODUCER:

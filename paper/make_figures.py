@@ -307,6 +307,297 @@ def fig_q3():
          "+ data/spans/", "paper/make_figures.py")
 
 
+# ------------------------------------------- figures added 2026-10-20 (IEEE) ---
+
+def numbers():
+    df = pd.read_csv(os.path.join(HERE, "numbers.csv"), dtype=str, keep_default_na=False)
+    return dict(zip(df.claim_id, df.value))
+
+
+def box(ax, x, y, w, h, title, sub="", fc="#ffffff", ec="#333333", fs=8.5, sfs=6.5):
+    from matplotlib.patches import FancyBboxPatch
+    ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.012,rounding_size=0.02",
+                                fc=fc, ec=ec, lw=0.9))
+    ax.text(x + w / 2, y + h * (0.64 if sub else 0.5), title, ha="center", va="center",
+            fontsize=fs, fontweight="bold")
+    if sub:
+        ax.text(x + w / 2, y + h * 0.28, sub, ha="center", va="center", fontsize=sfs,
+                family="monospace", color="#333333")
+
+
+def arrow(ax, x0, y0, x1, y1, text="", fs=6.5, color="#333333"):
+    ax.annotate("", xy=(x1, y1), xytext=(x0, y0),
+                arrowprops=dict(arrowstyle="-|>", lw=0.9, color=color,
+                                shrinkA=0, shrinkB=0))
+    if text:
+        ax.text((x0 + x1) / 2, (y0 + y1) / 2, text, fontsize=fs, ha="center", va="bottom",
+                color=color, backgroundcolor="white")
+
+
+# Each step of the campaign pipeline and the repository files that carry it out. The figure
+# is drawn from this list, and every file must exist.
+PIPELINE = [
+    ("Deploy stack", "tools/run_campaign.py (stack_up, stack_healthy)",
+     ["tools/run_campaign.py", "infra/docker-compose.override.yml",
+      "infra/hotel-compose.override.yml"]),
+    ("Locust workload", "infra/_locustfile_*.py; run_pilot.start_load",
+     ["infra/_locustfile_baseline.py", "infra/_locustfile_hotel.py", "tools/run_pilot.py"]),
+    ("Trace collection (Jaeger)", "measurement/metrics_collector.py",
+     ["measurement/metrics_collector.py"]),
+    ("Graph reconstruction", "tools/extract_graph.py -> data/graphs/",
+     ["tools/extract_graph.py", "data/graphs/sn_CANONICAL.json",
+      "data/graphs/hr_CANONICAL.json"]),
+    ("Predictor computation", "tools/build_predictor_table.py; centrality/",
+     ["tools/build_predictor_table.py", "centrality/compute_centrality.py",
+      "centrality/hybrid_weight_optimizer.py"]),
+    ("Preregistration lock", "PREREGISTRATION_v3_LOCKED.md",
+     ["_audit/preregistration_versions/PREREGISTRATION_v3_LOCKED.md"]),
+    ("Fault injection (Pumba kill / netem)", "faultinjection/fault_config.py; run_pilot.one_run",
+     ["faultinjection/fault_config.py", "tools/run_pilot.py"]),
+    ("Per-service metric extraction", "measurement/metrics_collector.py",
+     ["measurement/metrics_collector.py"]),
+    ("Blast-radius classification", "measurement/blast_radius.py",
+     ["measurement/blast_radius.py"]),
+    ("Recovery probe", "measurement/recovery_probe.py", ["measurement/recovery_probe.py"]),
+    ("Integrity gates", "tools/audit_run_topology.py; tools/audit_baseline_sanity.py",
+     ["tools/audit_run_topology.py", "tools/audit_baseline_sanity.py"]),
+    ("Statistical analysis", "analysis/final/run_confirmatory_analysis.py",
+     ["analysis/final/run_confirmatory_analysis.py", "analysis/final/fast_stats.py"]),
+]
+
+
+def fig_pipeline():
+    nums = numbers()
+    rows = []
+    for i, (step, sub, files) in enumerate(PIPELINE, 1):
+        for f in files:
+            if not os.path.isfile(os.path.join(REPO, f)):
+                raise SystemExit("pipeline figure names a missing file: %s" % f)
+        rows.append({"step": i, "name": step, "files": "; ".join(files)})
+    pd.DataFrame(rows).to_csv(os.path.join(OUT, "fig_pipeline_data.csv"), index=False)
+
+    fig, ax = plt.subplots(figsize=(7.2, 5.4))
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis("off")
+    w, h, gap = 0.42, 0.115, 0.034
+    cols = [(0.02, PIPELINE[:6], range(1, 7)), (0.56, PIPELINE[6:], range(7, 13))]
+    tops = 0.92
+    geo = []
+    for x, steps, nos in cols:
+        for k, ((step, sub, _), n) in enumerate(zip(steps, nos)):
+            y = tops - k * (h + gap) - h
+            fc = "#eef3fb" if n <= 6 else ("#fdf2e9" if n <= 10 else "#edf7ee")
+            box(ax, x, y, w, h, "%d. %s" % (n, step), sub.replace("; ", "\n"), fc=fc,
+                fs=7.8, sfs=5.6)
+            geo.append((x, y))
+    for (xa, ya), (xb, yb) in list(zip(geo[:5], geo[1:6])) + list(zip(geo[6:11], geo[7:12])):
+        arrow(ax, xa + w / 2, ya, xb + w / 2, yb + h)
+    # 6 -> 7 through the gap between the columns
+    (x6, y6), (x7, y7) = geo[5], geo[6]
+    xm = (x6 + w + x7) / 2
+    ax.plot([x6 + w, xm, xm], [y6 + h / 2, y6 + h / 2, y7 + h / 2], color="#333333", lw=0.9)
+    arrow(ax, xm, y7 + h / 2, x7, y7 + h / 2)
+    ax.text(0.23, 0.955, "Before the campaign", ha="center", fontsize=7.5, style="italic")
+    ax.text(0.77, 0.955, "Steps 7-10 in each of the %s runs; 11-12 after the campaign"
+            % nums["campaign_runs_total"], ha="center", fontsize=7.5, style="italic")
+    save(fig, "fig_pipeline",
+         "Methodology pipeline in execution order; each box names the repository files "
+         "that carry out the step, and the steps from fault injection to the recovery probe "
+         "repeat for every run",
+         "paper/figures/fig_pipeline_data.csv", "repository files listed in the figure",
+         "paper/make_figures.py")
+
+def fig_deployment():
+    import importlib.util
+    import sys as _sys
+    nums = numbers()
+    _sys.path.insert(0, REPO)
+    spec = importlib.util.spec_from_file_location("run_pilot",
+                                                  os.path.join(REPO, "tools", "run_pilot.py"))
+    rp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rp)
+    port = lambda url: url.rsplit(":", 1)[1]  # noqa: E731
+    sn, hr = rp.APPS["socialnetwork"], rp.APPS["hotelreservation"]
+
+    fig, ax = plt.subplots(figsize=(7.2, 4.4))
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis("off")
+    from matplotlib.patches import FancyBboxPatch
+    ax.add_patch(FancyBboxPatch((0.01, 0.02), 0.98, 0.94, boxstyle="round,pad=0.005",
+                                fc="#fafafa", ec="#555555", lw=1))
+    ax.text(0.03, 0.925, "Host: %s, %s cores / %s threads, %s GB RAM"
+            % (nums["testbed_host_os"], nums["testbed_cpu_cores"],
+               nums["testbed_cpu_logical"], nums["testbed_host_ram_gb"]),
+            fontsize=7, fontweight="bold", va="center")
+    ax.add_patch(FancyBboxPatch((0.34, 0.05), 0.63, 0.82, boxstyle="round,pad=0.005",
+                                fc="#eef3fb", ec="#4a6fa5", lw=1))
+    ax.text(0.36, 0.835, "Docker Desktop %s, %s VM, %s GiB memory"
+            % (nums["version_docker_desktop"], nums["testbed_docker_backend"],
+               nums["testbed_docker_vm_gib"]), fontsize=7, fontweight="bold", va="center")
+    box(ax, 0.37, 0.48, 0.30, 0.30, "Application stack",
+        "one stack at a time\nSocial Network: %s containers\nHotel Reservation: %s containers"
+        % (nums["testbed_containers_sn"], nums["testbed_containers_hr"]),
+        fc="#ffffff", fs=7.5, sfs=5.6)
+    box(ax, 0.75, 0.52, 0.20, 0.22, "Jaeger %s" % nums["version_jaeger"],
+        "all-in-one\n%s storage" % nums["testbed_jaeger_storage"], fc="#ffffff", fs=7.5,
+        sfs=5.6)
+    box(ax, 0.37, 0.09, 0.30, 0.19, "Pumba container",
+        "docker run --rm\nmounts /var/run/docker.sock", fc="#ffffff", fs=7.5, sfs=5.6)
+    box(ax, 0.04, 0.60, 0.24, 0.20, "Locust %s" % nums["version_locust"],
+        "%s users, host process" % nums["protocol_load_users"], fc="#ffffff", fs=7.5,
+        sfs=5.6)
+    box(ax, 0.04, 0.12, 0.24, 0.30, "Campaign runner",
+        "tools/run_campaign.py\nPython %s" % nums["version_python"], fc="#ffffff", fs=7.5,
+        sfs=5.6)
+
+    def lab(x, y, t):
+        ax.text(x, y, t, fontsize=5.6, ha="center", va="center", color="#333333")
+    arrow(ax, 0.28, 0.70, 0.37, 0.70)
+    lab(0.325, 0.75, "HTTP\n:%s / :%s" % (port(sn["url"]), port(hr["url"])))
+    arrow(ax, 0.67, 0.63, 0.75, 0.63)
+    lab(0.71, 0.665, "spans")
+    ax.plot([0.28, 0.85], [0.38, 0.38], color="#333333", lw=0.9)
+    arrow(ax, 0.85, 0.38, 0.85, 0.52)
+    lab(0.76, 0.405, "trace queries :%s / :%s" % (port(sn["jaeger"]), port(hr["jaeger"])))
+    arrow(ax, 0.28, 0.185, 0.37, 0.185)
+    lab(0.325, 0.215, "docker CLI")
+    arrow(ax, 0.52, 0.28, 0.52, 0.48)
+    lab(0.585, 0.33, "kill / netem")
+    arrow(ax, 0.16, 0.42, 0.16, 0.60)
+    lab(0.215, 0.51, "start / stop")
+    pd.DataFrame([{"element": k, "value": v} for k, v in (
+        ("host", nums["testbed_host_os"]), ("cpu_cores", nums["testbed_cpu_cores"]),
+        ("vm_gib", nums["testbed_docker_vm_gib"]),
+        ("containers_sn", nums["testbed_containers_sn"]),
+        ("containers_hr", nums["testbed_containers_hr"]),
+        ("gateway_port_sn", port(sn["url"])), ("gateway_port_hr", port(hr["url"])),
+        ("jaeger_port_sn", port(sn["jaeger"])), ("jaeger_port_hr", port(hr["jaeger"])))]) \
+        .to_csv(os.path.join(OUT, "fig_deployment_data.csv"), index=False)
+    save(fig, "fig_deployment",
+         "Testbed deployment: the host, the Docker Desktop VM, the application stack, Jaeger "
+         "and Pumba containers, and the host-side Locust and campaign runner",
+         "paper/figures/fig_deployment_data.csv",
+         "paper/numbers.csv + tools/run_pilot.py (APPS)", "paper/make_figures.py")
+
+def fig_service_graph(app, short, label):
+    import networkx as nx
+    g = json.load(open(os.path.join(REPO, "data", "graphs", "%s_CANONICAL.json" % short),
+                       encoding="utf-8"))
+    G = nx.node_link_graph(g, edges="edges")
+    gateway = [n for n in G.nodes if G.in_degree(n) == 0]
+    level = {n: 0 for n in G.nodes}
+    for n in nx.topological_sort(G):            # layered by longest path from the gateway
+        for m in G.successors(n):
+            level[m] = max(level[m], level[n] + 1)
+    layers = defaultdict(list)
+    for n, lv in level.items():
+        layers[lv].append(n)
+    order = {lv: sorted(ns) for lv, ns in layers.items()}
+    for _ in range(4):                          # barycentre ordering to reduce crossings
+        for lv in sorted(order)[1:]:
+            idx = {n: i - (len(order[l2]) - 1) / 2
+                   for l2 in order if l2 < lv for i, n in enumerate(order[l2])}
+
+            def bary(n):
+                ps = [idx[q] for q in G.predecessors(n) if q in idx]
+                return (sum(ps) / len(ps)) if ps else 0
+            order[lv] = sorted(order[lv], key=lambda n: (bary(n), n))
+    pos = {}
+    for lv, ns in order.items():
+        for k, n in enumerate(ns):
+            pos[n] = (lv * 3.0, -(k - (len(ns) - 1) / 2) * 0.9)
+    tall = max(len(v) for v in order.values())
+    fig, ax = plt.subplots(figsize=(7.2, 0.42 * tall + 0.9))
+    texts = {}
+    for n, (x, y) in pos.items():
+        gw = n in gateway
+        texts[n] = ax.text(x, y, n + ("\n(gateway)" if gw else ""), ha="center",
+                           va="center", fontsize=6.5, zorder=3,
+                           bbox=dict(boxstyle="round,pad=0.3",
+                                     fc="#f6d7b0" if gw else "#eef3fb",
+                                     ec="#b5651d" if gw else "#4a6fa5", lw=0.9))
+    xs = [p[0] for p in pos.values()]
+    ys = [p[1] for p in pos.values()]
+    ax.set_xlim(min(xs) - 1.4, max(xs) + 1.4)
+    ax.set_ylim(min(ys) - 0.6, max(ys) + 0.6)
+    ax.axis("off")
+    # Arrows run from the edge of the caller's label box to the edge of the callee's.
+    fig.canvas.draw()
+    inv = ax.transData.inverted()
+    boxes = {n: inv.transform(t.get_bbox_patch().get_window_extent())
+             for n, t in texts.items()}
+
+    def exit_point(n, other):
+        (x0, y0), (x1, y1) = boxes[n]
+        cx, cy = pos[n]
+        dx, dy = other[0] - cx, other[1] - cy
+        ts = [t for t in ((x1 - cx) / dx if dx > 0 else (x0 - cx) / dx if dx < 0 else 9,
+                          (y1 - cy) / dy if dy > 0 else (y0 - cy) / dy if dy < 0 else 9)
+              if t > 0]
+        t = min(ts)
+        return cx + t * dx, cy + t * dy
+    for u, v in G.edges:
+        a = exit_point(u, pos[v])
+        b = exit_point(v, pos[u])
+        ax.annotate("", xy=b, xytext=a, zorder=2,
+                    arrowprops=dict(arrowstyle="-|>", lw=0.7, color="#555555",
+                                    shrinkA=0, shrinkB=0, mutation_scale=8))
+    pd.DataFrame([{"caller": u, "callee": v, "call_count": d.get("call_count")}
+                  for u, v, d in G.edges(data=True)]) \
+        .to_csv(os.path.join(OUT, "fig_graph_%s_data.csv" % short), index=False)
+    save(fig, "fig_graph_%s" % short,
+         "%s dependency graph as observed in traces: %d services and %d caller-to-callee "
+         "edges, gateway marked" % (label, G.number_of_nodes(), G.number_of_edges()),
+         "paper/figures/fig_graph_%s_data.csv" % short,
+         "data/graphs/%s_CANONICAL.json" % short, "paper/make_figures.py")
+
+def fig_weight_sensitivity():
+    ws = pd.read_csv(os.path.join(FINAL, "weight_sensitivity.csv"))
+    panels = [("socialnetwork", "kill", "ancestor_affected_count",
+               "(a) Social Network,\nancestor_affected_count"),
+              ("hotelreservation", "kill", "ancestor_affected_count",
+               "(b) Hotel Reservation,\nancestor_affected_count"),
+              ("socialnetwork", "kill", "delta_error_rate",
+               "(c) Social Network,\ngateway error rate (exploratory)"),
+              ("hotelreservation", "kill", "delta_error_rate",
+               "(d) Hotel Reservation,\ngateway error rate (exploratory)")]
+    fig, axes = plt.subplots(2, 2, figsize=(5.2, 4.9))
+    s3 = np.sqrt(3) / 2
+    for ax, (app, fault, outcome, title) in zip(axes.flat, panels):
+        d = ws[(ws.architecture == app) & (ws.fault_type == fault) & (ws.outcome == outcome)]
+        x = d.w_out + d.w_btw / 2
+        y = d.w_btw * s3
+        ok = d.spearman_rho.notna()
+        sc = ax.scatter(x[ok], y[ok], c=d.spearman_rho[ok], cmap="RdBu_r", vmin=-1, vmax=1,
+                        s=11, linewidths=0)
+        ax.scatter(x[~ok], y[~ok], marker="x", c="#555555", s=16, linewidths=0.9)
+        r = d[d.is_reported_triplet]
+        ax.scatter(r.w_out + r.w_btw / 2, r.w_btw * s3, marker="o", s=55,
+                   facecolors="none", edgecolors="black", linewidths=1.2)
+        ax.plot([0, 1, 0.5, 0], [0, 0, s3, 0], color="#444444", lw=0.6)
+        ax.text(0.0, -0.05, "$w_{in}$=1", fontsize=6.5, ha="center", va="top")
+        ax.text(1.0, -0.05, "$w_{out}$=1", fontsize=6.5, ha="center", va="top")
+        ax.text(0.5, s3 + 0.03, "$w_{btw}$=1", fontsize=6.5, ha="center", va="bottom")
+        ax.set_title(title, fontsize=7)
+        ax.set_xlim(-0.12, 1.12)
+        ax.set_ylim(-0.16, 1.0)
+        ax.set_aspect("equal")
+        ax.axis("off")
+    fig.subplots_adjust(right=0.86, hspace=0.30, wspace=0.05)
+    cax = fig.add_axes([0.89, 0.25, 0.025, 0.5])
+    cb = fig.colorbar(sc, cax=cax)
+    cb.set_label("Spearman rho", fontsize=7)
+    cb.ax.tick_params(labelsize=6.5)
+    save(fig, "fig_weight_sensitivity",
+         "Post hoc weight sensitivity: Spearman rho of the hybrid metric against each outcome "
+         "for all 231 weight triplets (kill faults; latency faults give identical "
+         "ancestor_affected_count results); circled point: the reported weights 0.4/0.4/0.2; "
+         "x: metric constant",
+         "analysis/final/weight_sensitivity.csv", "analysis/final/weight_sensitivity.csv",
+         "paper/make_figures.py")
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     svc = pd.read_csv(os.path.join(FINAL, "service_level_data.csv"))
@@ -317,6 +608,11 @@ def main():
     fig_rank_inversion(ranks)
     fig_leave_one_out(loo)
     fig_q3()
+    fig_pipeline()
+    fig_deployment()
+    fig_service_graph("socialnetwork", "sn", "Social Network")
+    fig_service_graph("hotelreservation", "hr", "Hotel Reservation")
+    fig_weight_sensitivity()
 
     pd.DataFrame(INDEX).to_csv(os.path.join(OUT, "figures_index.csv"), index=False)
     print("wrote %d figures and figures_index.csv" % len(INDEX))

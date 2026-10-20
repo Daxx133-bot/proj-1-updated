@@ -1,0 +1,6 @@
+# Lines copied verbatim from _audit/MEMORY_CEILING.md by tools/record_testbed.py.
+**Date:** 2026-09-24
+It is **not** a Docker Desktop setting. Docker Desktop here runs on the **WSL2 backend**,
+Host = 15.7 GB → VM = **8 157 077 504 bytes = 7.598 GiB**, which matches the per-container
+| SN graph reconstruction | socialNetwork | stopped | 27 |
+| HR graph reconstruction | hotelReservation | stopped | 24 |

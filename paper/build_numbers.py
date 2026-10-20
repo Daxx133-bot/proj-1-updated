@@ -137,10 +137,16 @@ def protocol_and_topology_numbers():
     # A weight search on campaign data would leave output beside that data or beside the
     # final analysis: a file named for weights/tuning/grids/optimisation, or a table with
     # weight columns. Look in both places.
-    search_out = []
+    # The post-hoc sensitivity analysis (analysis/final/weight_sensitivity*, 2026-10-20)
+    # evaluates every grid triplet against campaign data but selects none, and the reported
+    # weights are unchanged; it is excluded from this check and recorded by its own id.
+    search_out, sensitivity = [], []
     for d in ("data/campaign", "analysis/final"):
         for f in _glob.glob(os.path.join(REPO, d, "**", "*"), recursive=True):
             if not os.path.isfile(f):
+                continue
+            if os.path.basename(f).startswith("weight_sensitivity"):
+                sensitivity.append(f)
                 continue
             if re.search(r"weight|tuned|grid|optimi", os.path.basename(f), re.I):
                 search_out.append(f)
@@ -153,7 +159,12 @@ def protocol_and_topology_numbers():
         "were re-optimised on campaign data", lock_exists or bool(search_out),
         "check: centrality/output/tuned_weights.lock.json absent AND no file under "
         "data/campaign/ or analysis/final/ whose name matches weight|tuned|grid|optimi or "
-        "whose CSV header has a w_in/w_out/w_btw column", S_SELF)
+        "whose CSV header has a w_in/w_out/w_btw column, other than the post-hoc "
+        "weight_sensitivity files (which select no triplet)", S_SELF)
+    add("hybrid_weights_grid_evaluated_post_hoc", "Whether all grid triplets were evaluated "
+        "against campaign data after the confirmatory results (post-hoc sensitivity "
+        "analysis; no triplet adopted)", bool(sensitivity),
+        "analysis/final/weight_sensitivity.py", S_SELF)
 
     # ---- run protocol, from the campaign runner's RunArgs -------------------
     src = open(os.path.join(REPO, "tools", "run_campaign.py"), encoding="utf-8").read()
@@ -527,8 +538,134 @@ def software_versions():
          "README.md", r"statsmodels (\d+\.\d+\.\d+)"),
         ("version_networkx", "NetworkX version the pipeline was verified with", "README.md",
          r"networkx (\d+\.\d+\.\d+)"),
+        ("version_numpy", "NumPy version the pipeline was verified with", "README.md",
+         r"numpy (\d+\.\d+\.\d+)"),
+        ("version_pandas", "pandas version the pipeline was verified with", "README.md",
+         r"pandas (\d+\.\d+\.\d+)"),
+        ("version_matplotlib", "matplotlib version the pipeline was verified with",
+         "README.md", r"matplotlib (\d+\.\d+\.\d+)"),
     ):
         add(cid, desc, grab(rel, pat), rel, S_SELF)
+
+
+def testbed_numbers():
+    """Testbed facts for the manuscript's testbed table (2026-10-20). Host facts not recorded
+    before the campaign were queried read-only by tools/record_testbed.py and carry their
+    query date; the Docker VM facts were recorded on 2026-09-24, before the campaign."""
+    S_SELF = "paper/build_numbers.py"
+    F_TB, F_VM = "data/environment/testbed.txt", "data/environment/docker_vm.txt"
+
+    def text(rel):
+        p = os.path.join(REPO, rel)
+        return open(p, encoding="utf-8").read() if os.path.isfile(p) else ""
+
+    tb = dict(re.findall(r"(?m)^(\w+) = (.+)$", text(F_TB)))
+    for cid, key, desc, unit, conv in (
+        ("testbed_measured_on", "measured_on", "Date the host facts were queried", "", str),
+        ("testbed_host_os", "host_os", "Host operating system (queried)", "", str),
+        ("testbed_host_os_version", "host_os_version", "Host OS version (queried)", "", str),
+        ("testbed_cpu_model", "cpu_model", "Host CPU model (queried)", "", str),
+        ("testbed_cpu_cores", "cpu_cores", "Host CPU physical cores (queried)", "cores", int),
+        ("testbed_cpu_logical", "cpu_logical_processors",
+         "Host CPU logical processors (queried)", "threads", int),
+        ("version_docker_desktop", "docker_desktop_version",
+         "Docker Desktop version (install record, queried)", "", str),
+        ("version_docker_compose", "docker_compose_version",
+         "Docker Compose client version (queried)", "", str),
+    ):
+        v = tb.get(key)
+        add(cid, desc, conv(v) if v and v != "NOT FOUND" else "SOURCE NOT FOUND", F_TB,
+            "tools/record_testbed.py", unit)
+
+    vm = text(F_VM)
+    m_date = re.search(r"\*\*Date:\*\* (\d{4}-\d{2}-\d{2})", vm)
+    m_host = re.search(r"Host = ([\d.]+) GB", vm)
+    m_vm = re.search(r"= ([\d.]+) GiB\*\*", vm)
+    m_sn = re.search(r"SN graph reconstruction \| \w+ \| \w+ \| (\d+) \|", vm)
+    m_hr = re.search(r"HR graph reconstruction \| \w+ \| \w+ \| (\d+) \|", vm)
+    for cid, desc, m, unit, conv in (
+        ("testbed_vm_record_date", "Date the Docker VM memory record was made", m_date, "",
+         str),
+        ("testbed_host_ram_gb", "Host RAM as recorded with the Docker VM ceiling", m_host,
+         "GB", float),
+        ("testbed_docker_vm_gib", "Docker VM memory ceiling (WSL2 default, recorded)", m_vm,
+         "GiB", float),
+        ("testbed_containers_sn", "Containers in the Social Network stack (recorded)", m_sn,
+         "containers", int),
+        ("testbed_containers_hr", "Containers in the Hotel Reservation stack (recorded)",
+         m_hr, "containers", int),
+    ):
+        add(cid, desc, conv(m.group(1)) if m else "SOURCE NOT FOUND", F_VM, S_SELF, unit,
+            "%.1f" if conv is float and "ram" in cid else ("%.3f" if conv is float else None))
+    add("testbed_docker_backend", "Docker Desktop backend (recorded)",
+        "WSL2" if "WSL2 backend" in vm else "SOURCE NOT FOUND", F_VM, S_SELF)
+
+    pilot = text("tools/run_pilot.py")
+    m = re.search(r'"--spawn-rate", "(\d+)"', pilot)
+    add("protocol_spawn_rate", "Locust spawn rate passed by the runner",
+        int(m.group(1)) if m else "SOURCE NOT FOUND", "tools/run_pilot.py", S_SELF,
+        "users/s")
+    add("testbed_jaeger_storage", "Jaeger storage mode (all-in-one image, in-memory)",
+        "in-memory" if "Jaeger's in-memory storage" in pilot else "SOURCE NOT FOUND",
+        "tools/run_pilot.py", S_SELF)
+
+
+def weight_sensitivity_numbers():
+    """Ids for analysis/final/weight_sensitivity.py (POST HOC, 2026-10-20)."""
+    S = "analysis/final/weight_sensitivity.py"
+    F = "analysis/final/weight_sensitivity_summary.csv"
+    p = os.path.join(REPO, F)
+    if not os.path.isfile(p):
+        return
+    s = pd.read_csv(p)
+    full = pd.read_csv(os.path.join(REPO, "analysis/final/weight_sensitivity.csv"))
+    add("ws_triplets", "Weight triplets on the 0.05 grid summing to 1",
+        int(s.triplets.iloc[0]), F, S, "triplets")
+    add("ws_grid_step", "Grid step of the weight sensitivity analysis", 0.05, S, S, "",
+        "%.2f")
+    add("ws_mc_permutations", "Random permutations where exact enumeration is infeasible",
+        10000, S, S, "permutations")
+    key = {("socialnetwork", "kill", "ancestor_affected_count"): "sn_kill_anc",
+           ("socialnetwork", "latency", "ancestor_affected_count"): "sn_lat_anc",
+           ("hotelreservation", "kill", "ancestor_affected_count"): "hr_kill_anc",
+           ("hotelreservation", "latency", "ancestor_affected_count"): "hr_lat_anc",
+           ("socialnetwork", "kill", "delta_error_rate"): "sn_kill_err",
+           ("hotelreservation", "kill", "delta_error_rate"): "hr_kill_err"}
+    for _, r in s.iterrows():
+        k = key[(r.architecture, r.fault_type, r.outcome)]
+        what = "%s, %s faults, %s" % (r.architecture_label, r.fault_type, r.outcome)
+        for col, desc, unit, fmt in (
+            ("triplets_defined", "triplets with a defined rho", "triplets", None),
+            ("triplets_undefined", "triplets with the metric constant (rho undefined)",
+             "triplets", None),
+            ("rho_min", "smallest rho over the triplets", "", "%.3f"),
+            ("rho_median", "median rho over the triplets", "", "%.3f"),
+            ("rho_max", "largest rho over the triplets", "", "%.3f"),
+            ("triplets_rho_positive", "triplets with rho > 0", "triplets", None),
+            ("triplets_rho_negative", "triplets with rho < 0", "triplets", None),
+            ("triplets_p_raw_below_05", "triplets with uncorrected p < 0.05", "triplets",
+             None),
+            ("triplets_significant_bh", "triplets significant after BH within the 231",
+             "triplets", None),
+            ("p_raw_min", "smallest uncorrected p over the triplets", "", "%.4f"),
+            ("p_bh_min", "smallest BH-adjusted p within the 231", "", "%.4f"),
+            ("reported_rho", "rho at the reported weights 0.4/0.4/0.2", "", "%.3f"),
+            ("reported_p", "uncorrected p at the reported weights", "", "%.4f"),
+            ("reported_p_bh_within_231", "BH-adjusted p (family of 231) at the reported "
+             "weights", "", "%.4f"),
+            ("triplets_rho_above_reported", "triplets with rho above the reported weights'",
+             "triplets", None),
+        ):
+            v = r[col]
+            add("ws_%s_%s" % (k, col), "Weight sensitivity (post hoc), %s: %s" % (what, desc),
+                int(v) if fmt is None else float(v), F, S, unit, fmt)
+    a = full[(full.architecture == "socialnetwork")
+             & (full.outcome == "ancestor_affected_count")]
+    same = (a[a.fault_type == "kill"].spearman_rho.round(9).tolist()
+            == a[a.fault_type == "latency"].spearman_rho.round(9).tolist())
+    add("ws_anc_identical_across_faults", "Weight sensitivity: ancestor_affected_count "
+        "results identical under kill and latency faults (Social Network)", bool(same),
+        "analysis/final/weight_sensitivity.csv", S)
 
 
 def user_facing_numbers():
@@ -1004,6 +1141,8 @@ def main():
     user_facing_numbers()
     number_audit_sources()
     software_versions()
+    testbed_numbers()
+    weight_sensitivity_numbers()
 
     df = pd.DataFrame(ROWS)
     dupes = df[df.claim_id.duplicated(keep=False)]

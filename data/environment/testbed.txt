@@ -1,0 +1,10 @@
+# Host and Docker facts, queried read-only by tools/record_testbed.py.
+# measured_on is the query date, not the campaign date (2026-09-25/26).
+measured_on = 2026-10-20
+host_os = Microsoft Windows 11 Home Single Language
+host_os_version = 10.0.26300
+cpu_model = 12th Gen Intel(R) Core(TM) i7-1255U
+cpu_cores = 10
+cpu_logical_processors = 12
+docker_desktop_version = 4.91.0
+docker_compose_version = 5.5.1
