@@ -79,18 +79,15 @@ def fig_primary(svc):
                             textcoords="offset points", xytext=(9, -3),
                             fontsize=9, fontweight="bold", color="#c0392b")
         ax.set_xlim(lim); ax.set_ylim(lim)
-        ax.set_xlabel("graph ancestor_count")
+        ax.set_xlabel("caller count X (graph ancestors)")
         ax.set_title("%s faults" % ft)
         ax.grid(alpha=0.25, lw=0.6)
-    axes[0].set_ylabel("measured ancestor_affected_count\n(median of 5 repetitions)")
+    axes[0].set_ylabel("degraded callers Y\n(median of 5 repetitions)")
     axes[0].legend(loc="upper left", fontsize=9, frameon=False)
-    fig.suptitle("Social Network: predicted vs measured blast radius. Points on the "
-                 "dashed line are\nsaturated, where the outcome restates the predictor; "
-                 "only the labelled services depart.",
-                 fontsize=10.5, y=1.04)
     save(fig, "fig_primary_sn",
-         "ancestor_count vs measured ancestor_affected_count per SN service, with y=x "
-         "and the departing services labelled",
+         "Caller count X against the measured number of degraded callers Y for each Social "
+         "Network service under kill and latency faults; points on the dashed line y = x "
+         "are saturated, and the labelled service departs from it",
          "paper/figures/fig_primary_sn_data.csv",
          "analysis/final/service_level_data.csv", RCA)
 
@@ -136,17 +133,13 @@ def fig_rank_inversion(ranks):
                     color="#c0392b" if cp else "0.3")
     ax.set_xlim(-1.05, 2.05); ax.set_ylim(n + 0.8, 0.2)
     ax.set_xticks([0, 1])
-    ax.set_xticklabels(["rank by\nhybrid_criticality\n(the proposed metric)",
-                        "rank by\nancestor_count\n(the corrected predictor)"])
+    ax.set_xticklabels(["rank by\nhybrid metric HC", "rank by\ncaller count X"])
     ax.set_ylabel("rank (1 = most critical)")
     ax.set_yticks(range(1, n + 1))
     ax.grid(axis="y", alpha=0.25, lw=0.6)
-    ax.set_title("compose-post-service is ranked first by the proposed metric and last by\n"
-                 "the corrected predictor; its measured blast radius is 1 ancestor in "
-                 "10 of 10 runs.", fontsize=10.5)
     save(fig, "fig_rank_inversion",
-         "Rank of all 11 SN services by hybrid_criticality vs by ancestor_count, "
-         "compose-post-service highlighted",
+         "Rank of the eleven Social Network services by the hybrid metric HC and by caller "
+         "count X, with compose-post-service highlighted",
          "paper/figures/fig_rank_inversion_data.csv",
          "analysis/final/sn_predictor_ranks.csv", RCA)
 
@@ -174,19 +167,17 @@ def fig_leave_one_out(loo):
                label="full 11-service set (rho = %.3f)" % full)
     ax.set_yticks(range(len(d)))
     ax.set_yticklabels(d.service_excluded, fontsize=9)
-    ax.set_xlabel("Spearman rho after excluding that service")
-    ax.set_ylabel("service excluded")
+    ax.set_xlabel("Spearman rho between X and Y with that service withheld")
+    ax.set_ylabel("service withheld")
     ax.set_xlim(0, 1.06)
     for i, v in enumerate(d.rho):
         ax.text(v + 0.012, i, "%.3f" % v, va="center", fontsize=8.5)
     # Outside the plot area, so it cannot cover bars, value labels or the reference line.
     ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0), fontsize=9, frameon=False)
     ax.grid(axis="x", alpha=0.25, lw=0.6)
-    ax.set_title("POST-HOC robustness check (not part of the preregistered family).\n"
-                 "Excluding user-service drives rho to 1.000: it is the only service whose "
-                 "removal\ncompletes the tautology.", fontsize=10.5)
     save(fig, "fig_leave_one_out",
-         "Post-hoc: primary rho recomputed with each SN service excluded, kill faults",
+         "Post hoc leave-one-out check: Spearman's rho between X and Y on Social Network "
+         "under kill faults, recomputed with each service withheld",
          "paper/figures/fig_leave_one_out_data.csv",
          "analysis/final/leave_one_out.csv", "analysis/final/leave_one_out.py")
 
@@ -288,20 +279,16 @@ def fig_q3():
     axes[0].set_ylabel("p95 latency (ms, log scale)")
     # One legend for both panels, outside the plot area so it covers no bar.
     h, l = axes[0].get_legend_handles_labels()
-    fig.legend(h, l, loc="center left", bbox_to_anchor=(1.0, 0.5), fontsize=9,
+    fig.legend(h, l, loc="upper center", bbox_to_anchor=(0.5, -0.02), ncol=2, fontsize=10,
                frameon=False)
     # Counts are read off the data, never asserted: exclude the faulted service itself,
     # which is expected to be flagged under either scope.
     nf = rep1[~rep1.faulted]
     n_old, n_new = int(nf.old_flagged.sum()), int(nf.new_flagged.sum())
-    fig.suptitle("Hotel Reservation, latency fault injected into 'search'. Excluding the "
-                 "faulted service, the old\nscope flags %d services that clear the 2x "
-                 "threshold together because they share a trace;\nthe corrected scope "
-                 "flags %d. Asterisk marks a flagged service."
-                 % (n_old, n_new), fontsize=10.5, y=1.10)
     save(fig, "fig_q3_artifact",
-         "Per-service p95 under the old end-to-end root-span scope vs the corrected "
-         "own-span scope, HR search latency fault",
+         "Per-service p95 on Hotel Reservation under a latency fault in search, measured on "
+         "the end-to-end root span of each trace (left) and on each service's own spans "
+         "(right); an asterisk marks a service flagged as degraded",
          "paper/figures/fig_q3_artifact_data.csv",
          "data/pilot/pilot_hotelreservation_search_latency_rep*_2026-09-26T*.json "
          "+ data/spans/", "paper/make_figures.py")
@@ -420,7 +407,7 @@ def fig_deployment():
     port = lambda url: url.rsplit(":", 1)[1]  # noqa: E731
     sn, hr = rp.APPS["socialnetwork"], rp.APPS["hotelreservation"]
 
-    fig, ax = plt.subplots(figsize=(7.2, 4.4))
+    fig, ax = plt.subplots(figsize=(7.2, 4.6))
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
@@ -430,43 +417,48 @@ def fig_deployment():
     ax.text(0.03, 0.925, "Host: %s, %s cores / %s threads, %s GB RAM"
             % (nums["testbed_host_os"], nums["testbed_cpu_cores"],
                nums["testbed_cpu_logical"], nums["testbed_host_ram_gb"]),
-            fontsize=7, fontweight="bold", va="center")
-    ax.add_patch(FancyBboxPatch((0.34, 0.05), 0.63, 0.82, boxstyle="round,pad=0.005",
+            fontsize=7.5, fontweight="bold", va="center")
+    ax.add_patch(FancyBboxPatch((0.40, 0.05), 0.57, 0.82, boxstyle="round,pad=0.005",
                                 fc="#eef3fb", ec="#4a6fa5", lw=1))
-    ax.text(0.36, 0.835, "Docker Desktop %s, %s VM, %s GiB memory"
+    ax.text(0.42, 0.835, "Docker Desktop %s, %s VM, %s GiB"
             % (nums["version_docker_desktop"], nums["testbed_docker_backend"],
-               nums["testbed_docker_vm_gib"]), fontsize=7, fontweight="bold", va="center")
-    box(ax, 0.37, 0.48, 0.30, 0.30, "Application stack",
-        "one stack at a time\nSocial Network: %s containers\nHotel Reservation: %s containers"
+               nums["testbed_docker_vm_gib"]), fontsize=7.5, fontweight="bold", va="center")
+    box(ax, 0.43, 0.52, 0.27, 0.26, "Application stack",
+        "one stack at a time\nSocial Network: %s containers\nHotel Reservation: %s"
         % (nums["testbed_containers_sn"], nums["testbed_containers_hr"]),
-        fc="#ffffff", fs=7.5, sfs=5.6)
-    box(ax, 0.75, 0.52, 0.20, 0.22, "Jaeger %s" % nums["version_jaeger"],
-        "all-in-one\n%s storage" % nums["testbed_jaeger_storage"], fc="#ffffff", fs=7.5,
-        sfs=5.6)
-    box(ax, 0.37, 0.09, 0.30, 0.19, "Pumba container",
-        "docker run --rm\nmounts /var/run/docker.sock", fc="#ffffff", fs=7.5, sfs=5.6)
-    box(ax, 0.04, 0.60, 0.24, 0.20, "Locust %s" % nums["version_locust"],
-        "%s users, host process" % nums["protocol_load_users"], fc="#ffffff", fs=7.5,
-        sfs=5.6)
-    box(ax, 0.04, 0.12, 0.24, 0.30, "Campaign runner",
-        "tools/run_campaign.py\nPython %s" % nums["version_python"], fc="#ffffff", fs=7.5,
-        sfs=5.6)
+        fc="#ffffff", fs=8, sfs=6.3)
+    box(ax, 0.76, 0.52, 0.19, 0.26, "Jaeger %s" % nums["version_jaeger"],
+        "all-in-one\n%s\nstorage" % nums["testbed_jaeger_storage"], fc="#ffffff", fs=8,
+        sfs=6.3)
+    box(ax, 0.43, 0.09, 0.27, 0.19, "Pumba container",
+        "docker run --rm\nmounts the Docker socket", fc="#ffffff", fs=8, sfs=6.3)
+    box(ax, 0.04, 0.60, 0.22, 0.20, "Locust %s" % nums["version_locust"],
+        "%s users\nhost process" % nums["protocol_load_users"], fc="#ffffff", fs=8, sfs=6.3)
+    box(ax, 0.04, 0.09, 0.22, 0.30, "Campaign runner",
+        "run_campaign.py\nPython %s" % nums["version_python"], fc="#ffffff", fs=8, sfs=6.3)
 
-    def lab(x, y, t):
-        ax.text(x, y, t, fontsize=5.6, ha="center", va="center", color="#333333")
-    arrow(ax, 0.28, 0.70, 0.37, 0.70)
-    lab(0.325, 0.75, "HTTP\n:%s / :%s" % (port(sn["url"]), port(hr["url"])))
-    arrow(ax, 0.67, 0.63, 0.75, 0.63)
-    lab(0.71, 0.665, "spans")
-    ax.plot([0.28, 0.85], [0.38, 0.38], color="#333333", lw=0.9)
-    arrow(ax, 0.85, 0.38, 0.85, 0.52)
-    lab(0.76, 0.405, "trace queries :%s / :%s" % (port(sn["jaeger"]), port(hr["jaeger"])))
-    arrow(ax, 0.28, 0.185, 0.37, 0.185)
-    lab(0.325, 0.215, "docker CLI")
-    arrow(ax, 0.52, 0.28, 0.52, 0.48)
-    lab(0.585, 0.33, "kill / netem")
-    arrow(ax, 0.16, 0.42, 0.16, 0.60)
-    lab(0.215, 0.51, "start / stop")
+    def lab(x, y, t, ha="center"):
+        ax.text(x, y, t, fontsize=6.6, ha=ha, va="bottom", color="#222222")
+    # load: label above the arrow
+    arrow(ax, 0.26, 0.68, 0.43, 0.68)
+    lab(0.33, 0.69, "HTTP\n:%s / :%s" % (port(sn["url"]), port(hr["url"])))
+    # spans: label above the arrow
+    arrow(ax, 0.70, 0.65, 0.76, 0.65)
+    lab(0.73, 0.66, "spans")
+    # trace queries: under the application box, up into Jaeger
+    ax.plot([0.26, 0.855], [0.43, 0.43], color="#333333", lw=0.9)
+    arrow(ax, 0.855, 0.43, 0.855, 0.52)
+    lab(0.585, 0.44, "trace queries :%s / :%s" % (port(sn["jaeger"]), port(hr["jaeger"])),
+        ha="left")
+    # docker CLI: its own space, label above the arrow
+    arrow(ax, 0.26, 0.18, 0.43, 0.18)
+    lab(0.33, 0.19, "docker CLI")
+    # Pumba acts on the stack: label to the right of the arrow, below the trace line
+    arrow(ax, 0.565, 0.28, 0.565, 0.52)
+    lab(0.58, 0.32, "kill / netem", ha="left")
+    # runner starts and stops Locust
+    arrow(ax, 0.15, 0.39, 0.15, 0.60)
+    lab(0.165, 0.47, "start / stop", ha="left")
     pd.DataFrame([{"element": k, "value": v} for k, v in (
         ("host", nums["testbed_host_os"]), ("cpu_cores", nums["testbed_cpu_cores"]),
         ("vm_gib", nums["testbed_docker_vm_gib"]),
@@ -476,8 +468,8 @@ def fig_deployment():
         ("jaeger_port_sn", port(sn["jaeger"])), ("jaeger_port_hr", port(hr["jaeger"])))]) \
         .to_csv(os.path.join(OUT, "fig_deployment_data.csv"), index=False)
     save(fig, "fig_deployment",
-         "Testbed deployment: the host, the Docker Desktop VM, the application stack, Jaeger "
-         "and Pumba containers, and the host-side Locust and campaign runner",
+         "Testbed deployment: the host, the Docker Desktop VM with the application stack, "
+         "Jaeger and Pumba containers, and the host-side Locust and campaign runner",
          "paper/figures/fig_deployment_data.csv",
          "paper/numbers.csv + tools/run_pilot.py (APPS)", "paper/make_figures.py")
 
@@ -556,9 +548,9 @@ def fig_service_graph(app, short, label):
 def fig_weight_sensitivity():
     ws = pd.read_csv(os.path.join(FINAL, "weight_sensitivity.csv"))
     panels = [("socialnetwork", "kill", "ancestor_affected_count",
-               "(a) Social Network,\nancestor_affected_count"),
+               "(a) Social Network,\ndegraded callers Y"),
               ("hotelreservation", "kill", "ancestor_affected_count",
-               "(b) Hotel Reservation,\nancestor_affected_count"),
+               "(b) Hotel Reservation,\ndegraded callers Y"),
               ("socialnetwork", "kill", "delta_error_rate",
                "(c) Social Network,\ngateway error rate (exploratory)"),
               ("hotelreservation", "kill", "delta_error_rate",
@@ -591,10 +583,10 @@ def fig_weight_sensitivity():
     cb.set_label("Spearman rho", fontsize=7)
     cb.ax.tick_params(labelsize=6.5)
     save(fig, "fig_weight_sensitivity",
-         "Post hoc weight sensitivity: Spearman rho of the hybrid metric against each outcome "
-         "for all 231 weight triplets (kill faults; latency faults give identical "
-         "ancestor_affected_count results); circled point: the reported weights 0.4/0.4/0.2; "
-         "x: metric constant",
+         "Post hoc weight sensitivity: Spearman's rho of the hybrid metric against degraded "
+         "callers (a, b) and the gateway error rate (c, d) for all 231 weight triplets under "
+         "kill faults (latency faults give identical results for degraded callers); circled: "
+         "the reported weights 0.4/0.4/0.2; cross: metric constant",
          "analysis/final/weight_sensitivity.csv", "analysis/final/weight_sensitivity.csv",
          "paper/make_figures.py")
 

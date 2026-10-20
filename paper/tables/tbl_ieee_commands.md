@@ -1,0 +1,8 @@
+| Step | Command | Source |
+|---|---|---|
+| Start the load | python -m locust -f <locustfile> --host <url> --headless --users <users> --spawn-rate 10 --run-time <duration>s --only-summary --loglevel ERROR | runner, load start |
+| Find the target container | docker ps --filter label=com.docker.compose.service=<service> --format '{{.Names}}\t{{.Label "com.docker.compose.service"}}' | runner, target resolution |
+| Kill fault | docker run --rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/alexei-led/pumba kill --signal SIGKILL <container> | fault configuration |
+| Latency fault | docker run --rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/alexei-led/pumba netem --duration 30s delay --time 500 --jitter 100 <container> | fault configuration |
+| Restore after a kill | docker compose up -d <service> | runner, restore |
+| Clean up after a latency fault | docker compose up -d --force-recreate <service> | runner, clean-up |

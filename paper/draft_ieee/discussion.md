@@ -37,14 +37,14 @@ A post hoc breakdown of the degraded ancestors makes the point sharper. In all 1
 applications every analysable service has the gateway among its graph ancestors
 %[id:gw_sn_services_gateway_ancestor] %[id:gw_hr_services_gateway_ancestor]. Every measured
 ancestor count therefore includes one unit that is the same for every service. What remains to be
-explained comes from the intermediate callers, and in Social Network only `user-service` departs
+explained comes from the intermediate callers, and in Social Network only user-service departs
 from its graph count in a consistent way. It has 4 %[id:userservice_ancestor_count] graph
 ancestors and registered 2 %[id:userservice_measured] degraded ancestors in all five kill runs
 %[id:userservice_runs_departing]. Its two ancestors that degraded sit on request paths the
 workload exercises, and its other two showed no degradation in any run. That explanation was
 formed after seeing the data and has not been tested.
 
-The leave-one-out check, also post hoc, shows what follows from this. With `user-service`
+The leave-one-out check, also post hoc, shows what follows from this. With user-service
 withheld, the Social Network correlation becomes 1.000 %[id:loo_userservice_rho]. A reader can
 fairly treat the Social Network result as resting on one service's worth of independent
 information. One lesson may extend past this study in a narrow sense: any structural predictor
@@ -63,9 +63,9 @@ request types whose traces pass through it were summed and divided by the total 
 correlation between that share and the median gateway error was 0.788
 %[id:uf_sn_rho_err_weight_share] on Social Network and 0.964 %[id:uf_hr_rho_err_weight_share] on
 Hotel Reservation. These are descriptive values with no p-value attached. In Hotel Reservation,
-killing `reservation`, which sits on request types carrying 0.727
+killing reservation, which sits on request types carrying 0.727
 %[id:uf_hr_reservation_weight_share] of the weight, gave a median gateway error rate of 0.7340
-%[id:uf_hr_reservation_err_median]. Killing `recommendation`, with a share of 0.091
+%[id:uf_hr_reservation_err_median]. Killing recommendation, with a share of 0.091
 %[id:uf_hr_recommendation_weight_share], gave 0.0860 %[id:uf_hr_recommendation_err_median]. The
 mix does not explain everything. The Social Network services reached only through the compose
 request all share a weight of 0.300 %[id:uf_sn_compose_post_service_weight_share], and their

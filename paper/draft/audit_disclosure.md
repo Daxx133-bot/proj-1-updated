@@ -25,10 +25,10 @@ to favour the metric, so the inherited weights are an unlikely cause of its null
 
 ## 7.2 Deviations from the locked specification
 
-Table 8 lists twelve deviations from the locked plan %[id:deviations_total]. Together they
+Table 8 lists thirteen deviations from the locked plan %[id:deviations_total]. Together they
 invalidated 17 %[id:deviations_runs_invalidated] runs, each of which was quarantined and
 collected again in its own cell, which is why the final dataset is complete and balanced at
-180 %[id:campaign_runs_total] runs. Nine %[id:deviations_no_data] of the twelve invalidated no
+180 %[id:campaign_runs_total] runs. Ten %[id:deviations_no_data] of the thirteen invalidated no
 data. The three %[id:deviations_with_data] that did are deviation 1 (3 runs
 %[id:deviation_1_runs_invalidated]), deviation 2 (3 runs %[id:deviation_2_runs_invalidated])
 and deviation 4 (11 runs %[id:deviation_4_runs_invalidated]). We describe them in the order

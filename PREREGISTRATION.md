@@ -1077,6 +1077,35 @@ The interrupted attempt was not listed among amendment 2's resets, in the quaran
 in the deviation table. No outcome from it was ever computed or used. Its span files remain
 in `data/spans/` and are identified here so they are not mistaken for an analysed run.
 
+### Deviation 13 — recorded 2026-10-20 during manuscript preparation
+
+**A deviation record, not an amendment.** Found on 2026-10-20, after the analysis was complete,
+by a read-only comparison of the runner code with the manuscript text. It changes no
+specification, locked output, stored outcome or measurement code. It is also a row of
+`analysis/final/deviations.csv`.
+
+#### Deviation 13 — the baseline window includes the load ramp-up
+
+| | |
+|---|---|
+| **Date recorded** | 2026-10-20 |
+| **Made before any campaign data was analysed?** | No; found during manuscript preparation, after the analysis. |
+| **Sections affected** | §8 (protocol per run) |
+| **Campaign runs invalidated** | 0 |
+
+§8 lists the protocol per run as "60 s warm-up → baseline → 30 s fault". The runner
+(`tools/run_pilot.py`, `one_run`) starts the load generator, waits for the warm-up, and then
+computes the baseline percentiles over the preceding window of the same length. The baseline
+therefore covers the first 60 s after the load starts, including the load generator's
+ramp-up, and not a separate window after a warm-up. Earlier manuscript text described the
+latter.
+
+The baseline-sanity gate, which compares each run's fault-free baseline with the rest of the
+campaign by median and median absolute deviation, found no anomalous baselines. The same
+procedure ran in every run. The size of any ramp-up effect on the baselines was not measured.
+The manuscript now describes the window as computed and lists the difference as a threat to
+validity.
+
 ---
 
 ---
@@ -1091,5 +1120,6 @@ in `data/spans/` and are identified here so they are not mistaken for an analyse
 | **Deviations after analysis** | 1 (§12 deviation 9, 2026-09-28): the primary test's raw p refined from Monte-Carlo to exact enumeration, in a supplementary file only. Verdict unchanged. |
 | **Campaign collected** | 180/180 runs, 2026-09-26 04:19-13:35 UTC, 0 failed, 0 censored, perfectly balanced (36 cells x 5 reps). Both pre-analysis gates clean. |
 | **Deviations recorded 2026-10-06** | 3 (§12 deviations 10-12): the §3 cross-arch weight protocol was not executed and inherited weights were used; Social Network per-service latency used all spans under a "server spans" label (post-hoc replay: no service-level change); one undocumented second attempt of `hotelreservation\|rate\|latency\|1`. No locked output or stored outcome changed. |
+| **Deviation recorded 2026-10-20** | 1 (§12 deviation 13): the baseline window is the first 60 s after the load starts, including ramp-up, not a separate window after the warm-up. No run invalidated; the baseline-sanity gate found no anomalies. |
 | **Campaign span, reconciled 2026-10-06** | The 04:19-13:35 UTC window above includes the 3 rehearsal runs later quarantined (item 11). The 180 kept runs span 05:02-13:35 UTC by their end-timestamps (8.5 h, `campaign_duration_hours`). |
 | **Text as locked** | `_audit/preregistration_versions/PREREGISTRATION_v3_FROZEN_95d37e5.md`. The file named `..._LOCKED.md` is the lock plus amendment log; see that directory's README. |

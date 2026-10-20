@@ -1,0 +1,9 @@
+| Quantity | Social Network | Hotel Reservation |
+|---|---|---|
+| Services, realised / preregistered | 11 / 11 | 7 / 7 |
+| Distinct *X* values, realised / preregistered | 4 / 4 | 2 / 2 |
+| *X* values | 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4 | 1, 1, 1, 1, 1, 2, 2 |
+| Ceiling ρ, realised / preregistered | 0.941 / 0.941 | 0.791 / 0.791 |
+| Ceiling p, exact | 0.0002 | 0.0952 |
+| Ceiling p, asymptotic (not for inference) | <0.0001 | 0.0343 |
+| p quoted in the preregistration |  | 0.034 |

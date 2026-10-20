@@ -233,7 +233,7 @@ preregistered rule promoting the rank test to primary fired on a threshold fixed
 computed.
 `integrity_checks_total`, `integrity_checks_passed`
 
-**8.4 SUPPORTED** — Twelve deviations from the preregistration are logged, invalidating 17 runs
+**8.4 SUPPORTED** — Thirteen deviations from the preregistration are logged, invalidating 17 runs
 in total, all of which were quarantined and re-collected rather than analysed or discarded.
 `deviations_total`, `deviations_runs_invalidated`, `quarantine_items`
 
@@ -436,8 +436,8 @@ after a warm-up. Manuscript text before 2026-10-20 described a 60 s warm-up foll
 `protocol_warmup_s`, `protocol_baseline_window_s`, `protocol_baseline_window_distinct`
 *Source: `tools/run_pilot.py` one_run (`baseline_start_us = baseline_end_us - warmup`), and
 the baseline-window timestamps stored in every run record. The preregistration lists "60 s warm-up →
-baseline"; whether the code's reading is a deviation is not settled here and it is not
-recorded as one.*
+baseline"; the difference is recorded as Deviation 13 (2026-10-20), with no run
+invalidated.*
 
 ---
 

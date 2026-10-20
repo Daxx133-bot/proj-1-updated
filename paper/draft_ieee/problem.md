@@ -26,15 +26,14 @@ $$ *D*<sub>r</sub><sup>A</sup> = *D*<sub>r</sub> ∩ anc(*v*), *D*<sub>r</sub><s
 $$ *D*<sub>r</sub><sup>U</sup> = *D*<sub>r</sub> ∖ (anc(*v*) ∪ desc(*v*)) $$
 
 The primary outcome of a service is the median over its repetitions of the number of degraded
-ancestors, *Y*(*v*, *f*) = median<sub>r</sub> |*D*<sub>r</sub><sup>A</sup>(*v*, *f*)|,
-recorded as `ancestor_affected_count`. The counts of degraded descendants and of degraded
+ancestors, *Y*(*v*, *f*) = median<sub>r</sub> |*D*<sub>r</sub><sup>A</sup>(*v*, *f*)|, the number of
+degraded callers. The counts of degraded descendants and of degraded
 unrelated services are recorded separately and are never added to it, because a combined count
 would discard the direction in which a failure travels.
 
 ## B. Predictors
 
-The primary predictor is the number of transitive callers, *X*(*v*) = |anc(*v*)|, recorded as
-`ancestor_count`. The comparator of interest is the hybrid criticality metric of the original
+The primary predictor is the number of transitive callers, *X*(*v*) = |anc(*v*)|, the caller count. The comparator of interest is the hybrid criticality metric of the original
 proposal:
 
 $$ HC(*v*) = *w*<sub>in</sub>*C*<sub>in</sub>(*v*) + *w*<sub>out</sub>*C*<sub>out</sub>(*v*)φ(*v*) + *w*<sub>btw</sub>*C*<sub>btw</sub>(*v*) $$
@@ -54,8 +53,8 @@ across the services of one application, with the gateway excluded (Section IV-C)
 The hypotheses are those of the locked preregistration. H2 below carries the label H1b in that document, where the name H2 belongs to a structural
 observation that is not tested here.
 
-H1, the primary hypothesis, states that *Y* is predicted by *X*, the number of transitive
-callers, and not by out-degree or descendant count, nor by the hybrid metric. It is tested as
+H1, the primary hypothesis, states that the caller count *X* predicts *Y*, whereas neither
+out-degree nor descendant count predicts it, and neither does the hybrid metric. It is tested as
 a positive Spearman rank correlation between *X* and *Y*:
 
 $$ H1: ρ(*X*, *Y*) > 0 $$

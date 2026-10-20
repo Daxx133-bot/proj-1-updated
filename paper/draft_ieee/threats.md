@@ -9,7 +9,7 @@ were registered in advance, and the realised sets match them exactly %[id:power_
 why 5 %[id:campaign_reps_per_cell] repetitions per cell were used, but it adds no points to a
 correlation. A study designed this way is bounded by how many services the system has.
 
-Ties tighten the bound. `ancestor_count` takes 4 %[id:power_sn_levels] distinct values on Social
+Ties tighten the bound. The caller count *X* takes 4 %[id:power_sn_levels] distinct values on Social
 Network and 2 %[id:power_hr_levels] on Hotel Reservation, and ties cap Spearman's ρ whatever is
 measured. The best attainable correlations are 0.941 %[id:power_sn_ceiling] and 0.791
 %[id:power_hr_ceiling]. The confirmatory null should be read with that in mind. These ceilings
@@ -51,12 +51,12 @@ The most serious threat to the primary result is conceptual. The outcome counts 
 transitive callers and the predictor counts transitive callers, so the two coincide whenever
 every ancestor degrades. On Hotel Reservation they always coincide
 %[id:saturation_hr_kill_service]. On Social Network they coincide for ten of the eleven services
-%[id:saturation_sn_kill_service], the exception being `user-service`, which registers 2
+%[id:saturation_sn_kill_service], the exception being user-service, which registers 2
 %[id:userservice_measured] of its 4 %[id:userservice_ancestor_count] ancestors in every kill
 repetition %[id:userservice_runs_departing].
 
 The whole gap between ρ = 0.785 %[id:primary_rho] and a correlation of exactly 1.0 therefore rests
-on one service. The post hoc leave-one-out check confirms the arithmetic: dropping `user-service`
+on one service. The post hoc leave-one-out check confirms the arithmetic: dropping user-service
 raises ρ to 1.000 %[id:loo_userservice_rho], a change 2.4 times %[id:loo_swing_ratio] the size of
 the next largest. That check was specified after the confirmatory result was known, and it is
 reported as a description of the data.
@@ -67,9 +67,9 @@ test remained meaningful, because saturation was not guaranteed in advance and d
 hold. A reader may nonetheless treat the Social Network correlation as carrying roughly one
 service's worth of independent information.
 
-This study cannot say why `user-service` departs. In all five of its kill repetitions the two
+This study cannot say why user-service departs. In all five of its kill repetitions the two
 ancestors that degraded both sit on request paths the workload drives, and its other two graph
-ancestors showed no degradation in any run. That suggests `ancestor_count` is a ceiling, and that
+ancestors showed no degradation in any run. That suggests the caller count is a ceiling, and that
 how close the outcome comes to it depends on the request mix. This explanation was formed after
 seeing the data and has not been tested. Testing it would need a workload-weighted predictor and
 a new preregistration.
@@ -101,12 +101,12 @@ implied by Hotel Reservation's published architecture, the traces recover 6
 %[id:hr_manifest_edges_missed_names], and one appears that the documentation does not list
 %[id:hr_manifest_edges_extra].
 
-Since `ancestor_count` is computed on the rebuilt graph, a service's predictor value depends on
-which of its callers the workload happens to drive. Here the `user` service has one observed
+Since the caller count is computed on the rebuilt graph, a service's predictor value depends on
+which of its callers the workload happens to drive. Here the user service has one observed
 caller %[id:hr_user_observed_caller_count], where the documentation implies two. A different
 request mix would give it a different predictor value with nothing about the deployed system
 changed. This limits how far any relationship reported here carries over to other traffic, and it
-is the same mechanism the post hoc reading of `user-service` in Section VII-D relies on, which is
+is the same mechanism the post hoc reading of user-service in Section VII-D relies on, which is
 one more reason to treat that reading as untested.
 
 ## G. Scope of the Measurement
@@ -128,8 +128,8 @@ windows were not stored, so Social Network recovery times stand as measured.
 ## I. The Baseline Window Includes the Load Ramp-Up
 
 The fault-free baseline is computed over the 60-second %[id:protocol_baseline_window_s] window in
-which the load generator starts, spawns its users and runs (Section IV-E), not over a separate
-window after a warm-up. A baseline percentile can therefore include start-up effects that a
+which the load generator starts, spawns its users and runs (Section IV-E), not over a
+separate window after a warm-up (Deviation 13). A baseline percentile can therefore include start-up effects that a
 steady-state baseline would not. The same procedure ran in every run, and the baseline-sanity gate,
 which compares each run's baseline with the rest of the campaign, reported no exceptions
 %[id:integrity_checks_passed]. The size of any start-up effect was not measured.

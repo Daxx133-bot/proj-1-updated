@@ -1,0 +1,14 @@
+No.,Date,Deviation,Runs affected,Action
+1,2026-09-26,Absolute floor added to the latency rule,3,Floor added; rehearsal runs discarded
+2,2026-09-26,Wrong container targeted by a substring match,3,Exact label matching; affected runs collected again
+3,2026-09-26,Name mismatch stopped the campaign on a healthy stack,0,Stack check corrected; no data affected
+4,2026-09-26,Network-delay rule outlived its run,11,Affected runs collected again; container recreated after each latency run
+5,2026-09-27,Two choices the plan left open,0,Settled before the analysis was written
+6,2026-09-27,No run censored,0,Rank test made primary for recovery time as the plan required
+7,2026-09-27,Asymptotic p-value quoted in the plan,0,Exact value used
+8,2026-09-27,Statistical routines vectorised,0,Tested against the reference implementation
+9,2026-09-28,Exact p-values computed after the results,0,Reported as supplementary; verdict unchanged
+10,2026-10-06,Weight-tuning step not run,0,Inherited weights kept; not re-tuned
+11,2026-10-06,Social Network latency drew on all spans,0,Server-only replay; no service-level change
+12,2026-10-06,One latency run attempted twice,0,Only the completed attempt analysed
+13,2026-10-20,Baseline window includes the load ramp-up,0,Disclosed; baseline gate found no anomalies

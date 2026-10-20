@@ -1,0 +1,14 @@
+n,deviation,action
+1,Absolute floor added to the latency rule,Floor added; rehearsal runs discarded
+2,Wrong container targeted by a substring match,Exact label matching; affected runs collected again
+3,Name mismatch stopped the campaign on a healthy stack,Stack check corrected; no data affected
+4,Network-delay rule outlived its run,Affected runs collected again; container recreated after each latency run
+5,Two choices the plan left open,Settled before the analysis was written
+6,No run censored,Rank test made primary for recovery time as the plan required
+7,Asymptotic p-value quoted in the plan,Exact value used
+8,Statistical routines vectorised,Tested against the reference implementation
+9,Exact p-values computed after the results,Reported as supplementary; verdict unchanged
+10,Weight-tuning step not run,Inherited weights kept; not re-tuned
+11,Social Network latency drew on all spans,Server-only replay; no service-level change
+12,One latency run attempted twice,Only the completed attempt analysed
+13,Baseline window includes the load ramp-up,Disclosed; baseline gate found no anomalies

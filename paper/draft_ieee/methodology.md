@@ -32,7 +32,7 @@ period are omitted.
 ## B. Applications and Dependency Graphs
 
 Both applications come from DeathStarBench, Social Network and Hotel Reservation [@gan2019],
-built from one pinned upstream commit, `6ecb097` %[id:dsb_commit]. The code under test was
+built from one pinned upstream commit, 6ecb097 %[id:dsb_commit]. The code under test was
 therefore the same in every run. The two applications have different shapes. Social Network is
 deep and fans out from a single composition service, while Hotel Reservation is shallow and
 close to a star around its gateway. That difference ended up deciding what each application
@@ -53,20 +53,20 @@ files, so no later change of workload can shift a structural value.
 The observed Hotel Reservation graph differs from the documented one. Of the 8
 %[id:hr_manifest_expected_edges] call edges implied by the published service tree, the traces
 recover 6 %[id:hr_manifest_edges_recovered]. Two never appear under this workload
-%[id:hr_manifest_edges_missed]: `reservation→user` and `search→profile`
+%[id:hr_manifest_edges_missed]: reservation→user and search→profile
 %[id:hr_manifest_edges_missed_names]. One edge appears that the tree does not list,
-`frontend→profile` %[id:hr_manifest_edges_extra], which appears to stand in for the missing
-`search→profile`, with the gateway fetching profiles directly. The difference matters for one
-service. `user` has a single observed caller %[id:hr_user_observed_caller_count], `frontend`
+frontend→profile %[id:hr_manifest_edges_extra], which appears to stand in for the missing
+search→profile, with the gateway fetching profiles directly. The difference matters for one
+service. user has a single observed caller %[id:hr_user_observed_caller_count], frontend
 %[id:hr_user_observed_callers], where the documentation implies two, so its ancestor count is 1
-%[id:hr_user_observed_caller_count]. With the documented graph, `user` would carry a predictor
+%[id:hr_user_observed_caller_count]. With the documented graph, user would carry a predictor
 value that no traffic in the experiments could have produced. The observed graph is kept and
 the divergence reported.
 
 ## C. Analysis Set and Gateway Exclusion
 
 Every correlation excludes the one service in each application that has no caller in the
-graph: `nginx-web-server` in Social Network and `frontend` in Hotel Reservation
+graph: nginx-web-server in Social Network and frontend in Hotel Reservation
 %[prereg:§4]. A gateway receives traffic only from the load generator, which is not a node in
 the graph, so its ancestor count is zero by construction and cannot vary. Killing it also
 removes the only way into the application, which leaves the outcome undefined. Excluding the
@@ -117,8 +117,8 @@ Reservation they are 6 %[id:protocol_hr_task_weight_hotel_search] for a hotel se
 
 The load runs for 60 seconds %[id:protocol_warmup_s] before the fault, and the fault-free
 baseline percentiles are computed over that same 60-second %[id:protocol_baseline_window_s]
-window. The window therefore begins when the load generator starts and includes its ramp-up;
-its length was identical in all 180 %[id:campaign_runs_total] runs
+window. The window therefore begins when the load generator starts and includes its ramp-up
+(Deviation 13); its length was identical in all 180 %[id:campaign_runs_total] runs
 %[id:protocol_baseline_window_distinct]. The fault is then injected and held for 30 seconds
 %[id:protocol_fault_duration_s], the recovery probe runs, and a 20-second %[id:protocol_cooldown_s]
 cooldown separates one run from the next.
@@ -159,7 +159,7 @@ To find the target container, the runner looks for the one whose `com.docker.com
 label, which Docker Compose sets on every container, equals the service name exactly. The runner
 stops if no running container or more than one matches, so a fault cannot land on a different
 service from the one recorded (Deviation 2). The Social Network gateway reports itself to
-Jaeger as `nginx-web-server` but runs as the compose service `nginx-thrift`, and the runner
+Jaeger as nginx-web-server but runs as the compose service nginx-thrift, and the runner
 translates between the two names.
 
 Timing differs by fault type. A kill completes at once; the runner waits out the fault window
@@ -207,13 +207,13 @@ the same flaw if a trace counts as failed whenever any span in it carries an err
 
 Services on a shared path then become indistinguishable, and any threshold applied to them flags
 them as a group. Figure 5 shows the effect on Hotel Reservation under a latency fault injected
-into `search`. The figure uses two %[id:q3_pilot_runs] pilot method-validation runs, which are
+into search. The figure uses two %[id:q3_pilot_runs] pilot method-validation runs, which are
 not among the 180 campaign runs, and its end-to-end values are reconstructed from their
-persisted spans. Under that scope three services %[id:q3_identical_baseline_services], `geo`,
-`rate` and `search` %[id:q3_identical_baseline_names], share an identical baseline p95 in both
+persisted spans. Under that scope three services %[id:q3_identical_baseline_services], geo,
+rate and search %[id:q3_identical_baseline_names], share an identical baseline p95 in both
 runs, and a multiplicative threshold flags five services that were not faulted
-%[fig:fig_q3_artifact — paper/figures/fig_q3_artifact_data.csv]. Two of these, `profile` and
-`reservation`, are neither ancestors nor descendants of `search`. They share a trace with it and
+%[fig:fig_q3_artifact — paper/figures/fig_q3_artifact_data.csv]. Two of these, profile and
+reservation, are neither ancestors nor descendants of search. They share a trace with it and
 nothing more.
 
 Each service's latency is therefore measured on the server spans that service emits. On Hotel
@@ -263,9 +263,9 @@ also calls. The error-rate rule is repeated in three modules with the same value
 %[src:_audit/VERIFICATION_2026-10-06.md §3].
 
 Degraded services are split into the three counts of Section III-A, which are recorded and
-analysed separately. `ancestor_affected_count`, the primary outcome, counts degraded transitive
-callers of the faulted service. `descendant_affected_count` counts degraded transitive callees.
-`unrelated_affected_count` counts degraded services that are neither, which would indicate
+analysed separately. The primary outcome, *Y*, counts degraded transitive callers of the faulted service. A second
+count covers degraded transitive callees, and a third covers degraded services that are
+neither, which would indicate
 shared-resource contention or synchronous fan-out.
 
 Which indicator carries signal depends on the fault type, and the pairing was fixed in the plan
@@ -327,43 +327,48 @@ outcome, the replication in fact reuses the same outcome values as the confirmat
 %[id:replication_primary_identical] (Section V-E).
 
 Two gates run before any statistic is computed. One confirms that every expected service was
-present in every run. The other checks that each run's fault-free baseline is a plausible steady
-state, flagging any baseline that is an outlier against the rest of the campaign by median and
-median absolute deviation. Both must report zero exceptions before analysis can proceed. All 10
+present in every run. The other compares each run's fault-free baseline with those of all other runs, using the
+median and the median absolute deviation, and flags any baseline that does not look like a
+steady state. Both must report zero exceptions before analysis can proceed. All 10
 %[id:integrity_checks_total] pre-analysis integrity checks passed %[id:integrity_checks_passed]
 on the final dataset.
 
 ## J. Preregistration and Deviations
 
 The plan was specified and locked before the campaign started [@nosek2018], and every later
-change was logged with its date and with whether campaign data had been analysed by then. Twelve
-deviations were recorded %[id:deviations_total], and the Appendix lists them. Nine
+change was logged with its date and with whether campaign data had been analysed by then.
+Thirteen deviations were recorded %[id:deviations_total], and the Appendix lists them. Ten
 %[id:deviations_no_data] invalidated no data. The other three %[id:deviations_with_data]
-invalidated 17 runs %[id:deviations_runs_invalidated] in all, each collected again in its own
-cell, so the final dataset is complete and balanced. Deviation 1 arose in the pre-launch
-rehearsal %[id:deviations_precampaign]. Per-service percentiles of a few hundredths of a
-millisecond made a purely multiplicative degradation rule react to scheduler noise, so the
-absolute floor of Section IV-H was added and the 3 %[id:deviation_1_runs_invalidated] rehearsal
-runs were discarded. Deviation 2 was a targeting defect in which a substring match faulted the
-wrong Hotel Reservation container; exact label matching replaced it, and 3
-%[id:deviation_2_runs_invalidated] runs were collected again. Deviation 4 was a netem rule that
-outlived its run and inflated the baselines of later latency runs; the 11
-%[id:deviation_4_runs_invalidated] affected runs were collected again, and the per-run container
-recreation and a baseline-sanity gate were added. Deviation 3 was a name mismatch in the new
-stack check that stopped the campaign on a healthy stack. Deviations 5, 6, 7, 8 and 9 concern
-the analysis: two choices the plan left open, the rank test becoming primary for recovery time
-because no run was censored, an asymptotic p-value quoted in the plan, statistical routines
-vectorised for speed and tested against the reference implementation, and exact permutation
-p-values computed after the results were known and reported only as supplementary. Deviation 10
-is the weight tuning that was not run (Section IV-D), Deviation 11 concerns Social Network span
-selection (Section IV-G), and Deviation 12 records a latency run attempted twice, of which only
-the completed second attempt is analysed.
+invalidated 17 runs %[id:deviations_runs_invalidated], each collected again in its own cell, so
+the final dataset is complete and balanced. Deviation 1 arose in the pre-launch rehearsal
+%[id:deviations_precampaign]: at per-service percentiles of a few hundredths of a millisecond, a
+purely multiplicative rule reacted to scheduler noise, so the absolute floor of Section IV-H was
+added and the 3 %[id:deviation_1_runs_invalidated] rehearsal runs were discarded. Deviation 2
+was a substring match that faulted the wrong Hotel Reservation container; exact label matching
+replaced it, and 3 %[id:deviation_2_runs_invalidated] runs were collected again. Deviation 4 was
+a netem rule that outlived its run and inflated later baselines; the 11
+%[id:deviation_4_runs_invalidated] affected runs were collected again, and per-run container
+recreation and a baseline-sanity gate were added. Deviation 3 was a name mismatch that stopped
+the campaign on a healthy stack. Deviations 5, 6, 7, 8 and 9 concern the analysis: two choices
+the plan left open, the rank test becoming primary for recovery time, an asymptotic p-value
+quoted in the plan, vectorised statistical routines, and exact p-values reported only as
+supplementary. Deviation 10 is the weight tuning that was not run (Section IV-D), Deviation 11
+concerns Social Network span selection (Section IV-G), and Deviation 12 a latency run attempted
+twice, of which only the completed attempt is analysed. Deviation 13, found during manuscript
+preparation, records that baselines were computed over the opening 60 s
+%[id:protocol_baseline_window_s] of load, ramp-up included; it invalidated no run, and the
+baseline-sanity gate found no anomalies.
 
 ## K. Data and Code Availability
 
 The code, the raw campaign data (persisted trace spans, run records and the reconstructed
 dependency graphs) and the analysis outputs are available at
 https://github.com/Daxx133-bot/proj-1-updated and will be archived at Zenodo (DOI: [TO FILL]).
-The repository's build script regenerates every number in this paper from the logged data. The
+The repository's build script regenerates every number in this paper from the logged data.
+Three supplementary files accompany the paper in the repository: S1, the leave-one-out
+recomputation of Section V-B (`paper/tables/tbl_leave_one_out.csv`); S2, the unrounded
+recovery-time estimates of Section V-I, including the Cox fits shown there as not estimable
+(`paper/tables/tbl_trec_supplementary.csv`); and S3, the exact-enumeration p-values for the
+confirmatory family (`analysis/final/exact_p_supplement.csv`). The
 experiments used DeathStarBench at upstream commit 6ecb097 %[id:dsb_commit]. Code is released
 under the MIT licence; data and figures are released under CC BY 4.0.

@@ -1,0 +1,4 @@
+| Family | Fault | Tests | Tests with defined p | Significant after BH | Smallest p (raw) | Its p (BH) | Test with the smallest p |
+|---|---|---|---|---|---|---|---|
+| confirmatory | kill | 44 | 44 | 0 | 0.0080 | 0.3451 | Social Network, caller count *X* against *Y* |
+| replication | latency | 44 | 44 | 0 | 0.0076 | 0.1848 | Social Network, caller count *X* against *Y* |

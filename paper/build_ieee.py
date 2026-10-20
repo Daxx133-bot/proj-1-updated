@@ -87,9 +87,20 @@ KEEP_ROWS = 13
 PAD = 6.5
 TRANSPOSE = {"tbl_trec_supplementary"}
 FORCE_LAND = {"tbl_trec_supplementary"}
-MONO_COLS = {"tbl_commands": {"command"}}
+MONO_COLS = {"tbl_commands": {"command"}, "tbl_ieee_commands": {"Command"}}
 # Fixed column fractions of the text width, for tables Word's autofit lays out badly.
-COL_FRACTIONS = {"tbl_commands": (0.15, 0.60, 0.25)}
+# Service, then the 13 predictor and outcome columns of the per-service tables.
+PRED_FRACTIONS = (0.14, 0.071, 0.084, 0.05, 0.05, 0.04, 0.084, 0.071, 0.064, 0.084, 0.071,
+                  0.071, 0.058, 0.058)
+PRED_TABLES = {"tbl_ieee_predictors_sn", "tbl_ieee_predictors_hr"}
+COL_FRACTIONS = {"tbl_commands": (0.15, 0.60, 0.25),
+                 "tbl_ieee_commands": (0.17, 0.63, 0.20),
+                 "tbl_ieee_predictors_sn": PRED_FRACTIONS,
+                 "tbl_ieee_predictors_hr": PRED_FRACTIONS}
+# Footnotes under single tables (the IEEE tables carry units in their headers, so the
+# general units note is not repeated).
+IEEE_TABLE_FOOTNOTES = {"tbl_ieee_trec": bd.TABLE_FOOTNOTES["tbl_trec"]}
+FN_TOKEN = re.compile("\u27e6FN(\\d+)\u27e7")
 SHORT_TITLE = bd.COVER["title"].split("? ")[0] + "?"
 PLACEHOLDER = re.compile(r"\[(?:TO FILL[^\]]*|Guide to confirm)\]")
 ZWSP = "​"
@@ -118,6 +129,7 @@ PRONOUN = re.compile(r"\b(we|We|WE|our|Our|ours|us|Us|he|He|she|She|his|His|her|
 
 _plain_add_runs = bd.add_runs
 _plain_blocks = bd.blocks
+FN_ANY = re.compile("\u27e6FN\\??\\d+\u27e7")
 
 
 def add_runs(par, text, size=None):
@@ -231,6 +243,49 @@ def ieee_blocks(text):
             out.append(("algo", algos[int(m.group(1))]))
         elif kind == "p" and t.strip().startswith("$$") and t.strip().endswith("$$"):
             out.append(("eq", t.strip()[2:-2].strip()))
+        else:
+            out.append((kind, t))
+    return out
+
+
+def head_text(base, val):
+    """IEEE tables carry final headers; the others get build_docx's unit suffixes."""
+    return val if base.startswith("tbl_ieee_") else bd.header_with_unit(val)
+
+
+def split_footnotes(text):
+    """Pull ^[...] footnotes out of a paragraph (brackets inside them may nest). The
+    paragraph keeps a token where each footnote was."""
+    out, notes, i = [], [], 0
+    while True:
+        j = text.find("^[", i)
+        if j < 0:
+            out.append(text[i:])
+            break
+        out.append(text[i:j])
+        depth, k = 0, j + 1
+        while k < len(text):
+            if text[k] == "[":
+                depth += 1
+            elif text[k] == "]":
+                depth -= 1
+                if depth == 0:
+                    break
+            k += 1
+        notes.append(text[j + 2:k])
+        out.append("\u27e6FN?%d\u27e7" % (len(notes) - 1))
+        i = k + 1
+    return "".join(out), notes
+
+
+def ieee_blocks_for_ids(text):
+    """ieee_blocks with each footnote as a paragraph of its own, for sentence keys."""
+    out = []
+    for kind, t in ieee_blocks(text):
+        if kind == "p" and "^[" in t:
+            main, notes = split_footnotes(t)
+            out.append(("p", FN_ANY.sub("", main)))
+            out.extend(("p", n) for n in notes)
         else:
             out.append((kind, t))
     return out
@@ -359,6 +414,7 @@ class IEEEBuilder(bd.Builder):
         self.eq_no = 0
         self.algo_no = 0
         self.table_no = 0
+        self.footnotes = []
         self.fixed_tables = set()       # 1-based indices of tables Word must not autofit
 
     # numbering and citations -------------------------------------------------
@@ -455,12 +511,15 @@ class IEEEBuilder(bd.Builder):
         transposed = base in TRANSPOSE or (len(rows) - 1 <= 2 and len(rows[0]) >= 10)
         if transposed:
             rows = [list(col) for col in zip(*rows)]
-            shown = [[bd.header_with_unit(r[0])] + r[1:] for r in rows]
+            shown = [[head_text(base, r[0])] + r[1:] for r in rows]
         else:
-            shown = [[bd.header_with_unit(h) for h in rows[0]]] + rows[1:]
+            shown = [[head_text(base, h) for h in rows[0]]] + rows[1:]
+        shown = [[cdn.unformat(c) for c in r] for r in shown]
         mono = {j for j, h in enumerate(rows[0]) if h in MONO_COLS.get(base, ())}
         longest = max(len(c) for r in shown for c in r)
         ncols = len(shown[0])
+        if base in PRED_TABLES:
+            return rows, transposed, "span", 7, mono
         if base not in FORCE_LAND and longest <= 300:
             if ncols <= 3 and not mono and width_needed(shown, 8) <= COL_W_CM:
                 return rows, transposed, "two", 8, mono
@@ -542,7 +601,7 @@ class IEEEBuilder(bd.Builder):
         for i, row in enumerate(rows):
             for j, val in enumerate(row):
                 head = (j == 0) if transposed else (i == 0)
-                text = bd.header_with_unit(val) if head else val
+                text = head_text(base, val) if head else val
                 cell = t.cell(i, j)
                 cell.text = ""
                 par = cell.paragraphs[0]
@@ -550,11 +609,20 @@ class IEEEBuilder(bd.Builder):
                 par.paragraph_format.first_line_indent = Inches(0)
                 par.paragraph_format.line_spacing = 1.0
                 par.paragraph_format.space_after = Pt(0)
-                run = par.add_run(text if (j in mono and not head) else wrap_points(text))
-                run.font.size = Pt(pt - 0.5 if (j in mono and not head) else pt)
-                if j in mono and not head:
+                code = j in mono and not head
+                if code:
+                    run = par.add_run(text)
                     run.font.name = "Courier New"
-                run.bold = head or (transposed and i == 0)
+                    runs = [run]
+                elif base.startswith("tbl_ieee_"):
+                    _plain_add_runs(par, text)
+                    runs = par.runs
+                else:
+                    runs = [par.add_run(wrap_points(text))]
+                for run in runs:
+                    run.font.size = Pt(pt - 0.5 if code else pt)
+                    if head or (transposed and i == 0):
+                        run.bold = True
                 if keep_together:
                     par.paragraph_format.keep_with_next = True
         if keep_together:
@@ -563,8 +631,11 @@ class IEEEBuilder(bd.Builder):
         hdr = OxmlElement("w:tblHeader")
         hdr.set(qn("w:val"), "true")
         t.rows[0]._tr.get_or_add_trPr().append(hdr)
-        notes = [bd.TABLE_NOTE] + ([bd.TABLE_FOOTNOTES[base]] if base in bd.TABLE_FOOTNOTES
-                                   else [])
+        if base.startswith("tbl_ieee_"):
+            notes = [IEEE_TABLE_FOOTNOTES[base]] if base in IEEE_TABLE_FOOTNOTES else []
+        else:
+            notes = [bd.TABLE_NOTE] + ([bd.TABLE_FOOTNOTES[base]] if base in
+                                       bd.TABLE_FOOTNOTES else [])
         for k, note in enumerate(notes):
             p = self.doc.add_paragraph(note, style="Caption")
             p.runs[0].font.size = Pt(7)
@@ -575,7 +646,12 @@ class IEEEBuilder(bd.Builder):
     # text -------------------------------------------------------------------
     def paragraph(self, text, style=None):
         before = set(self.number)
-        add_runs(self.doc.add_paragraph(style=style), self.render(text))
+        main, notes = split_footnotes(text)
+        for k, note in enumerate(notes):
+            self.footnotes.append(self.render(note))
+            main = main.replace("\u27e6FN?%d\u27e7" % k,
+                                "\u27e6FN%d\u27e7" % len(self.footnotes))
+        add_runs(self.doc.add_paragraph(style=style), self.render(main))
         self.place_new(before)
 
     def equation(self, text):
@@ -693,7 +769,7 @@ class IEEEBuilder(bd.Builder):
         self.doc.save(DOCX_OUT)
 
 
-def word_finalize(docx_path, pdf_path, fixed=()):
+def word_finalize(docx_path, pdf_path, fixed=(), footnotes=()):
     """Fit tables, save, export the PDF and measure each table against its column or page.
     Returns (pages, geometry) or (None, []) where Word is not available."""
     try:
@@ -710,6 +786,14 @@ def word_finalize(docx_path, pdf_path, fixed=()):
             if i not in fixed:
                 d.Tables(i).AutoFitBehavior(1)
                 d.Tables(i).AutoFitBehavior(2)
+        for k, text in enumerate(footnotes, 1):
+            rng = d.Content
+            if rng.Find.Execute(FindText="\u27e6FN%d\u27e7" % k):
+                rng.Text = ""
+                fn = d.Footnotes.Add(Range=rng)
+                fn.Range.Text = text
+                fn.Range.Font.Name = bd.FONT
+                fn.Range.Font.Size = 8
         d.Repaginate()
         for i in range(1, d.Tables.Count + 1):
             t = d.Tables(i)
@@ -753,10 +837,52 @@ def draft_sentence_ids():
         bd.SECTIONS = [("", f, None) for f in ["abstract.md"] + ORDER + TAIL]
         bd.TRAILING = []
         bd.COVER_LETTER = "abstract.md"
-        bd.blocks = ieee_blocks
+        bd.blocks = ieee_blocks_for_ids
         return cdn.draft_sentence_ids()
     finally:
         bd.DRAFT, bd.SECTIONS, bd.TRAILING, bd.COVER_LETTER, bd.blocks = saved
+
+
+def footnote_texts(d):
+    """Text of each footnote in a saved docx (Word's separator footnotes excluded)."""
+    from docx.opc.constants import RELATIONSHIP_TYPE as RT
+    for rel in d.part.rels.values():
+        if rel.reltype == RT.FOOTNOTES:
+            from lxml import etree
+            root = etree.fromstring(rel.target_part.blob)
+            out = []
+            for fn in root.findall(qn("w:footnote")):
+                if int(fn.get(qn("w:id"))) < 1:
+                    continue
+                out.append("".join(t.text or "" for t in fn.iter(qn("w:t"))).strip())
+            return out
+    return []
+
+
+def check_presentation(docx_path, L):
+    """No underscore in any table cell or caption, and no monospace variable name in the
+    running text."""
+    d = docx.Document(docx_path)
+    bad = []
+    for t in d.tables:
+        for row in t.rows:
+            for c in row.cells:
+                if "_" in c.text:
+                    bad.append(("table", c.text[:60]))
+    for p in d.paragraphs:
+        if p.style.name == "Caption" and "_" in p.text:
+            bad.append(("caption", p.text[:80]))
+        if p.style.name in ("Normal", "Abstract"):
+            for r in p.runs:
+                # File paths (Data Availability) contain "/"; variable names never do.
+                if (r.font.name == "Courier New" and "/" not in r.text
+                        and re.search(r"_|^[a-z]+(-[a-z]+)*$", r.text.strip())):
+                    bad.append(("monospace name", r.text))
+    L.append("Presentation: underscores in tables or captions, or monospace names in the "
+             "text: %d" % len(bad))
+    for kind, t in bad[:20]:
+        L.append("  %s: %s" % (kind, t))
+    return not bad
 
 
 def audit(docx_path, b, L):
@@ -774,7 +900,7 @@ def audit(docx_path, b, L):
     for el in d.element.body.iterchildren():
         if el in pmap:
             p = pmap[el]
-            txt, st = clean(p.text).strip(), p.style.name
+            txt, st = FN_ANY.sub("", clean(p.text)).strip(), p.style.name
             if not txt:
                 continue
             heading = st.startswith("Heading")
@@ -825,11 +951,18 @@ def audit(docx_path, b, L):
                     a, bb = (j, i) if transposed else (i, j)
                     head = (j == 0) if transposed else (i == 0)
                     same = (srows is not None and a < len(srows) and bb < len(srows[a])
-                            and srows[a][bb] == ct)
+                            and cdn.unformat(srows[a][bb]) == ct)
                     cat = "table header" if head else "table cell" if same else "UNMATCHED"
                     counts[cat] += len(toks)
                     if cat == "UNMATCHED":
                         flagged.append((cat, label, ct, ""))
+    for txt in footnote_texts(d):
+        for sent in cdn.SENT.split(txt):
+            marked = [by_id[i] for i in sent_ids.get(ieee_key(sent), ()) if i in by_id]
+            for tok, cat in cdn.classify_text(sent, False, nums, strings, nref, marked):
+                counts[cat] += 1
+                if cat in ("UNMATCHED", "WEAK MATCH"):
+                    flagged.append((cat, "footnote", tok, sent))
     L.append("Number audit: " + ", ".join("%s %d" % kv for kv in sorted(counts.items())))
     for cat, sec, tok, sent in flagged:
         L.append("  %s [%s] %s | %s" % (cat, sec, tok, sent[:150]))
@@ -945,7 +1078,7 @@ def check_layout(pdf_path, geometry, floats, L):
 def main():
     b = IEEEBuilder()
     b.build_ieee()
-    pages, geometry = word_finalize(DOCX_OUT, PDF_OUT, b.fixed_tables)
+    pages, geometry = word_finalize(DOCX_OUT, PDF_OUT, b.fixed_tables, b.footnotes)
     L = ["ieee_checks.txt -- written by paper/build_ieee.py",
          "IEEE manuscript: paper/ieee/manuscript_ieee.docx%s"
          % (" and .pdf (%d pages in Word)" % pages if pages else
@@ -954,6 +1087,9 @@ def main():
     ok_floats = check_floats(DOCX_OUT, b, L)
     ok_refs = check_references(DOCX_OUT, b, L)
     ok_pron, ok_abs = check_pronouns_and_abstract(DOCX_OUT, b, L)
+    ok_pres = check_presentation(DOCX_OUT, L)
+    L.append("Tables: %d; footnotes: %d" % (sum(k == "Table" for _, k, _, _ in b.floats),
+                                            len(b.footnotes)))
     if pages:
         check_layout(PDF_OUT, geometry, b.floats, L)
     todo = [m.group(0) for p in docx.Document(DOCX_OUT).paragraphs
@@ -964,7 +1100,8 @@ def main():
     print("\n".join(L))
     failed = [name for name, ok in (("number audit", unmatched == 0), ("floats", ok_floats),
                                     ("references", ok_refs), ("pronouns", ok_pron),
-                                    ("abstract", ok_abs)) if not ok]
+                                    ("abstract", ok_abs), ("presentation", ok_pres))
+              if not ok]
     if failed:
         print("IEEE BUILD FAILED: %s" % ", ".join(failed))
         return 1

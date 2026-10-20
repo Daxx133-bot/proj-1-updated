@@ -1,0 +1,8 @@
+| Application | Fault | Outcome | Triplets with defined ρ | ρ min | ρ median | ρ max | ρ > 0 | p (raw) < 0.05 | Significant after BH | ρ at 0.4/0.4/0.2 | p at 0.4/0.4/0.2 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Social Network | kill | degraded callers *Y* | 231 | -0.544 | -0.167 | 0.337 | 28 | 0 | 0 | -0.144 | 0.6695 |
+| Social Network | latency | degraded callers *Y* | 231 | -0.544 | -0.167 | 0.337 | 28 | 0 | 0 | -0.144 | 0.6695 |
+| Hotel Reservation | kill | degraded callers *Y* | 230 | -0.258 | -0.258 | -0.258 | 0 | 0 | 0 | -0.258 | 1.0000 |
+| Hotel Reservation | latency | degraded callers *Y* | 230 | -0.258 | -0.258 | -0.258 | 0 | 0 | 0 | -0.258 | 1.0000 |
+| Social Network | kill | gateway error rate | 231 | 0.229 | 0.753 | 0.832 | 231 | 145 | 128 | 0.786 | 0.0064 |
+| Hotel Reservation | kill | gateway error rate | 230 | -0.204 | -0.204 | -0.204 | 0 | 0 | 0 | -0.204 | 0.8571 |

@@ -1,0 +1,5 @@
+Family,Fault,Application,Services,ρ,95% CI,p (raw),p (BH),ρ ≤ 0,Distinguishable from zero after BH
+confirmatory,kill,Social Network,11,-0.144,-0.810 to 0.698,0.6688,0.9925,yes,no
+confirmatory,kill,Hotel Reservation,7,-0.258,-0.730 to -0.167,1.0000,1.0000,yes,no
+replication,latency,Social Network,11,-0.144,-0.805 to 0.713,0.6656,0.9152,yes,no
+replication,latency,Hotel Reservation,7,-0.258,-0.750 to -0.167,1.0000,1.0000,yes,no

@@ -5,12 +5,12 @@ named, not that it is attached to the right claim. Tokens below 10 count as sour
 only if an id marked in the same draft sentence carries that value.
 
 Tokens by category:
-  numbers.csv value               103
+  numbers.csv value               102
   numbers.csv value (string)       11
   URL                              10
   affiliation                       1
   marked in sentence              140
-  table cell                      797
+  table cell                      811
   table header                      0
   reference entry                  90
   section number                   89

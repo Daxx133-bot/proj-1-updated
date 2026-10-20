@@ -14,14 +14,17 @@ for each service in Social Network and Hotel Reservation.
 ## B. The Confirmatory Test of H1
 
 H1 replaced the original fan-out hypothesis after the pilot %[prereg:§1]. On Social Network under
-kill faults, `ancestor_count` and the measured `ancestor_affected_count` correlate at ρ = 0.785
+kill faults, the caller count *X* and the measured number of degraded callers *Y* correlate at
+ρ = 0.785
 %[id:primary_rho] across 11 %[id:primary_n_services] services, with a bias-corrected and
 accelerated bootstrap interval of [0.000, 1.000] %[id:primary_ci_lo] %[id:primary_ci_hi]
 %[id:primary_ci_method]. The uncorrected permutation p-value, from 10,000
-%[id:primary_n_permutations] Monte-Carlo permutations, is 0.0080 %[id:primary_p_locked]. The
-exact value, 0.006926 %[id:primary_p_exact], is given in Table 5 (Deviation 9). After
-Benjamini-Hochberg correction across the 44 %[id:conf_family_size] tests of the confirmatory
-family, the adjusted p-value is 0.3451 %[id:primary_p_bh_locked].
+%[id:primary_n_permutations] Monte-Carlo permutations, is 0.0080 %[id:primary_p_locked]. After Benjamini-Hochberg correction across the 44
+%[id:conf_family_size] tests of the confirmatory family, the adjusted p-value is 0.3451
+%[id:primary_p_bh_locked]. Exact enumeration, run after the results were known (Deviation 9),
+gives 0.006926 %[id:primary_p_exact] uncorrected and 0.3048 %[id:primary_p_bh_exact] adjusted,
+and the verdict is unchanged %[id:primary_significant_exact].^[The locked Monte Carlo values
+above remain the preregistered result.]
 
 At q = 0.05 %[id:fdr_q], not one of the 44 confirmatory tests is significant
 %[id:conf_family_significant]. The primary test has the smallest uncorrected p-value in the family
@@ -45,20 +48,16 @@ directional only. It can neither confirm the hypothesis nor disconfirm it.
 Social Network is not fully saturated. Its run-level saturation is 0.909
 %[id:saturation_sn_kill_run] under kill faults, which is why ρ is 0.785 %[id:primary_rho] and not
 1.0. Figure 6 shows the pattern. Ten of the eleven services lie exactly on the line *y = x*. One
-departs from it: `user-service`, which has 4 %[id:userservice_ancestor_count] graph ancestors and
+departs from it: user-service, which has 4 %[id:userservice_ancestor_count] graph ancestors and
 registers 2 %[id:userservice_measured] degraded ancestors in all five of its kill repetitions
 %[id:userservice_runs_departing]. The empirical content of the Social Network correlation, as
 distinct from its definitional content, rests on that one service.
 
-A leave-one-out recomputation repeats the correlation eleven times, withholding one service each
-time (Table 8, Figure 7). The check was designed after the confirmatory results were known, so it
-is post hoc and carries no inferential weight. Across the eleven recomputations ρ ranges from
-0.696 %[id:loo_rho_min] to 1.000 %[id:loo_rho_max]. Withholding `user-service` gives ρ = 1.000
-%[id:loo_userservice_rho], a change of +0.215 %[id:loo_userservice_delta] that is 2.4 times
-%[id:loo_swing_ratio] the next largest swing, −0.089 %[id:loo_second_largest_delta] for
-`compose-post-service` %[id:loo_second_largest_service]. Only one exclusion moves the correlation
-much, and it is the one that removes the single service that stops the outcome from restating
-the predictor.
+A leave-one-out recomputation, designed after the confirmatory results were known and so
+carrying no inferential weight, withholds one service at a time (Figure 7): ρ ranges from
+0.696 %[id:loo_rho_min] to 1.000 %[id:loo_rho_max], and the value of 1.000
+%[id:loo_userservice_rho] comes from withholding user-service, the one service that stops the
+outcome from restating the predictor.
 
 ## C. The Hybrid Metric and H2
 
@@ -70,7 +69,7 @@ wrong way.
 Table 9 gives all four architecture-by-fault cells %[id:h1b_cells]. They are not independent. The
 outcome vectors coincide across fault types %[id:replication_primary_identical], so the cells
 contain 2 %[id:h1b_distinct_comparisons] distinct comparisons, one per architecture. The
-correlation between `hybrid_criticality` and `ancestor_affected_count` is negative in every cell
+correlation between the hybrid metric and *Y* is negative in every cell
 %[id:h1b_all_negative]: ρ = −0.144 on Social Network under both kill %[id:h1b_sn_kill_rho] and
 latency %[id:h1b_sn_latency_rho] faults, and ρ = −0.258 on Hotel Reservation %[id:h1b_hr_kill_rho]
 %[id:h1b_hr_latency_rho]. After correction, no cell's correlation can be told apart from zero
@@ -85,7 +84,7 @@ be separated from zero, and no negative relationship is claimed.
 
 ## D. The Motivating Case
 
-The metric was first motivated by `compose-post-service`, the composition service of Social
+The metric was first motivated by compose-post-service, the composition service of Social
 Network, which calls 7 %[id:composepost_out_degree] services directly and has 10
 %[id:composepost_descendants] transitive descendants. Because of that fan-out, the hybrid metric
 ranks it first of the 11 %[id:composepost_set_size] analysed services
@@ -94,13 +93,13 @@ callers it ranks last %[id:composepost_rank_ancestor_count], having a single gra
 %[id:composepost_ancestor_count]. Figure 8 shows the full rank inversion across the eleven
 services.
 
-Measurement sides with the caller-based ranking. Faulting `compose-post-service` left exactly one
+Measurement sides with the caller-based ranking. Faulting compose-post-service left exactly one
 degraded ancestor in every run. In each of its 5 %[id:composepost_kill_reps] kill repetitions the
 minimum and maximum were both 1 %[id:composepost_kill_min] %[id:composepost_kill_max], and the
 latency runs gave the same result %[id:composepost_latency_mean] %[id:composepost_latency_min]
 %[id:composepost_latency_max]. A post hoc breakdown shows that in all 10
 %[id:composepost_runs_only_gateway_ancestor] %[id:composepost_runs_total] runs that ancestor was
-`nginx-web-server`, the gateway. The third kill repetition also recorded two degraded descendants
+nginx-web-server, the gateway. The third kill repetition also recorded two degraded descendants
 %[id:descendant_affected_max_in_any_run] %[id:descendant_affected_exception_run], the only such
 run in the campaign (Section V-F). On the preregistered outcome, the service the original metric
 rates most critical is the lowest in its application. That outcome counts degraded services; it
@@ -118,7 +117,7 @@ smallest uncorrected p-value is 0.0076 %[id:repl_best_raw_p], with an adjusted v
 %[id:repl_best_bh_p].
 
 The agreement between the families comes with a caveat. Under kill and latency faults, the
-service medians of `ancestor_affected_count` are the same in both architectures
+service medians of *Y* are the same in both architectures
 %[id:replication_primary_identical], and at run level the match is nearly as close: for 17 of the
 18 services %[id:fault_invariant_services_all] %[id:fault_invariant_services_all_total], the five
 per-run counts are the same under both fault types. On the primary outcome, then, the latency
@@ -141,7 +140,7 @@ faulted service degraded in 179 of 180 runs %[id:descendant_affected_runs_zero]
 analysis, is zero for each service under both fault types
 %[id:descendant_affected_count_distinct_values] %[id:descendant_affected_count_constant_at]. The
 single exception recorded two degraded descendants %[id:descendant_affected_runs_nonzero]
-%[id:descendant_affected_max_in_any_run], in a Social Network `compose-post-service` kill
+%[id:descendant_affected_max_in_any_run], in a Social Network compose-post-service kill
 repetition %[id:descendant_affected_exception_run]. Services unrelated to the faulted node behave
 the same way, with 179 of 180 runs at zero %[id:unrelated_affected_runs_zero] and one exception
 %[id:unrelated_affected_exception_run].
@@ -157,8 +156,8 @@ entered as zeros.
 
 Of the 66 %[id:expl_testable] testable exploratory tests, 2 %[id:expl_significant] survive
 correction within that family. Both concern the size of latency inflation under latency faults on
-Social Network. Δp95 correlates with `hybrid_criticality` at ρ = 0.949
-%[id:expl_sig_hybrid_criticality_rho] and with plain `degree` at ρ = 0.953
+Social Network. Δp95 correlates with the hybrid metric at ρ = 0.949 %[id:expl_sig_hybrid_criticality_rho] and
+with plain degree at ρ = 0.953
 %[id:expl_sig_degree_rho], both with an adjusted p of 0.0033
 %[id:expl_sig_hybrid_criticality_bh_p] %[id:expl_sig_degree_bh_p].
 
@@ -177,7 +176,7 @@ registered number of distinct predictor levels %[id:power_sn_levels_match]
 %[id:power_hr_levels_match], and the ceiling correlations come out exactly as preregistered
 %[id:power_sn_ceiling_matches] %[id:power_hr_ceiling_matches].
 
-Those ceilings limit what the study could ever show. `ancestor_count` takes only 4
+Those ceilings limit what the study could ever show. The caller count *X* takes only 4
 %[id:power_sn_levels] distinct values across the 11 %[id:power_sn_n] Social Network services and
 2 %[id:power_hr_levels] across the 7 %[id:power_hr_n] Hotel Reservation services, and the ties cap
 the attainable correlation at 0.941 %[id:power_sn_ceiling] and 0.791 %[id:power_hr_ceiling]
@@ -197,9 +196,9 @@ and uncorrected (Deviation 6). Table 11 gives all three for both predictors. No 
 test is significant after correction in either family %[id:trec_conf_significant]
 %[id:trec_repl_significant]. The log-rank test is undefined for 10 of the 22 recovery-time tests
 in each family %[id:trec_conf_logrank_undefined] %[id:trec_repl_logrank_undefined]
-%[id:trec_conf_tests] %[id:trec_repl_tests], including `ancestor_count` on Hotel Reservation,
-where the predictor has fewer than two distinct terciles. The unrounded estimates are listed in
-the Appendix.
+%[id:trec_conf_tests] %[id:trec_repl_tests], including *X* on Hotel Reservation,
+where the predictor has fewer than two distinct terciles. Supplementary file S2 gives the
+unrounded estimates.
 
 ## J. Post Hoc Weight Sensitivity
 
@@ -212,7 +211,7 @@ corrected with the Benjamini-Hochberg procedure within that set. No triplet was 
 adopted, and every other result in this paper uses the reported weights. Table 12 and Figure 9
 give the full distribution.
 
-Against `ancestor_affected_count` on Social Network, ρ ranged from −0.544
+Against the number of degraded callers *Y* on Social Network, ρ ranged from −0.544
 %[id:ws_sn_kill_anc_rho_min] to 0.337 %[id:ws_sn_kill_anc_rho_max], with a median of −0.167
 %[id:ws_sn_kill_anc_rho_median]. It was positive for 28 %[id:ws_sn_kill_anc_triplets_rho_positive]
 of the 231 triplets. No triplet reached an uncorrected p below 0.05 %[id:fdr_q]

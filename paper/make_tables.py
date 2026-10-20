@@ -303,6 +303,7 @@ def main():
 
     testbed_tables()
     ws_table()
+    ieee_tables(preds, svc, conf, repl, h1b, powr, devs)
 
     pd.DataFrame(INDEX).to_csv(os.path.join(OUT, "tables_index.csv"), index=False)
     print("wrote %d tables (csv + md) and tables_index.csv" % len(INDEX))
@@ -459,6 +460,274 @@ def ws_table():
          "(BH within each family of 231), and the values at the reported weights",
          "analysis/final/weight_sensitivity_summary.csv",
          "analysis/final/weight_sensitivity.py")
+
+
+# ---- IEEE Access tables (2026-10-20) -------------------------------------------
+# Display versions for paper/build_ieee.py: plain-language headers with units, no code names
+# or underscores, rho and centralities to 3 decimals, p-values to 4 (or <0.0001), times to
+# 1, and one "95% CI" column. Each is formatted from the raw analysis values, never from an
+# already rounded table. *X* and <sub>..</sub> are inline markup that the build renders.
+
+def ci(lo, hi, n=3):
+    return "%s to %s" % (f(lo, n), f(hi, n))
+
+
+def count(v):
+    return str(int(v)) if float(v).is_integer() else f(v, 1)
+
+
+def ieee_tables(preds, svc, conf, repl, h1b, powr, devs):
+    import re as _re
+    import sys
+    from dataclasses import replace
+    sys.path.insert(0, REPO)
+    from faultinjection.fault_config import DEFAULT_SPECS, FaultType
+    n = numbers()
+    FAM = {"confirmatory (kill)": ("confirmatory", "kill"),
+           "replication (latency)": ("replication", "latency")}
+    PRED = {"ancestor_count": "caller count *X*", "hybrid_criticality": "hybrid metric HC"}
+
+    # Testbed
+    rows = [
+        ("Host OS", "%s (%s)" % (n["testbed_host_os"], n["testbed_host_os_version"]),
+         "measured on %s" % n["testbed_measured_on"]),
+        ("Host CPU", "%s, %s cores, %s threads" % (n["testbed_cpu_model"],
+                                                   n["testbed_cpu_cores"],
+                                                   n["testbed_cpu_logical"]),
+         "measured on %s" % n["testbed_measured_on"]),
+        ("Host RAM (GB)", n["testbed_host_ram_gb"], "recorded %s" % n["testbed_vm_record_date"]),
+        ("Docker Desktop", "%s, %s backend" % (n["version_docker_desktop"],
+                                               n["testbed_docker_backend"]),
+         "version measured on %s" % n["testbed_measured_on"]),
+        ("Docker VM memory (GiB)", "%s (WSL2 default)" % n["testbed_docker_vm_gib"],
+         "recorded %s" % n["testbed_vm_record_date"]),
+        ("Docker client / Compose", "%s / %s" % (n["version_docker_client"],
+                                                 n["version_docker_compose"]),
+         "client recorded 2026-10-18; Compose measured on %s" % n["testbed_measured_on"]),
+        ("Containers per stack", "Social Network %s, Hotel Reservation %s"
+         % (n["testbed_containers_sn"], n["testbed_containers_hr"]),
+         "recorded %s; one stack at a time" % n["testbed_vm_record_date"]),
+        ("DeathStarBench commit", n["dsb_commit"], "pinned upstream commit"),
+        ("Jaeger", "%s all-in-one, %s storage" % (n["version_jaeger"],
+                                                  n["testbed_jaeger_storage"]),
+         "compose override file"),
+        ("Pumba", "ghcr.io/alexei-led/pumba, untagged image", "version not recorded"),
+        ("Python", n["version_python"], "repository README"),
+        ("Python libraries", "NumPy %s, pandas %s, SciPy %s, statsmodels %s, NetworkX %s, "
+         "matplotlib %s" % (n["version_numpy"], n["version_pandas"], n["version_scipy"],
+                            n["version_statsmodels"], n["version_networkx"],
+                            n["version_matplotlib"]), "repository README"),
+        ("Locust", "%s; %s users, spawn rate %s users/s, %s to %s s between requests"
+         % (n["version_locust"], n["protocol_load_users"], n["protocol_spawn_rate"],
+            n["protocol_sn_wait_min_s"], n["protocol_sn_wait_max_s"]),
+         "runner and Locust files"),
+        ("Request mix, Social Network", "compose post %s, home timeline %s, user timeline %s"
+         % (n["protocol_sn_task_weight_compose_post"],
+            n["protocol_sn_task_weight_read_home_timeline"],
+            n["protocol_sn_task_weight_read_user_timeline"]), "Locust task weights"),
+        ("Request mix, Hotel Reservation", "search %s, reservation %s, user %s, "
+         "recommendation %s" % (n["protocol_hr_task_weight_hotel_search"],
+                                n["protocol_hr_task_weight_make_reservation"],
+                                n["protocol_hr_task_weight_get_user"],
+                                n["protocol_hr_task_weight_get_recommendations"]),
+         "Locust task weights"),
+        ("Load before the fault (s)", "%s, also the baseline window" % n["protocol_warmup_s"],
+         "runner"),
+        ("Fault hold (s)", n["protocol_fault_duration_s"], "runner"),
+        ("Recovery probe (s)", "poll %s, confirmation %s, lag %s, cap %s"
+         % (n["trec_poll_interval_nominal_s"], n["protocol_confirm_s"],
+            n["protocol_probe_lag_s"], n["protocol_recovery_cap_s"]), "runner"),
+        ("Cooldown (s)", n["protocol_cooldown_s"], "runner"),
+    ]
+    emit("tbl_ieee_testbed", pd.DataFrame(rows, columns=["Item", "Value", "Source"]),
+         "Testbed and run protocol; host values marked as measured were queried after the "
+         "campaign", "paper/numbers.csv", "paper/make_tables.py")
+
+    # Command lines, generated from the code, with placeholders in plain words
+    lists = literal_commands("tools/run_pilot.py")
+    pick = lambda *keys: next(c for c in lists if all(k in c for k in keys))  # noqa: E731
+    lat = replace(DEFAULT_SPECS[FaultType.LATENCY],
+                  duration_seconds=int(n["protocol_fault_duration_s"]))
+    cmd = lambda spec: " ".join(["docker"] + spec.pumba_command("<container>")[1:])  # noqa
+    plain = lambda c: c.replace("<compose_svc>", "<service>")  # noqa: E731
+    rows = [
+        ("Start the load", pick("locust", "--users"), "runner, load start"),
+        ("Find the target container", pick("ps", "--filter"), "runner, target resolution"),
+        ("Kill fault", cmd(DEFAULT_SPECS[FaultType.KILL]), "fault configuration"),
+        ("Latency fault", cmd(lat), "fault configuration"),
+        ("Restore after a kill", next(c for c in lists if c.startswith("docker compose up")
+                                      and "--force-recreate" not in c), "runner, restore"),
+        ("Clean up after a latency fault", pick("--force-recreate"), "runner, clean-up"),
+    ]
+    rows = [(a, plain(b), c) for a, b, c in rows]
+    assert not any("_" in b for _, b, _ in rows), "underscore left in a command line"
+    emit("tbl_ieee_commands", pd.DataFrame(rows, columns=["Step", "Command", "Source"]),
+         "Command lines issued in each run, generated from the runner code",
+         "tools/run_pilot.py + faultinjection/fault_config.py", "paper/make_tables.py")
+
+    # Predictors and measured outcomes per service
+    for app, tag, label in (("socialnetwork", "sn", "Social Network"),
+                            ("hotelreservation", "hr", "Hotel Reservation")):
+        p = preds[(preds.architecture == app) & (preds.in_analysis_set)].copy()
+        k = svc[(svc.app == app) & (svc.fault_type == "kill")][
+            ["service", "ancestor_affected_count", "T_rec"]].rename(
+            columns={"ancestor_affected_count": "yk", "T_rec": "tk"})
+        l = svc[(svc.app == app) & (svc.fault_type == "latency")][
+            ["service", "ancestor_affected_count", "T_rec"]].rename(
+            columns={"ancestor_affected_count": "yl", "T_rec": "tl"})
+        t = p.merge(k, on="service").merge(l, on="service").sort_values(
+            ["ancestor_count", "service"], ascending=[False, True])
+        out = pd.DataFrame({
+            "Service": t.service,
+            "Ancestors": t.ancestor_count.astype(int),
+            "Descendants": t.descendant_count.astype(int),
+            "In-degree": t.in_degree_raw.astype(int),
+            "Out-degree": t.out_degree_raw.astype(int),
+            "HC": t.hybrid_criticality.map(lambda v: f(v, 3)),
+            "Betweenness": t.betweenness.map(lambda v: f(v, 3)),
+            "Closeness": t.closeness.map(lambda v: f(v, 3)),
+            "PageRank": t.pagerank.map(lambda v: f(v, 3)),
+            "Eigenvector": t.eigenvector.map(lambda v: f(v, 3)),
+            "Degraded ancestors (kill)": t.yk.map(count),
+            "Degraded ancestors (latency)": t.yl.map(count),
+            "*T*<sub>rec</sub> kill (s)": t.tk.map(lambda v: f(v, 1)),
+            "*T*<sub>rec</sub> latency (s)": t.tl.map(lambda v: f(v, 1)),
+        })
+        emit("tbl_ieee_predictors_%s" % tag, out,
+             "%s: graph predictors and measured service medians for each analysed service"
+             % label, "analysis/final/predictors.csv + service_level_data.csv", RCA)
+
+    # H1: the primary test in each family and application
+    rows = []
+    for fam, df in (("confirmatory (kill)", conf), ("replication (latency)", repl)):
+        for _, r in df[(df.predictor == "ancestor_count") &
+                       (df.outcome == "ancestor_affected_count")].iterrows():
+            m = _re.match(r"(\d+) random permutations", str(r.p_method))
+            e = _re.match(r"exact enumeration of (\d+) permutations", str(r.p_method))
+            meth = ("Monte Carlo, %s permutations" % format(int(m.group(1)), ",") if m else
+                    "exact, %s permutations" % format(int(e.group(1)), ",") if e else
+                    str(r.p_method))
+            rows.append({
+                "Family": FAM[fam][0], "Fault": FAM[fam][1],
+                "Application": r.architecture_label, "Services": int(r.n_services),
+                "ρ": f(r.spearman_rho, 3), "95% CI": ci(r.ci_lo, r.ci_hi),
+                "CI method": r.ci_method, "p (raw)": pv(r.p_permutation),
+                "p method": meth, "p (BH)": pv(r.p_bh_adjusted),
+                "Significant": "yes" if r.significant_after_fdr else "no",
+                "Note": "saturated; directional only" if r.hr_directional_only else "",
+            })
+    emit("tbl_ieee_primary", pd.DataFrame(rows),
+         "Test of H1, caller count X against degraded callers Y, in each family and "
+         "application", "analysis/final/confirmatory_family_kill.csv + "
+         "replication_family_latency.csv", RCA)
+
+    # Family summary
+    rows = []
+    for fam, df in (("confirmatory (kill)", conf), ("replication (latency)", repl)):
+        b = df.nsmallest(1, "p_permutation").iloc[0]
+        rows.append({
+            "Family": FAM[fam][0], "Fault": FAM[fam][1], "Tests": len(df),
+            "Tests with defined p": int(df.p_permutation.notna().sum()),
+            "Significant after BH": int(df.significant_after_fdr.sum()),
+            "Smallest p (raw)": pv(b.p_permutation), "Its p (BH)": pv(b.p_bh_adjusted),
+            "Test with the smallest p": "%s, %s against %s" % (
+                b.architecture_label, PRED.get(b.predictor, b.predictor),
+                "*Y*" if b.outcome == "ancestor_affected_count" else b.outcome),
+        })
+    emit("tbl_ieee_families", pd.DataFrame(rows),
+         "Family sizes and the number of tests that survive Benjamini-Hochberg correction",
+         "analysis/final/confirmatory_family_kill.csv + replication_family_latency.csv", RCA)
+
+    # H2
+    h = pd.DataFrame({
+        "Family": h1b.family, "Fault": h1b.fault_type, "Application": h1b.architecture_label,
+        "Services": h1b.n_services.astype(int),
+        "ρ": h1b.spearman_rho.map(lambda v: f(v, 3)),
+        "95% CI": [ci(a, b) for a, b in zip(h1b.ci_lo, h1b.ci_hi)],
+        "p (raw)": h1b.p_permutation.map(pv), "p (BH)": h1b.p_bh_adjusted.map(pv),
+        "ρ ≤ 0": h1b.anti_predictive_rho_le_0.map(lambda b: "yes" if b else "no"),
+        "Distinguishable from zero after BH": h1b.distinguishable_from_zero_after_fdr.map(
+            lambda b: "yes" if b else "no"),
+    })
+    emit("tbl_ieee_h2", h,
+         "Test of H2, the hybrid metric HC against degraded callers Y, in all four "
+         "application and fault cells", "analysis/final/h1b_hybrid_metric.csv", RCA)
+
+    # Power, one column per application
+    pw = {r.architecture_label: r for _, r in powr.iterrows()}
+    sn, hr = pw["Social Network"], pw["Hotel Reservation"]
+    q = lambda fn: [fn(sn), fn(hr)]  # noqa: E731
+    rows = [
+        ["Services, realised / preregistered"] + q(
+            lambda r: "%d / %d" % (r.n_services_actual, r.n_services_preregistered)),
+        ["Distinct *X* values, realised / preregistered"] + q(
+            lambda r: "%d / %d" % (r.ancestor_count_levels_actual,
+                                   r.ancestor_count_levels_preregistered)),
+        ["*X* values"] + q(lambda r: str(r.ancestor_count_values).replace(",", ", ")),
+        ["Ceiling ρ, realised / preregistered"] + q(
+            lambda r: "%s / %s" % (f(r.best_attainable_rho_untied_outcome, 3),
+                                   f(r.best_attainable_rho_preregistered, 3))),
+        ["Ceiling p, exact"] + q(lambda r: pv(r.best_attainable_p_untied_outcome)),
+        ["Ceiling p, asymptotic (not for inference)"] + q(
+            lambda r: pv(r.best_attainable_p_asymptotic_NOT_FOR_INFERENCE)),
+        ["p quoted in the preregistration"] + q(
+            lambda r: "" if pd.isna(r.prereg_stated_p) else f(r.prereg_stated_p, 3)),
+    ]
+    emit("tbl_ieee_power", pd.DataFrame(rows, columns=["Quantity", "Social Network",
+                                                       "Hotel Reservation"]),
+         "Preregistered power analysis reproduced on the realised analysis sets",
+         "analysis/final/power_table.csv", RCA)
+
+    # Recovery time: the tbl_trec values (same estimable rule), headers in plain words
+    tr = pd.read_csv(os.path.join(OUT, "tbl_trec.csv"), dtype=str, keep_default_na=False)
+    out = pd.DataFrame({
+        "Fault": tr.family.map(lambda s: FAM[s][1]), "Application": tr.architecture,
+        "Predictor": tr.predictor.map(PRED),
+        "ρ": tr.spearman_rho, "p (raw)": tr.p_raw, "p (BH)": tr.p_bh_adjusted,
+        "HR per unit, run": tr.cox_run_hr, "95% CI, run": tr.cox_run_ci_95,
+        "p, run": tr.cox_run_p, "HR per unit, service": tr.cox_service_hr,
+        "95% CI, service": tr.cox_service_ci_95, "p, service": tr.cox_service_p,
+        "Log-rank p": tr.logrank_p,
+    })
+    emit("tbl_ieee_trec", out,
+         "Recovery time: Spearman's ρ (primary, BH-corrected within each family) and Cox and "
+         "log-rank tests (secondary, uncorrected). Hazard ratios are per one-unit increase of "
+         "the predictor, fitted per run with service-clustered errors and per service; the "
+         "hybrid metric spans less than one unit, so its hazard ratios extrapolate beyond the "
+         "observed range. Log-rank is undefined where the predictor has fewer than two "
+         "distinct terciles", "paper/tables/tbl_trec.csv", RCA)
+
+    # Weight sensitivity
+    s = pd.read_csv(os.path.join(FINAL, "weight_sensitivity_summary.csv"))
+    out = pd.DataFrame({
+        "Application": s.architecture_label, "Fault": s.fault_type,
+        "Outcome": s.outcome.map({"ancestor_affected_count": "degraded callers *Y*",
+                                  "delta_error_rate": "gateway error rate"}),
+        "Triplets with defined ρ": s.triplets_defined.astype(int),
+        "ρ min": s.rho_min.map(lambda v: f(v, 3)), "ρ median": s.rho_median.map(
+            lambda v: f(v, 3)), "ρ max": s.rho_max.map(lambda v: f(v, 3)),
+        "ρ > 0": s.triplets_rho_positive.astype(int),
+        "p (raw) < 0.05": s.triplets_p_raw_below_05.astype(int),
+        "Significant after BH": s.triplets_significant_bh.astype(int),
+        "ρ at 0.4/0.4/0.2": s.reported_rho.map(lambda v: f(v, 3)),
+        "p at 0.4/0.4/0.2": s.reported_p.map(pv),
+    })
+    emit("tbl_ieee_weights", out,
+         "Post hoc weight sensitivity of the hybrid metric over 231 weight triplets, with "
+         "BH correction within each set of 231", "analysis/final/weight_sensitivity_summary.csv",
+         "analysis/final/weight_sensitivity.py")
+
+    # Deviations: date and runs from the record, short labels from paper/deviations_short.csv
+    short = pd.read_csv(os.path.join(HERE, "deviations_short.csv"))
+    d = devs.merge(short, on="n", how="left").sort_values("n")
+    missing = d[d.deviation.isna()].n.tolist()
+    if missing:
+        raise SystemExit("paper/deviations_short.csv has no label for deviation(s) %s" % missing)
+    emit("tbl_ieee_deviations", pd.DataFrame({
+        "No.": d.n.astype(int), "Date": d.date, "Deviation": d.deviation,
+        "Runs affected": d.runs_invalidated.astype(int), "Action": d.action}),
+         "Deviations from the preregistered plan",
+         "analysis/final/deviations.csv + paper/deviations_short.csv", "paper/make_tables.py")
 
 
 if __name__ == "__main__":

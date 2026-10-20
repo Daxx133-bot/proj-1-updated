@@ -1,0 +1,21 @@
+| Item | Value | Source |
+|---|---|---|
+| Host OS | Microsoft Windows 11 Home Single Language (10.0.26300) | measured on 2026-10-20 |
+| Host CPU | 12th Gen Intel(R) Core(TM) i7-1255U, 10 cores, 12 threads | measured on 2026-10-20 |
+| Host RAM (GB) | 15.7 | recorded 2026-09-24 |
+| Docker Desktop | 4.91.0, WSL2 backend | version measured on 2026-10-20 |
+| Docker VM memory (GiB) | 7.598 (WSL2 default) | recorded 2026-09-24 |
+| Docker client / Compose | 29.8.0 / 5.5.1 | client recorded 2026-10-18; Compose measured on 2026-10-20 |
+| Containers per stack | Social Network 27, Hotel Reservation 24 | recorded 2026-09-24; one stack at a time |
+| DeathStarBench commit | 6ecb097 | pinned upstream commit |
+| Jaeger | 1.62.0 all-in-one, in-memory storage | compose override file |
+| Pumba | ghcr.io/alexei-led/pumba, untagged image | version not recorded |
+| Python | 3.13.2 | repository README |
+| Python libraries | NumPy 2.1.2, pandas 2.2.3, SciPy 1.14.1, statsmodels 0.14.6, NetworkX 3.6.1, matplotlib 3.9.2 | repository README |
+| Locust | 2.46.3; 25 users, spawn rate 10 users/s, 0.5 to 1.5 s between requests | runner and Locust files |
+| Request mix, Social Network | compose post 3, home timeline 5, user timeline 2 | Locust task weights |
+| Request mix, Hotel Reservation | search 6, reservation 2, user 2, recommendation 1 | Locust task weights |
+| Load before the fault (s) | 60, also the baseline window | runner |
+| Fault hold (s) | 30 | runner |
+| Recovery probe (s) | poll 1, confirmation 5, lag 5, cap 180 | runner |
+| Cooldown (s) | 20 | runner |
