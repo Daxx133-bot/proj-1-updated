@@ -73,6 +73,8 @@ def main() -> int:
                 produced_by = "paper/make_tables.py"
             elif base.startswith("figures/"):
                 produced_by = "paper/make_figures.py"
+            elif base.startswith("review/"):
+                produced_by = "paper/build_review_pdf.py (run separately; needs Microsoft Word)"
             elif base.startswith("submission/") and fn not in PRODUCER:
                 produced_by = "paper/build_docx.py"
             elif base.startswith("draft/"):

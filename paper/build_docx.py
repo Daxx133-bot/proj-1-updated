@@ -311,15 +311,25 @@ def style_document(doc, line_numbers=True):
     st.paragraph_format.line_spacing = 1.5
     st.paragraph_format.space_after = Pt(6)
     st.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
-    for name, size in (("Title", 16), ("Heading 1", 14), ("Heading 2", 12),
-                       ("Heading 3", 12)):
+    for name, size, italic in (("Title", 16, False), ("Heading 1", 14, False),
+                               ("Heading 2", 12, False), ("Heading 3", 12, True)):
         h = doc.styles[name]
         h.font.name = FONT
         h.font.size = Pt(size)
         h.font.bold = True
+        h.font.italic = italic
         h.font.color.rgb = RGBColor(0, 0, 0)
-        h.element.rPr.rFonts.set(qn("w:eastAsia"), FONT)
+        # The template's theme-font attributes override the font name; drop them so
+        # titles and headings really are Times New Roman.
+        rf = h.element.rPr.rFonts
+        for a in ("w:asciiTheme", "w:hAnsiTheme", "w:eastAsiaTheme", "w:cstheme"):
+            rf.attrib.pop(qn(a), None)
+        for a in ("w:ascii", "w:hAnsi", "w:cs", "w:eastAsia"):
+            rf.set(qn(a), FONT)
         h.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    title_pPr = doc.styles["Title"].element.get_or_add_pPr()
+    for e in title_pPr.findall(qn("w:pBdr")):       # the template's coloured rule
+        title_pPr.remove(e)
     for sec in doc.sections:
         sec.page_width, sec.page_height = Inches(8.5), Inches(11)
         for side in ("left_margin", "right_margin", "top_margin", "bottom_margin"):

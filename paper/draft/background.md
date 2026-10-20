@@ -49,18 +49,15 @@ architecture and fault type %[id:h1b_all_negative] and was never distinguishable
 callers and almost never callees, with no descendant of the faulted service degraded in 179
 of 180 runs %[id:descendant_affected_runs_zero].
 
-This paper makes four contributions.
-
-- A preregistered test of whether caller count, or a fan-out-weighted centrality metric,
-  tracks measured failure impact in two benchmark applications, reported with its null result
-  and with the power ceiling the design imposed.
-- Documentation of a measurement pitfall, in which a request's end-to-end latency is charged
-  to every service on its path, and of its effect in the pilot, where it flagged services
-  unrelated to the faulted one in the graph.
-- An observation on the direction of propagation that held in both applications and under
-  both fault types.
-- An artifact in which every number in the paper is produced by a script from logged
-  campaign data.
+This paper makes four contributions. First, it reports a preregistered test of whether
+caller count, or a fan-out-weighted centrality metric, tracks measured failure impact in two
+benchmark applications, with its null result and with the power ceiling the design imposed.
+Second, it documents a measurement pitfall, in which a request's end-to-end latency is
+charged to every service on its path, and its effect in the pilot, where it flagged services
+unrelated to the faulted one in the graph. Third, it reports an observation on the direction
+of propagation that held in both applications and under both fault types. Finally, it
+provides an artifact in which every number in the paper is produced by a script from logged
+campaign data.
 
 An earlier analysis from this project was withdrawn after a self-audit found results that
 had not come from measurement; §7 describes what happened and the safeguards that followed.

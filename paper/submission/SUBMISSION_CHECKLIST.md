@@ -47,4 +47,4 @@ Drafts and `build_docx.py` are the sources; the `.docx` rows are where each one 
 | paper/submission/cover_letter.docx, paragraph 1 | `[TO FILL: date]` |
 | paper/submission/cover_letter.docx, paragraph 13 | `[TO FILL: corresponding author name and email]` |
 | paper/submission/cover_page.docx, paragraph 4 | `[TO FILL: corresponding author name and email]` |
-| paper/submission/manuscript.docx, paragraph 173 | `[TO FILL]` |
+| paper/submission/manuscript.docx, paragraph 169 | `[TO FILL]` |
