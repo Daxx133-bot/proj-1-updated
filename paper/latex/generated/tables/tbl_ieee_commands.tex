@@ -1,0 +1,20 @@
+\begin{table*}[!t]
+\centering
+\caption{Command lines issued in each run, generated from the runner code}
+\label{tab:tbl_ieee_commands}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+
+\begin{tabular}{p{2.9cm}p{11.9cm}p{2.7cm}}
+\toprule
+\textbf{Step} & \textbf{Command} & \textbf{Source} \\
+\midrule
+Start the load & \texttt{python -m locust -f <locustfile> -{}-host <url> -{}-headless -{}-users <users> -{}-spawn-rate 10 -{}-run-time <duration>s -{}-only-summary -{}-loglevel ERROR} & runner, load start \\
+Find the target container & \texttt{docker ps -{}-filter label=com.docker.compose.service=<service> -{}-format '\{\{.Names\}\}\textbackslash\{\}t\{\{.Label "com.docker.compose.service"\}\}'} & runner, target resolution \\
+Kill fault & \texttt{docker run -{}-rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/alexei-led/pumba kill -{}-signal SIGKILL <container>} & fault configuration \\
+Latency fault & \texttt{docker run -{}-rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/alexei-led/pumba netem -{}-duration 30s delay -{}-time 500 -{}-jitter 100 <container>} & fault configuration \\
+Restore after a kill & \texttt{docker compose up -d <service>} & runner, restore \\
+Clean up after a latency fault & \texttt{docker compose up -d -{}-force-recreate <service>} & runner, clean-up \\
+\bottomrule
+\end{tabular}
+\end{table*}

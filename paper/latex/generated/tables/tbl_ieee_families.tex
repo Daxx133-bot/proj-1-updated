@@ -1,0 +1,16 @@
+\begin{table*}[!t]
+\centering
+\caption{Family sizes and the number of tests that survive Benjamini-Hochberg correction}
+\label{tab:tbl_ieee_families}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+
+\begin{tabular}{llrrrrrp{5.0cm}}
+\toprule
+\textbf{Family} & \textbf{Fault} & \textbf{Tests} & \textbf{\makecell[lb]{Tests with\\defined p}} & \textbf{\makecell[lb]{Significant\\after BH}} & \textbf{\makecell[lb]{Smallest p\\(raw)}} & \textbf{Its p (BH)} & \textbf{Test with the smallest p} \\
+\midrule
+confirmatory & kill & 44 & 44 & 0 & 0.0080 & 0.3451 & Social Network, caller count \textit{X} against \textit{Y} \\
+replication & latency & 44 & 44 & 0 & 0.0076 & 0.1848 & Social Network, caller count \textit{X} against \textit{Y} \\
+\bottomrule
+\end{tabular}
+\end{table*}

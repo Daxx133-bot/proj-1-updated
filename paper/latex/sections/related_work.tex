@@ -1,0 +1,97 @@
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Graph Measures and Network Failures}
+
+Freeman's account of centrality separated several ideas of what makes a node central, some
+resting on a node's direct ties and others on the shortest paths that pass through it, and
+gave them normalised forms that remain standard \cite{freeman1978}. Path-based measures became
+practical on large graphs once Brandes published a fast algorithm for betweenness
+\cite{brandes2001}. The graph library used in this study, NetworkX \val{version_networkx}
+\cite{hagberg2008}, implements that algorithm.
+
+Network science has studied how graphs respond to the loss of nodes. Albert, Jeong and
+Barab\'asi examined the tolerance of complex networks to errors and to attacks
+\cite{albert2000}, and Motter and Lai examined attacks on complex networks that work through
+cascades \cite{motter2002}. In a running microservice system a failed service stays in the call
+graph, and its effect appears as latency and errors in the services around it, which have to be
+measured on the system itself.
+
+Software engineering adopted graph measures early. Zimmermann and Nagappan computed network
+measures on the dependency graph of a large software system and found that they helped predict
+which components would contain defects \cite{zimmermann2008}, and Ma and colleagues built a
+service dependency graph to analyse and test microservice systems \cite{ma2018}. The present
+study shares their premise that a component's position in a dependency graph says something
+about its risk. Its outcome is different: how far a run-time failure spreads under load, which
+depends on the call pattern of the running system and not on the code alone.
+
+\subsection{Fault Injection and Chaos Engineering}
+
+Injecting faults into a running system is now an established way to learn how it behaves under
+stress. Basiri and colleagues describe chaos engineering as practised at Netflix, where
+controlled experiments on production systems build confidence that they tolerate failure
+\cite{basiri2016}, and Basiri and colleagues later described automating chaos experiments in
+production \cite{basiri2019}. For microservices, Gremlin offered systematic resilience testing by injecting
+faults between services \cite{heorhiadi2016}, and Meiklejohn and colleagues brought fault
+injection testing down to the level of individual services \cite{meiklejohn2021}.
+Lineage-driven fault injection reasons backwards from how a correct result was produced to
+choose the faults most likely to expose a bug \cite{alvaro2015}. Not every failure is a crash.
+Huang and colleagues describe gray failure, in which a component keeps running while working
+badly, as a central weakness of cloud-scale systems \cite{huang2017}; an injected network delay
+is one controlled form of such a partial failure.
+
+These tools search for bugs or confirm that fallbacks work. This study uses fault injection
+for a narrower purpose. Two fault types are injected into each service in turn in a fixed,
+balanced design, and the counts of degraded services become the outcome against which a
+structural prediction is tested. The faults serve as a measuring instrument.
+
+\subsection{Call Graphs from Traces}
+
+Distributed tracing makes it possible to recover the service graph from what the system
+actually does. Dapper set out the model most tracing systems still follow: a request carries a
+trace context across service boundaries, each unit of work becomes a span with a parent, and a
+request becomes a tree of spans \cite{sigelman2010}. A parent span in one service with a child
+span in another gives a caller-to-callee edge, which is how the graphs in this study were
+built. Graphs recovered this way depend on the traffic that produced them. Luo and colleagues
+found the call graphs in Alibaba's production traces to be highly dynamic, changing from one
+request to the next \cite{luo2021}. The benchmark graphs here are small and their workload is
+fixed, but the same dependence on traffic reaches the predictor
+(Section~\ref{sec:threat-scope}).
+
+\subsection{Failure Diagnosis}
+
+A large body of work starts from an anomaly that is already under way and tries to find its
+source. Pinpoint addressed problem determination in large, dynamic Internet services
+\cite{chen2002}. For microservices, Microscope
+locates performance problems with causal graphs \cite{lin2018}, MicroRCA ranks candidate root
+causes on a graph of the running system \cite{wu2020}, and Seer applies large-scale data
+analysis to performance debugging in cloud microservices \cite{gan2019seer}. An industrial
+survey documents how hard such diagnosis is in practice and contributes a benchmark with
+injected faults \cite{zhou2021}, and Soldani and Brogi survey anomaly detection and
+root-cause analysis for service-based cloud applications \cite{soldani2022}. These methods use
+the graph together with live metrics after a problem has begun. The question here comes
+earlier: whether graph structure alone, before any fault, indicates which services will do the
+most damage when they fail. The direction of propagation reported in
+Section~\ref{sec:res-direction} may interest diagnosis work, although no diagnosis method was
+studied.
+
+\subsection{Preregistration and Multiple Testing}
+
+Preregistration separates the analyses planned before data are seen from those devised
+afterwards, so that a reader can tell a test of a prediction from a search through the data
+\cite{nosek2018}. With \val{conf_family_size} tests in each family, %[id:repl_family_size]
+a correction for multiple testing was unavoidable. The false discovery rate was controlled
+with the Benjamini-Hochberg procedure \cite{benjamini1995}, which bounds the expected share
+of false positives among reported discoveries and gives up less power than a family-wise
+correction.
+
+\subsection{Research Gap}
+
+Graph measures have been used to rank software components by defect risk
+\cite{zimmermann2008}, network studies examine tolerance to errors, attacks and cascades
+\cite{albert2000,motter2002}, fault-injection tools test whether a system tolerates
+failure \cite{basiri2016,heorhiadi2016,meiklejohn2021}, and diagnosis methods use the graph
+once an anomaly is under way \cite{wu2020,lin2018}. To the authors' knowledge, none of the
+works cited here reports a test, fixed in advance, of whether a graph-derived ranking of
+services anticipates failure propagation measured in a controlled campaign. This paper
+reports such a test, including a result that came out null.

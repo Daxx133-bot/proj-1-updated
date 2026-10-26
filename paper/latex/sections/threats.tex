@@ -1,0 +1,66 @@
+\section{Threats to Validity}
+\label{sec:threats}
+
+\subsection{Sample Size and Ties}
+
+The unit of analysis is the service, so the sample sizes are \val{power_sn_n} for Social Network
+and \val{power_hr_n} for Hotel Reservation, the number of services the applications have. Both
+were registered in advance and matched exactly. %[id:power_sn_n_matches] %[id:power_hr_n_matches]
+Repetition makes each service's outcome more precise, which is why each cell was run
+\val{campaign_reps_per_cell} times, but it adds no points to a correlation. Ties tighten the
+bound further: the caller count takes \val{power_sn_levels} distinct values on Social Network
+and \val{power_hr_levels} on Hotel Reservation, which caps the correlation for an outcome
+without ties at \val{power_sn_ceiling} and \val{power_hr_ceiling}. These ceilings were stated
+before data collection, so they are a property of the design and not an explanation found
+afterwards. On Hotel Reservation the outcome was also fully saturated, so every result there
+restates how the outcome was built and is reported as directional only.
+%[id:saturation_hr_kill_tautological]
+Its value is as a second, differently shaped topology on which the direction result also holds.
+
+\subsection{A Predictor Close to Its Outcome}
+
+The most serious threat to the primary result is conceptual. The outcome counts degraded
+transitive callers and the predictor counts transitive callers, so they coincide whenever every
+ancestor degrades, and on Social Network the whole gap between $\rho = \val{primary_rho}$ and a
+correlation of one rests on user-service. Withholding it raises $\rho$ to
+\val{loo_userservice_rho}, a change \val{loo_swing_ratio} times the size of the next largest,
+in a check specified after the result was known. The saturation measure was registered before
+collection precisely to detect this, and the test remained meaningful because saturation was
+not guaranteed in advance and did not fully hold. A reader may still treat the Social Network
+correlation as one service's worth of evidence.
+
+\subsection{Benchmarks, Workload and Graph}
+\label{sec:threat-scope}
+
+Both applications come from one benchmark suite at one commit, chosen because they are
+instrumented and reproducible, not because they sample the space of microservice architectures.
+The workload is synthetic, fixed at \val{protocol_load_users} users with a fixed request mix,
+and containment mechanisms were not studied. Nothing here describes production behaviour.
+Because the dependency graph is rebuilt from observed traffic, it is a property of deployment and
+workload together; production call graphs change from request to request \cite{luo2021}. Even
+here, the traces recover \val{hr_manifest_edges_recovered} of the
+\val{hr_manifest_expected_edges} edges implied by Hotel Reservation's documentation, and the user
+service has one observed caller where the documentation implies two.
+%[id:hr_user_observed_caller_count]
+A different request mix would give it a different predictor value with nothing about the
+deployed system changed, which limits how far any relationship reported here carries to other
+traffic.
+
+\subsection{Measurement}
+
+For latency faults, the runner infers that the netem rule is gone from the exit of the injecting
+process. That inference failed at least once (Deviation 4). The cross-run baseline gate added
+afterwards catches a rule that outlives its run, because later baselines then look contaminated,
+but a rule that leaked and cleared within a single run would pass unnoticed, so latency-fault
+recovery times carry an assumption the instrumentation cannot check. Blast-radius counts are
+less exposed, since they come from the fault window itself. The server-span replay of
+Deviation 11 could not cover recovery times on Social Network, because the probe's windows were
+not stored, and those times stand as measured. The baseline window includes the load ramp-up (Deviation 13); the same
+procedure ran in every run and the baseline gate reported no exceptions,
+%[id:integrity_checks_passed]
+but the size of any start-up effect was not measured. Two fault types were studied, a process
+kill and a \val{fault_latency_delay_ms}~ms delay; CPU contention was evaluated in the pilot and
+dropped because its effect was too small to classify reliably. Finally, some testbed values in
+Table~\ref{tab:tbl_ieee_testbed} were queried after the campaign, on \val{testbed_measured_on},
+and no record from the campaign days confirms that the host operating system build and Docker
+Desktop version were unchanged.

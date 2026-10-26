@@ -1,6 +1,6 @@
 """
-check_draft_ids.py -- verify the drafting markers in paper/draft/*.md and
-paper/draft_ieee/*.md.
+check_draft_ids.py -- verify the drafting markers in paper/draft/*.md. (The IEEE Access
+manuscript in paper/latex/ is checked by paper/build_latex.py.)
 
 Three checks:
 
@@ -33,7 +33,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DRAFT = os.path.join(HERE, "draft")
-DRAFT_DIRS = [DRAFT, os.path.join(HERE, "draft_ieee")]
+DRAFT_DIRS = [DRAFT]
 NUMBERS = os.path.join(HERE, "numbers.csv")
 
 MARKER = re.compile(r"%\[id:([a-z0-9_]+)\]")

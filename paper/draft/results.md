@@ -183,14 +183,17 @@ Those ceilings limit what the study could ever show. `ancestor_count` takes only
 %[id:power_sn_levels] distinct values across the 11 %[id:power_sn_n] Social Network services
 and 2 %[id:power_hr_levels] across the 7 %[id:power_hr_n] Hotel Reservation services, and the
 ties cap the attainable correlation at 0.941 %[id:power_sn_ceiling] and 0.791
-%[id:power_hr_ceiling] respectively. For Hotel Reservation the effect is severe. Under the
-exact permutation test the plan mandates, the best attainable p-value is 0.0952
-%[id:power_hr_ceiling_p], above the conventional threshold before any correction. The
-preregistration quoted p = 0.034 %[id:power_hr_prereg_stated_p] for this ceiling, which is the
-asymptotic value (Deviation 7); the exact value the plan requires is 0.0952
-%[id:power_hr_ceiling_p]. Hotel Reservation could not have reached nominal significance for
-this predictor whatever outcome we observed. That follows from its tie structure and sample
-size, not from anything we measured.
+%[id:power_hr_ceiling] respectively, for an outcome without ties. For Hotel Reservation the
+effect is severe. Under the exact permutation test the plan mandates, the best p-value an
+outcome without ties can reach is 0.0952 %[id:power_hr_ceiling_p], above the conventional
+threshold before any correction. The preregistration quoted p = 0.034
+%[id:power_hr_prereg_stated_p] for this ceiling, which is the asymptotic value (Deviation 7);
+the exact value the plan requires is 0.0952 %[id:power_hr_ceiling_p]. Only an outcome that
+repeats the predictor's own ties can do better, reaching ρ = 1.000 %[id:power_hr_tied_rho] with
+p = 0.0476 %[id:power_hr_tied_p], and saturation produced exactly that outcome. Hotel
+Reservation could pass the nominal threshold before correction only by restating its
+predictor. That follows from its tie structure and sample size, not from anything we
+measured.
 
 ## 4.8 Recovery time
 

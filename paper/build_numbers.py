@@ -193,6 +193,16 @@ def protocol_and_topology_numbers():
             add(cid, desc, int(v) if float(v).is_integer() else float(v),
                 "tools/run_campaign.py", S_SELF, unit)
 
+    # ---- recovery tolerance, the keyword the runner passes to probe_recovery --
+    pilot = ast.parse(open(os.path.join(REPO, "tools", "run_pilot.py"), encoding="utf-8").read())
+    tols = {kw.value.value for node in ast.walk(pilot) if isinstance(node, ast.Call)
+            for kw in node.keywords
+            if kw.arg == "tolerance" and isinstance(kw.value, ast.Constant)}
+    if len(tols) == 1:
+        add("protocol_recovery_tolerance_pct", "Recovery tolerance: every indicator back "
+            "within this share of its baseline", 100.0 * tols.pop(), "tools/run_pilot.py",
+            S_SELF, "%", "%.0f")
+
     # ---- baseline window length, measured from the run records themselves ---
     runs = pd.read_csv(os.path.join(FINAL, "run_level_data.csv"))
     lens = []
@@ -1014,6 +1024,11 @@ def main():
             f"the preregistered value", bool(r.untied_ceiling_matches_prereg), F_POW, RCA)
         add(f"power_{lab}_ceiling_p", f"{r.architecture_label}: exact p at the ceiling",
             r.best_attainable_p_untied_outcome, F_POW, RCA, "", "%.4f")
+        add(f"power_{lab}_tied_rho", f"{r.architecture_label}: best attainable rho for an "
+            f"outcome with the same ties as ancestor_count",
+            r.best_attainable_rho_tie_matching_outcome, F_POW, RCA, "", "%.3f")
+        add(f"power_{lab}_tied_p", f"{r.architecture_label}: p at that tie-matching ceiling",
+            r.best_attainable_p_tie_matching_outcome, F_POW, RCA, "", "%.4f")
         add(f"power_{lab}_ceiling_p_asymptotic", f"{r.architecture_label}: asymptotic p at "
             f"the ceiling (NOT for inference)",
             r.best_attainable_p_asymptotic_NOT_FOR_INFERENCE, F_POW, RCA, "", "%.4f")

@@ -1,0 +1,121 @@
+% IEEE Access manuscript. Build: python paper/build_latex.py
+% Every number is written \val{<claim id>} and printed from paper/numbers.csv; claims that
+% print no number carry a comment naming their claim id. Do not type results into this file.
+\documentclass[journal]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs,array,makecell}
+\usepackage{cite}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{url}
+\usepackage{textcomp}
+\usepackage{stfloats}
+\usepackage[hidelinks]{hyperref}
+
+\input{generated/values}
+\makeatletter
+\newcommand{\val}[1]{\@ifundefined{val@#1}{\PackageError{values}{Unknown claim id #1}{}}%
+  {\@nameuse{val@#1}}}
+\makeatother
+\newcommand{\Trec}{\ensuremath{T_{\mathrm{rec}}}}
+\newcommand{\HC}{\mathrm{HC}}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\urlstyle{same}
+
+\begin{document}
+
+\title{Does Call-Graph Fan-Out Predict Failure Impact in Microservices? A Preregistered
+Fault-Injection Study}
+
+\author{Dakshrajsinh~Tank and Badrinath~N%
+\thanks{D.~Tank and Badrinath~N are with the School of Computer Science and Engineering
+(SCOPE), Vellore Institute of Technology, Vellore, India.}%
+\thanks{Corresponding author: [TO FILL: corresponding author name and email].}}
+
+\markboth{IEEE Access}{Tank and N: Does Call-Graph Fan-Out Predict Failure Impact in
+Microservices?}
+
+\maketitle
+
+\begin{abstract}
+Ranking the services of a microservice application by their place in the call graph is a
+cheap way to choose which ones to harden, and a common intuition treats services with high
+fan-out as the riskiest. A failed service, however, mainly hurts the services that wait on
+it, which are its callers. This paper tests both views in a preregistered fault-injection
+campaign of \val{campaign_runs_total} runs on two DeathStarBench applications. Every
+analysable service received a process kill and a \val{fault_latency_delay_ms}~ms network
+delay in \val{campaign_reps_per_cell} repetitions each. Dependency graphs were rebuilt from
+traces, and latency and errors were charged to each service's own spans. On Social Network
+under kill faults, the number of transitive callers and the number of degraded callers
+correlated at $\rho = \val{primary_rho}$, but none of the \val{conf_family_size} confirmatory
+tests survived Benjamini-Hochberg correction (adjusted $p = \val{primary_p_bh_locked}$), and a
+latency-fault replication agreed. %[id:conf_family_significant] %[id:repl_family_significant]
+Much of that correlation holds by construction, since ten of the \val{sn_services} services
+degraded every caller they had. %[id:saturation_sn_kill_service]
+A fan-out-weighted centrality metric correlated negatively with degraded callers in every
+application and fault type and was distinguishable from zero in none, and a post hoc sweep of
+\val{ws_triplets} weightings found no significant association.
+%[id:h1b_all_negative] %[id:h1b_any_distinguishable] %[id:ws_sn_kill_anc_triplets_significant_bh]
+The clearest result concerns direction: no callee of the faulted service degraded in
+\val{descendant_affected_runs_zero} of \val{campaign_runs_total} runs. The study also shows
+that charging a trace's end-to-end latency to every service on its path flags unrelated
+services, and it releases data and scripts that regenerate every reported number.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Distributed tracing, failure propagation, fault injection, graph centrality, microservices,
+preregistration.
+\end{IEEEkeywords}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/problem}
+\input{sections/methodology}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/threats}
+\input{sections/conclusion}
+
+\section*{Data Availability}
+The code, the raw campaign data (trace spans for every run, run records and the reconstructed
+dependency graphs) and the analysis outputs are available at
+\url{https://github.com/Daxx133-bot/proj-1-updated} and will be archived at Zenodo (DOI: [TO
+FILL]). A single build script regenerates every number, table and figure in this paper from
+the logged data. Three supplementary files accompany the paper in the repository: S1, the
+leave-one-out recomputation of Section~\ref{sec:res-h1}
+(\texttt{paper/tables/tbl\_leave\_one\_out.csv}); S2, the unrounded recovery-time estimates of
+Section~\ref{sec:res-trec} (\texttt{paper/tables/tbl\_trec\_supplementary.csv}); and S3, the
+exact-enumeration p-values for the confirmatory family
+(\texttt{analysis/final/exact\_p\_supplement.csv}). Code is released under the MIT licence,
+and data and figures under CC BY 4.0.
+
+\section*{Acknowledgment}
+The authors used an AI assistant (Claude, Anthropic) for code development support and
+language editing. The authors performed all experiments and verified all content.
+
+\bibliographystyle{IEEEtran}
+\bibliography{generated/references}
+
+\appendices
+\section{Deviations from the Preregistered Plan}
+\label{app:deviations}
+Table~\ref{tab:tbl_ieee_deviations} lists every departure from the locked plan with its date,
+the runs it affected and the action taken; Section~\ref{sec:deviations} summarises them. The
+repository holds the full record, with a description of each deviation and of the change made.
+\input{generated/tables/tbl_ieee_deviations}
+
+\begin{IEEEbiographynophoto}{Dakshrajsinh Tank}
+is a B.Tech student with the School of Computer Science and Engineering (SCOPE), Vellore
+Institute of Technology, Vellore, India. [TO FILL: photograph and biography]
+\end{IEEEbiographynophoto}
+
+\begin{IEEEbiographynophoto}{Badrinath N}
+is an Assistant Professor with the School of Computer Science and Engineering (SCOPE), Vellore
+Institute of Technology, Vellore, India. [TO FILL: photograph and biography]
+\end{IEEEbiographynophoto}
+
+\end{document}

@@ -23,10 +23,12 @@ and not an explanation found afterwards.
 ## 6.2 Hotel Reservation could not have reached significance
 
 For Hotel Reservation the problem goes beyond low power. Under the exact permutation test the
-plan mandates, a perfect result with the observed ties, ρ = 1.0, yields p = 0.0952
-%[id:power_hr_ceiling_p]. That is above the conventional 0.05 threshold before any
-correction for multiplicity. No outcome we could have measured on this application would have reached
-nominal significance for this predictor.
+plan mandates, the best outcome without ties, ρ = 0.791 %[id:power_hr_ceiling], yields
+p = 0.0952 %[id:power_hr_ceiling_p]. That is above the conventional 0.05 threshold before any
+correction for multiplicity. Only an outcome that repeats the predictor's own ties can do
+better, reaching ρ = 1.000 %[id:power_hr_tied_rho] with p = 0.0476 %[id:power_hr_tied_p], and
+that is the saturated outcome we observed. On this application, nominal significance for this
+predictor was reachable only by restating it.
 
 The application is also saturated. Each service's measured count matched its graph count in every run %[id:saturation_hr_kill_run] %[id:saturation_hr_kill_service], so a correlation computed here only restates how the outcome was built %[id:saturation_hr_kill_tautological] %[id:saturation_hr_kill_tautological].
 We report every Hotel Reservation result as directional only, and it should be read neither as

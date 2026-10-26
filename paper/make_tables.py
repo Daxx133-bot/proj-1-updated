@@ -463,7 +463,7 @@ def ws_table():
 
 
 # ---- IEEE Access tables (2026-10-20) -------------------------------------------
-# Display versions for paper/build_ieee.py: plain-language headers with units, no code names
+# Display versions for paper/build_latex.py: plain-language headers with units, no code names
 # or underscores, rho and centralities to 3 decimals, p-values to 4 (or <0.0001), times to
 # 1, and one "95% CI" column. Each is formatted from the raw analysis values, never from an
 # already rounded table. *X* and <sub>..</sub> are inline markup that the build renders.
@@ -664,18 +664,25 @@ def ieee_tables(preds, svc, conf, repl, h1b, powr, devs):
             lambda r: "%d / %d" % (r.ancestor_count_levels_actual,
                                    r.ancestor_count_levels_preregistered)),
         ["*X* values"] + q(lambda r: str(r.ancestor_count_values).replace(",", ", ")),
-        ["Ceiling ρ, realised / preregistered"] + q(
+        ["Ceiling ρ, outcome without ties, realised / preregistered"] + q(
             lambda r: "%s / %s" % (f(r.best_attainable_rho_untied_outcome, 3),
                                    f(r.best_attainable_rho_preregistered, 3))),
-        ["Ceiling p, exact"] + q(lambda r: pv(r.best_attainable_p_untied_outcome)),
-        ["Ceiling p, asymptotic (not for inference)"] + q(
+        ["Ceiling p, outcome without ties, permutation"] + q(
+            lambda r: pv(r.best_attainable_p_untied_outcome)),
+        ["Ceiling p, outcome without ties, asymptotic (not for inference)"] + q(
             lambda r: pv(r.best_attainable_p_asymptotic_NOT_FOR_INFERENCE)),
+        ["Ceiling ρ, outcome tied like *X*"] + q(
+            lambda r: f(r.best_attainable_rho_tie_matching_outcome, 3)),
+        ["Ceiling p, outcome tied like *X*, permutation"] + q(
+            lambda r: pv(r.best_attainable_p_tie_matching_outcome)),
         ["p quoted in the preregistration"] + q(
             lambda r: "" if pd.isna(r.prereg_stated_p) else f(r.prereg_stated_p, 3)),
     ]
     emit("tbl_ieee_power", pd.DataFrame(rows, columns=["Quantity", "Social Network",
                                                        "Hotel Reservation"]),
-         "Preregistered power analysis reproduced on the realised analysis sets",
+         "Preregistered power analysis reproduced on the realised analysis sets; permutation "
+         "p-values from %s (Social Network) and %s (Hotel Reservation)"
+         % (sn.p_method, hr.p_method),
          "analysis/final/power_table.csv", RCA)
 
     # Recovery time: the tbl_trec values (same estimable rule), headers in plain words

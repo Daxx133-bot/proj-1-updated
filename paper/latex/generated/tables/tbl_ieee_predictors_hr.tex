@@ -1,0 +1,21 @@
+\begin{table*}[!t]
+\centering
+\caption{Hotel Reservation: graph predictors and measured service medians for each analysed service}
+\label{tab:tbl_ieee_predictors_hr}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrrrrrrr}
+\toprule
+\textbf{Service} & \textbf{Ancestors} & \textbf{Descendants} & \textbf{In-degree} & \textbf{Out-degree} & \textbf{HC} & \textbf{Betweenness} & \textbf{Closeness} & \textbf{PageRank} & \textbf{Eigenvector} & \textbf{\makecell[lb]{Degraded\\ancestors\\(kill)}} & \textbf{\makecell[lb]{Degraded\\ancestors\\(latency)}} & \textbf{\makecell[lb]{\textit{T}\textsubscript{rec}\\kill (s)}} & \textbf{\makecell[lb]{\textit{T}\textsubscript{rec}\\latency (s)}} \\
+\midrule
+geo & 2 & 0 & 1 & 0 & 0.057 & 0.000 & 0.190 & 0.152 & 0.707 & 2 & 2 & 22.0 & 17.7 \\
+rate & 2 & 0 & 1 & 0 & 0.057 & 0.000 & 0.190 & 0.152 & 0.707 & 2 & 2 & 20.9 & 16.9 \\
+profile & 1 & 0 & 1 & 0 & 0.057 & 0.000 & 0.143 & 0.124 & 0.002 & 1 & 1 & 27.0 & 18.7 \\
+recommendation & 1 & 0 & 1 & 0 & 0.057 & 0.000 & 0.143 & 0.107 & 0.002 & 1 & 1 & 22.6 & 25.4 \\
+reservation & 1 & 0 & 1 & 0 & 0.057 & 0.000 & 0.143 & 0.127 & 0.002 & 1 & 1 & 19.3 & 16.6 \\
+search & 1 & 2 & 1 & 2 & 0.112 & 0.048 & 0.143 & 0.119 & 0.002 & 1 & 1 & 22.3 & 24.7 \\
+user & 1 & 0 & 1 & 0 & 0.057 & 0.000 & 0.143 & 0.119 & 0.002 & 1 & 1 & 19.7 & 13.6 \\
+\bottomrule
+\end{tabular}}
+\end{table*}

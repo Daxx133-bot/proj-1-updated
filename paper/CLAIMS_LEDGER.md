@@ -116,10 +116,16 @@ reproduce.
 `power_hr_n_matches`, `power_hr_levels`, `power_hr_levels_match`, `power_hr_ceiling`,
 `power_hr_ceiling_matches`
 
-**4.2 SUPPORTED** — Under the exact permutation test the preregistration itself mandates,
-Hotel Reservation cannot reach nominal significance for this predictor at any observed
-outcome, because its tie structure puts the best attainable p above 0.05.
-`power_hr_ceiling_p`, `power_hr_levels`, `power_hr_n`
+**4.2 SUPPORTED (corrected 2026-10-26)** — Under the exact permutation test the
+preregistration itself mandates, an outcome without ties cannot bring Hotel Reservation below
+p = 0.05 for this predictor: the best it can reach is the untied ceiling, whose exact p is
+above 0.05. Only an outcome that repeats the predictor's ties can do better, reaching a
+correlation of one with p just under 0.05, and that is the saturated outcome observed; after
+correction the test is far from significant. *Correction:* the earlier wording said Hotel
+Reservation could not reach nominal significance at any observed outcome, which overlooked the
+tie-matching ceiling in `analysis/final/power_table.csv`; the confirmatory row for Hotel
+Reservation shows that uncorrected p.
+`power_hr_ceiling_p`, `power_hr_tied_rho`, `power_hr_tied_p`, `power_hr_levels`, `power_hr_n`
 
 **4.3 SUPPORTED** — The p-value quoted in the preregistration's power section for that
 ceiling is the asymptotic value, which the same document forbids for inference; the exact

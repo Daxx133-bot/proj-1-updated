@@ -23,8 +23,8 @@ fan-out metric's correlation was negative in all four architecture-by-fault cell
 Degradation reached callers and almost never callees: no descendant of the faulted service
 degraded in 179 of 180 runs %[id:descendant_affected_runs_zero]. The service the fan-out metric ranked most critical had exactly one degraded caller in each of its ten %[id:composepost_runs_total] runs %[id:composepost_kill_min] %[id:composepost_kill_max] %[id:composepost_latency_min] %[id:composepost_latency_max]
 %[id:composepost_runs_only_gateway_ancestor]. Hotel Reservation was saturated, and its ties
-kept the best attainable p-value at 0.0952 %[id:power_hr_ceiling_p], above the usual
-threshold.
+kept the best p-value attainable by an outcome without ties at 0.0952 %[id:power_hr_ceiling_p],
+above the usual threshold.
 
 **Conclusions.** In these two benchmark applications a failure's reach followed callers,
 and the fan-out premise found no support. Our test of the caller count did not survive the

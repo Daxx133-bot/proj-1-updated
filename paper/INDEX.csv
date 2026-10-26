@@ -1,17 +1,17 @@
 file,produced_by,bytes
-paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",26108
-paper/INDEX.csv,paper/build_all.py,11254
-paper/build_all.py,source,4771
-paper/build_docx.py,source,27200
-paper/build_ieee.py,source,48478
-paper/build_numbers.py,source,68478
+paper/CLAIMS_LEDGER.md,"hand-written, validated by paper/check_ledger.py",26655
+paper/INDEX.csv,paper/build_all.py,12826
+paper/build_all.py,source,5413
+paper/build_docx.py,source,27318
+paper/build_latex.py,source,23002
+paper/build_numbers.py,source,69500
 paper/build_review_pdf.py,source,38123
 paper/check_docx_numbers.py,source,13510
-paper/check_draft_ids.py,source,5501
+paper/check_draft_ids.py,source,5522
 paper/check_ledger.py,source,3783
 paper/check_references.py,source,5206
-paper/deviations_short.csv,unknown,1100
-paper/draft/abstract.md,"hand-written, markers validated by paper/check_draft_ids.py",3060
+paper/deviations_short.csv,hand-written short labels for the deviations table; read by paper/make_tables.py,1100
+paper/draft/abstract.md,"hand-written, markers validated by paper/check_draft_ids.py",3087
 paper/draft/ai_statement.md,"hand-written, markers validated by paper/check_draft_ids.py",343
 paper/draft/audit_disclosure.md,"hand-written, markers validated by paper/check_draft_ids.py",10183
 paper/draft/background.md,"hand-written, markers validated by paper/check_draft_ids.py",5179
@@ -21,7 +21,7 @@ paper/draft/cover_letter.md,"hand-written, markers validated by paper/check_draf
 paper/draft/data_availability.md,"hand-written, markers validated by paper/check_draft_ids.py",676
 paper/draft/discussion.md,"hand-written, markers validated by paper/check_draft_ids.py",8414
 paper/draft/funding.md,"hand-written, markers validated by paper/check_draft_ids.py",58
-paper/draft/limitations.md,"hand-written, markers validated by paper/check_draft_ids.py",8632
+paper/draft/limitations.md,"hand-written, markers validated by paper/check_draft_ids.py",8829
 paper/draft/method.md,"hand-written, markers validated by paper/check_draft_ids.py",21655
 paper/draft/outline_abstract.md,"hand-written, markers validated by paper/check_draft_ids.py",3810
 paper/draft/outline_conclusion.md,"hand-written, markers validated by paper/check_draft_ids.py",2826
@@ -29,20 +29,7 @@ paper/draft/outline_discussion.md,"hand-written, markers validated by paper/chec
 paper/draft/outline_intro.md,"hand-written, markers validated by paper/check_draft_ids.py",5335
 paper/draft/outline_related_work.md,"hand-written, markers validated by paper/check_draft_ids.py",7197
 paper/draft/related_work.md,"hand-written, markers validated by paper/check_draft_ids.py",5301
-paper/draft/results.md,"hand-written, markers validated by paper/check_draft_ids.py",15215
-paper/draft_ieee/abstract.md,"hand-written, markers validated by paper/check_draft_ids.py",2169
-paper/draft_ieee/acknowledgment.md,"hand-written, markers validated by paper/check_draft_ids.py",186
-paper/draft_ieee/appendix.md,"hand-written, markers validated by paper/check_draft_ids.py",271
-paper/draft_ieee/biographies.md,"hand-written, markers validated by paper/check_draft_ids.py",453
-paper/draft_ieee/conclusion.md,"hand-written, markers validated by paper/check_draft_ids.py",2088
-paper/draft_ieee/discussion.md,"hand-written, markers validated by paper/check_draft_ids.py",8380
-paper/draft_ieee/floats.md,"hand-written, markers validated by paper/check_draft_ids.py",1423
-paper/draft_ieee/introduction.md,"hand-written, markers validated by paper/check_draft_ids.py",5896
-paper/draft_ieee/methodology.md,"hand-written, markers validated by paper/check_draft_ids.py",27507
-paper/draft_ieee/problem.md,"hand-written, markers validated by paper/check_draft_ids.py",3908
-paper/draft_ieee/related_work.md,"hand-written, markers validated by paper/check_draft_ids.py",5181
-paper/draft_ieee/results.md,"hand-written, markers validated by paper/check_draft_ids.py",17743
-paper/draft_ieee/threats.md,"hand-written, markers validated by paper/check_draft_ids.py",9524
+paper/draft/results.md,"hand-written, markers validated by paper/check_draft_ids.py",15456
 paper/emit_macros.py,source,3649
 paper/figures/fig_deployment.pdf,paper/make_figures.py,41634
 paper/figures/fig_deployment.png,paper/make_figures.py,229289
@@ -71,19 +58,50 @@ paper/figures/fig_rank_inversion_data.csv,paper/make_figures.py,470
 paper/figures/fig_weight_sensitivity.pdf,paper/make_figures.py,26014
 paper/figures/fig_weight_sensitivity.png,paper/make_figures.py,451820
 paper/figures/figures_index.csv,paper/make_figures.py,2865
-paper/ieee/ieee_checks.txt,paper/build_ieee.py,3104
-paper/ieee/manuscript_ieee.docx,paper/build_ieee.py,2849051
-paper/ieee/manuscript_ieee.pdf,paper/build_ieee.py,1505638
+paper/latex/generated/figures/fig_deployment.pdf,paper/build_latex.py,41634
+paper/latex/generated/figures/fig_graph_hr.pdf,paper/build_latex.py,11038
+paper/latex/generated/figures/fig_graph_sn.pdf,paper/build_latex.py,12898
+paper/latex/generated/figures/fig_leave_one_out.pdf,paper/build_latex.py,17132
+paper/latex/generated/figures/fig_pipeline.pdf,paper/build_latex.py,45167
+paper/latex/generated/figures/fig_primary_sn.pdf,paper/build_latex.py,20300
+paper/latex/generated/figures/fig_q3_artifact.pdf,paper/build_latex.py,19666
+paper/latex/generated/figures/fig_rank_inversion.pdf,paper/build_latex.py,25555
+paper/latex/generated/figures/fig_weight_sensitivity.pdf,paper/build_latex.py,26014
+paper/latex/generated/references.bib,paper/build_latex.py,12666
+paper/latex/generated/tables/tbl_ieee_commands.tex,paper/build_latex.py,1338
+paper/latex/generated/tables/tbl_ieee_deviations.tex,paper/build_latex.py,1754
+paper/latex/generated/tables/tbl_ieee_families.tex,paper/build_latex.py,768
+paper/latex/generated/tables/tbl_ieee_h2.tex,paper/build_latex.py,1052
+paper/latex/generated/tables/tbl_ieee_power.tex,paper/build_latex.py,1127
+paper/latex/generated/tables/tbl_ieee_predictors_hr.tex,paper/build_latex.py,1401
+paper/latex/generated/tables/tbl_ieee_predictors_sn.tex,paper/build_latex.py,1873
+paper/latex/generated/tables/tbl_ieee_primary.tex,paper/build_latex.py,1144
+paper/latex/generated/tables/tbl_ieee_testbed.tex,paper/build_latex.py,1854
+paper/latex/generated/tables/tbl_ieee_trec.tex,paper/build_latex.py,2621
+paper/latex/generated/tables/tbl_ieee_weights.tex,paper/build_latex.py,1614
+paper/latex/generated/values.tex,paper/build_latex.py,54489
+paper/latex/latex_checks.txt,paper/build_latex.py,555
+paper/latex/main.tex,"hand-written; numbers as \val{claim_id}, checked by paper/build_latex.py",5840
+paper/latex/manuscript_ieee.pdf,paper/build_latex.py,488995
+paper/latex/overleaf_upload.zip,paper/build_latex.py,199328
+paper/latex/sections/conclusion.tex,"hand-written; numbers as \val{claim_id}, checked by paper/build_latex.py",2070
+paper/latex/sections/discussion.tex,"hand-written; numbers as \val{claim_id}, checked by paper/build_latex.py",7445
+paper/latex/sections/introduction.tex,"hand-written; numbers as \val{claim_id}, checked by paper/build_latex.py",5441
+paper/latex/sections/methodology.tex,"hand-written; numbers as \val{claim_id}, checked by paper/build_latex.py",22731
+paper/latex/sections/problem.tex,"hand-written; numbers as \val{claim_id}, checked by paper/build_latex.py",3836
+paper/latex/sections/related_work.tex,"hand-written; numbers as \val{claim_id}, checked by paper/build_latex.py",6516
+paper/latex/sections/results.tex,"hand-written; numbers as \val{claim_id}, checked by paper/build_latex.py",18503
+paper/latex/sections/threats.tex,"hand-written; numbers as \val{claim_id}, checked by paper/build_latex.py",4550
 paper/make_checklist.py,source,9996
 paper/make_figures.py,source,30628
-paper/make_tables.py,source,41747
-paper/manuscript.docx,paper/build_docx.py,62785
+paper/make_tables.py,source,42213
+paper/manuscript.docx,paper/build_docx.py,62877
 paper/manuscript.pdf,"exported from manuscript.docx by Microsoft Word, for reading only; not part of the submission",281148
-paper/number_audit.txt,paper/check_docx_numbers.py,2343
-paper/numbers.csv,paper/build_numbers.py,126092
-paper/numbers.json,paper/emit_macros.py,209802
-paper/numbers.tex,paper/emit_macros.py,101906
-paper/references.csv,keys and DOIs hand-entered; bibliographic fields from Crossref via paper/check_references.py; only rows a person marks VERIFIED are rendered,5190
+paper/number_audit.txt,paper/check_docx_numbers.py,2139
+paper/numbers.csv,paper/build_numbers.py,127019
+paper/numbers.json,paper/emit_macros.py,211338
+paper/numbers.tex,paper/emit_macros.py,102634
+paper/references.csv,keys and DOIs hand-entered; bibliographic fields from Crossref via paper/check_references.py or paper/verify_candidates.py; only VERIFIED rows are rendered,10500
 paper/review/Manuscript_review_copy.docx,paper/build_review_pdf.py (run separately; needs Microsoft Word),1911957
 paper/review/Manuscript_review_copy.pdf,paper/build_review_pdf.py (run separately; needs Microsoft Word),996626
 paper/review/review_checks.txt,paper/build_review_pdf.py (run separately; needs Microsoft Word),2017
@@ -96,7 +114,7 @@ paper/submission/Figure 3.pdf,paper/build_docx.py,17132
 paper/submission/Figure 3.png,paper/build_docx.py,271283
 paper/submission/Figure 4.pdf,paper/build_docx.py,25555
 paper/submission/Figure 4.png,paper/build_docx.py,500216
-paper/submission/SUBMISSION_CHECKLIST.md,paper/make_checklist.py,3254
+paper/submission/SUBMISSION_CHECKLIST.md,paper/make_checklist.py,3255
 paper/submission/Supplementary_recovery_time_raw.csv,paper/build_docx.py,3523
 paper/submission/Table 1.docx,paper/build_docx.py,37855
 paper/submission/Table 10.docx,paper/build_docx.py,45992
@@ -111,8 +129,8 @@ paper/submission/Table 9.docx,paper/build_docx.py,38082
 paper/submission/cover_letter.docx,paper/build_docx.py,37813
 paper/submission/cover_page.docx,paper/build_docx.py,36978
 paper/submission/figure_legends.docx,paper/build_docx.py,37136
-paper/submission/manuscript.docx,paper/build_docx.py,62785
-paper/tables/tables_index.csv,paper/make_tables.py,6165
+paper/submission/manuscript.docx,paper/build_docx.py,62877
+paper/tables/tables_index.csv,paper/make_tables.py,6298
 paper/tables/tbl_commands.csv,paper/make_tables.py,980
 paper/tables/tbl_commands.md,paper/make_tables.py,1047
 paper/tables/tbl_deviations.csv,paper/make_tables.py,21001
@@ -131,8 +149,8 @@ paper/tables/tbl_ieee_families.csv,paper/make_tables.py,293
 paper/tables/tbl_ieee_families.md,paper/make_tables.py,378
 paper/tables/tbl_ieee_h2.csv,paper/make_tables.py,438
 paper/tables/tbl_ieee_h2.md,paper/make_tables.py,591
-paper/tables/tbl_ieee_power.csv,paper/make_tables.py,426
-paper/tables/tbl_ieee_power.md,paper/make_tables.py,491
+paper/tables/tbl_ieee_power.csv,paper/make_tables.py,610
+paper/tables/tbl_ieee_power.md,paper/make_tables.py,687
 paper/tables/tbl_ieee_predictors_hr.csv,paper/make_tables.py,637
 paper/tables/tbl_ieee_predictors_hr.md,paper/make_tables.py,936
 paper/tables/tbl_ieee_predictors_sn.csv,paper/make_tables.py,1000
@@ -165,3 +183,4 @@ paper/tables/tbl_trec_supplementary.csv,paper/make_tables.py,3523
 paper/tables/tbl_trec_supplementary.md,paper/make_tables.py,4012
 paper/tables/tbl_weight_sensitivity.csv,paper/make_tables.py,703
 paper/tables/tbl_weight_sensitivity.md,paper/make_tables.py,936
+paper/verify_candidates.py,source,9172

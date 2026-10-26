@@ -1,0 +1,20 @@
+\begin{table*}[!t]
+\centering
+\caption{Post hoc weight sensitivity of the hybrid metric over 231 weight triplets, with BH correction within each set of 231}
+\label{tab:tbl_ieee_weights}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+
+\begin{tabular}{lllrrrrrrrrr}
+\toprule
+\textbf{Application} & \textbf{Fault} & \textbf{Outcome} & \textbf{\makecell[lb]{Triplets\\with\\defined $\rho$}} & \textbf{$\rho$ min} & \textbf{$\rho$ median} & \textbf{$\rho$ max} & \textbf{$\rho$ $>$ 0} & \textbf{\makecell[lb]{p (raw) $<$\\0.05}} & \textbf{\makecell[lb]{Significant\\after BH}} & \textbf{\makecell[lb]{$\rho$ at\\0.4/0.4/0.2}} & \textbf{\makecell[lb]{p at\\0.4/0.4/0.2}} \\
+\midrule
+Social Network & kill & degraded callers \textit{Y} & 231 & \textminus{}0.544 & \textminus{}0.167 & 0.337 & 28 & 0 & 0 & \textminus{}0.144 & 0.6695 \\
+Social Network & latency & degraded callers \textit{Y} & 231 & \textminus{}0.544 & \textminus{}0.167 & 0.337 & 28 & 0 & 0 & \textminus{}0.144 & 0.6695 \\
+Hotel Reservation & kill & degraded callers \textit{Y} & 230 & \textminus{}0.258 & \textminus{}0.258 & \textminus{}0.258 & 0 & 0 & 0 & \textminus{}0.258 & 1.0000 \\
+Hotel Reservation & latency & degraded callers \textit{Y} & 230 & \textminus{}0.258 & \textminus{}0.258 & \textminus{}0.258 & 0 & 0 & 0 & \textminus{}0.258 & 1.0000 \\
+Social Network & kill & gateway error rate & 231 & 0.229 & 0.753 & 0.832 & 231 & 145 & 128 & 0.786 & 0.0064 \\
+Hotel Reservation & kill & gateway error rate & 230 & \textminus{}0.204 & \textminus{}0.204 & \textminus{}0.204 & 0 & 0 & 0 & \textminus{}0.204 & 0.8571 \\
+\bottomrule
+\end{tabular}
+\end{table*}

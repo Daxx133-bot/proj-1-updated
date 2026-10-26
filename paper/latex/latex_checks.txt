@@ -1,0 +1,13 @@
+Compile (pdflatex, bibtex, pdflatex, pdflatex exit codes [0, 0, 0, 0]): ok
+Undefined references and citations: 0: ok
+Overfull boxes over 1 pt: 0 (largest 0 pt): ok
+References: 35 VERIFIED, 35 cited: ok
+Claim ids: 257 used, 0 unknown: ok
+Digits typed into the source: 0: ok
+Abstract: 244 words (limit 250): ok
+Words in the running text (captions included, tables excluded): 9302
+Banned phrases: 0: ok
+First-person and gendered pronouns: 0: ok
+Overlap: 427 sentences, 0 sharing 8 words with the repository's own records: ok
+Pages: 16
+Tables: 11; figures: 9

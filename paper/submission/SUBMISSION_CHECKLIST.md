@@ -9,12 +9,12 @@ Written by `paper/make_checklist.py`. PASS means the build output meets the requ
 | Continuous line numbering | PASS |  |
 | US Letter page, 2.5 cm margins | PASS |  |
 | Figures and tables not embedded in the manuscript | PASS | 0 tables, 0 drawings |
-| Abstract with Background, Methods, Results, Conclusions headings, at most 500 words | PASS | 380 words |
+| Abstract with Background, Methods, Results, Conclusions headings, at most 500 words | PASS | 385 words |
 | Each figure supplied as a separate file (PNG and PDF) | PASS | 4 figures |
 | Figure legends supplied | PASS |  |
 | Each table supplied as a separate .docx with a title | PASS | 10 tables |
 | Supplementary data files named in table footnotes supplied | PASS | Supplementary_recovery_time_raw.csv |
-| Every reference in the list is cited in the text | PASS | 15 listed, 15 cited |
+| Every reference in the list is cited in the text | TO DO | 35 listed, 15 cited |
 | Every reference has a DOI or URL | PASS |  |
 | No drafting markers, unresolved citations or [TO WRITE] in the manuscript | PASS |  |
 | Number audit: every number traced to numbers.csv (0 unmatched) | PASS | paper/number_audit.txt, 0 unmatched |

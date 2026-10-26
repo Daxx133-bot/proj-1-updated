@@ -472,3 +472,23 @@ steady-state baselines and complete topologies
 
 **Retained deliberately.** These records are the evidence for amendment 3 and are cited by
 `PREREGISTRATION.md` §12. They are not campaign data and must never be pooled with it.
+
+## Item 14 — Word-based IEEE Access build superseded by the LaTeX manuscript
+
+**Date:** 2026-10-26
+**Moved from:** `paper/build_ieee.py`, `paper/draft_ieee/`, `paper/ieee/`
+**Moved to:** `_quarantine/paper/build_ieee.py`, `_quarantine/paper/draft_ieee/`,
+`_quarantine/paper/ieee/`
+
+The IEEE Access manuscript is now written in LaTeX (`paper/latex/`) and built by
+`paper/build_latex.py`, which also runs that manuscript's checks. Keeping a second IEEE
+manuscript generated from separate Markdown drafts would let the two texts drift apart, so the
+Word build, its drafts and its last outputs were moved here unchanged. They are not an input to
+anything.
+
+**Known error in the moved drafts.** `draft_ieee/results.md` (Section V-H) and
+`draft_ieee/threats.md` (Section VII-B) say that on Hotel Reservation a perfect result with the
+observed ties gives p = 0.0952, so no outcome could reach nominal significance. That is wrong:
+0.0952 is the ceiling for an outcome without ties, and an outcome tied like the predictor reaches
+p = 0.0476 (`power_hr_tied_p`). The LaTeX manuscript, `paper/CLAIMS_LEDGER.md` 4.2 and the
+PeerJ drafts state it correctly.

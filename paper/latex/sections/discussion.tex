@@ -1,0 +1,107 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Why Fan-Out Points the Wrong Way}
+
+The direction of propagation is the result that needs the fewest qualifications. In
+\val{descendant_affected_runs_zero} of \val{campaign_runs_total} runs no descendant of the
+faulted service degraded, and which services degraded hardly depended on how the fault was
+delivered: for \val{fault_invariant_services_all} of the
+\val{fault_invariant_services_all_total} services the per-run counts were identical whether the
+service was killed or slowed down. The most plausible reading is that a caller suffers while it
+waits on a dependency that has died or slowed, whereas a callee only receives fewer requests and
+has nothing to wait for. The measurements fit that reading without testing it, because the
+degradation rule asks only whether a service's own latency or error rate crossed a threshold and
+never observes waiting directly.
+
+If the reading is right, a fan-out ranking scores the wrong end of each edge. The composition
+service of Social Network is the clearest case: it calls \val{composepost_out_degree} services
+and the fan-out metric ranks it first, yet in each of its \val{composepost_runs_total} runs
+exactly one caller degraded, and that caller was always the gateway.
+%[id:composepost_runs_only_gateway_ancestor]
+Across all services, the metric's correlation with degraded callers was negative in every cell
+and separable from zero in none (Section~\ref{sec:res-h2}), and no weighting on the
+preregistered grid changed that (Section~\ref{sec:res-weights}). The data give the fan-out
+premise no support; they cannot show a negative relationship.
+
+\subsection{A Predictor That Sits Close to Its Outcome}
+
+The caller count correlates with degraded callers partly by construction, since the outcome
+counts a subset of the predictor, and the two are equal whenever every ancestor of a faulted
+service degrades. That held for every Hotel Reservation service and for ten of the eleven
+Social Network services. %[id:saturation_hr_kill_service] %[id:saturation_sn_kill_service]
+A post hoc breakdown sharpens the point. In all \val{gw_runs_all} runs the gateway was among the
+degraded ancestors, %[id:gw_runs_gateway_degraded_all]
+and in both applications every analysable service has the gateway among its graph ancestors.
+%[id:gw_sn_services_gateway_ancestor] %[id:gw_hr_services_gateway_ancestor]
+Every measured ancestor count therefore includes one unit that is the same for every service,
+and what remains to be explained comes from intermediate callers. In Social Network only
+user-service departs from its graph count in a consistent way. Its two ancestors that degraded
+sit on request paths the workload exercises, and its other two showed no degradation in any run,
+an explanation formed after seeing the data and not tested here.
+
+With user-service withheld, the Social Network correlation becomes \val{loo_userservice_rho}.
+The result can fairly be read as resting on one service's worth of independent information. One
+lesson may reach beyond this study: a structural predictor tested against a structurally defined
+outcome needs a saturation measure reported next to the correlation, without which the
+correlation cannot be interpreted.
+
+\subsection{What Users Would See}
+\label{sec:disc-users}
+
+The preregistered outcome counts degraded services and says nothing about how many requests
+fail. To come closer to what a user experiences, the gateway's end-to-end error rate under kill
+faults was examined after the fact. This analysis is exploratory and descriptive.
+
+Gateway error followed the request mix. For each faulted service, the Locust task weights of the
+request types whose traces pass through it were summed and divided by the total weight. The rank
+correlation between that share and the median gateway error was
+\val{uf_sn_rho_err_weight_share} on Social Network and \val{uf_hr_rho_err_weight_share} on
+Hotel Reservation, reported without p-values. In Hotel Reservation, killing reservation, which
+sits on request types carrying \val{uf_hr_reservation_weight_share} of the weight, gave a median
+gateway error rate of \val{uf_hr_reservation_err_median}, while killing recommendation, with a
+share of \val{uf_hr_recommendation_weight_share}, gave \val{uf_hr_recommendation_err_median}.
+The mix does not explain everything. The Social Network services reached only through the
+compose request all share a weight of \val{uf_sn_compose_post_service_weight_share}, and their
+median error rates still range from \val{uf_sn_unique_id_service_err_median} to
+\val{uf_sn_compose_post_service_err_median}.
+
+The hybrid metric's exploratory correlation with gateway error on Social Network was
+\val{uf_test_sn_hybrid_rho}, not significant after correction within its family (adjusted
+$p = \val{uf_test_sn_hybrid_bh_p}$). Splitting the metric into its weighted terms shows where
+the association comes from: the in-degree term alone has a rank correlation of
+\val{uf_sn_rho_err_term_in} with gateway error, the fan-out term \val{uf_sn_rho_err_term_fanout}
+and the betweenness term \val{uf_sn_rho_err_term_btw}. The association follows the count of
+direct callers more closely than the fan-out correction, so it lends that correction no support.
+
+\subsection{Lessons about Measurement}
+
+Two measurement choices mattered more than the plan anticipated. The first is where latency is
+attributed. Charging each trace's end-to-end latency to every service on the trace makes services
+on a shared path indistinguishable; in the pilot comparison of Section~\ref{sec:attribution} that
+shortcut flagged five non-faulted services where per-service attribution flagged one.
+%[fig:fig_q3_artifact]
+The correction was in place before the campaign, so what an uncorrected campaign would have
+concluded is unknown, but the pilot shows how it would have behaved.
+
+The second is that per-service attribution is only as good as the instrumentation behind it.
+Social Network's spans carry no span-kind tag, so its per-service latency drew on all of a
+service's spans, \val{sn_spans_selected_client_pct}\% of them client spans. A post hoc replay on
+server spans altered \val{replay_runs_changed} of the \val{replay_runs} run outcomes and none of
+the service-level medians. %[id:replay_service_medians_changed]
+The change was small, which was fortunate. A study that depends on span semantics should check
+them before collecting data, and this one did not.
+
+\subsection{Implications for Practitioners}
+
+For a team that has to rank services before running any experiment, the data favour looking up
+the graph at callers over looking down it at callees. That advice rests on the propagation
+pattern and on the lack of support for fan-out; the preregistered test of the caller ranking
+itself did not reach significance, so no claim is made that it predicts failure impact. In both
+applications the gateway appeared in every caller count, and in the exploratory analysis the
+user-visible error rate tracked how much traffic passed through the failed service. A ranking
+that weights callers by the traffic they carry may therefore be worth testing as a new
+preregistered hypothesis; it was not tested here. Larger applications would also lift the
+ceiling that eleven services place on any correlation, and containment mechanisms such as retries
+with back-off or circuit breakers, which were neither configured nor studied, could change how
+far a failure travels.

@@ -107,3 +107,6 @@ centrality/output/
 *.temp
 *.log.gz
 nohup.out
+
+# LaTeX intermediate files (paper/build_latex.py compiles into paper/latex/build/)
+paper/latex/build/

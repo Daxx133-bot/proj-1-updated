@@ -58,7 +58,7 @@ resolve here.
 | `data/pilot/` | Pilot runs that precede the campaign. Two of them (the 2026-09-26 Hotel Reservation latency runs) back Figure 4; the rest support the absolute-floor threshold evidence. |
 | `data/analysis/` | The predictor table derived from the graphs, used to size the test family. |
 | `analysis/final/` | The preregistered analysis and its outputs, plus the supplementary leave-one-out, exact-p and blind-recomputation checks. |
-| `paper/` | Everything the manuscript cites. `numbers.csv` holds one row per citable number with its source file and producing script; `tables/` and `figures/` hold the table- and figure-ready outputs; `draft/` holds the section drafts; `CLAIMS_LEDGER.md` holds the claim-by-claim verdict. |
+| `paper/` | Everything the manuscript cites. `numbers.csv` holds one row per citable number with its source file and producing script; `tables/` and `figures/` hold the table- and figure-ready outputs; `draft/` holds the PeerJ section drafts; `latex/` holds the IEEE Access manuscript in LaTeX, built by `paper/build_latex.py`; `CLAIMS_LEDGER.md` holds the claim-by-claim verdict. |
 | `_audit/` | The audit report, the confirmatory analysis report, and the frozen v3 preregistration. |
 | `_quarantine/` | `QUARANTINE_LOG.md`, which records what was withdrawn and why, and `QUARANTINE_INDEX.txt`, a one-line-per-file listing of the withdrawn material. The withdrawn files themselves are not in this copy. |
 | `tools/`, `measurement/`, `centrality/`, `faultinjection/`, `infra/`, `sdg/` | The campaign runner, the metric collection and blast-radius code, the centrality implementation, the fault specifications, the stack and load-generation scripts, and the expected-service manifest. |
@@ -158,7 +158,7 @@ reported, with no held-out data.
 
 That earlier work is a real part of this project's history and is not disowned here. Its
 results were withdrawn in full, and the files were **not deleted**: they were moved to a
-quarantine directory in the original repository, where each of 13 numbered items is
+quarantine directory in the original repository, where each of 14 numbered items is
 documented with what was removed and why. The audit findings themselves are in
 `_audit/AUDIT_REPORT.md`, which is included.
 
@@ -186,7 +186,7 @@ data. The preregistered protocol, which tuned weights on Social Network and froz
 Hotel Reservation, was not carried out (Deviation 10). Because the original search favoured
 the metric, this is unlikely to explain a failure to find an association. Deviations from
 the locked plan are logged in `PREREGISTRATION.md` §12 and tabulated in
-`paper/tables/tbl_deviations.csv`; there are twelve, and the 17 runs invalidated across them
+`paper/tables/tbl_deviations.csv`; there are thirteen, and the 17 runs invalidated across them
 were quarantined and re-collected rather than
 analysed or dropped.
 

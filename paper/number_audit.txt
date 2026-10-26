@@ -9,34 +9,32 @@ Tokens by category:
   numbers.csv value (string)       11
   URL                              10
   affiliation                       1
-  marked in sentence              140
+  marked in sentence              145
   table cell                      811
   table header                      0
   reference entry                  90
   section number                   89
   table/figure number              29
   deviation number                 24
-  year                             27
+  year                             25
   reference number                  0
-  WEAK MATCH                        7
+  WEAK MATCH                        6
   UNMATCHED                         0
 
 UNMATCHED tokens (0), each with its sentence or table row:
 
 
-WEAK MATCH tokens (7), each with its sentence or table row:
+WEAK MATCH tokens (6), each with its sentence or table row:
 
   1. [4.1 The confirmatory test] token 1.0
      If every service's measured blast radius equalled its graph ancestor count, a correlation of 1.0 would follow by construction and would test nothing.
   2. [4.1 The confirmatory test] token 1.0
      Its run-level saturation is 0.909 under kill faults, which is why ρ is 0.785 and not 1.0.
-  3. [6.2 Hotel Reservation could not have reached significance] token 1.0
-     Under the exact permutation test the plan mandates, a perfect result with the observed ties, ρ = 1.0, yields p = 0.0952.
-  4. [6.2 Hotel Reservation could not have reached significance] token 0.05
+  3. [6.2 Hotel Reservation could not have reached significance] token 0.05
      That is above the conventional 0.05 threshold before any correction for multiplicity.
-  5. [6.4 The primary predictor is close to definitional] token 1.0
+  4. [6.4 The primary predictor is close to definitional] token 1.0
      The whole gap between ρ = 0.785 and a correlation of exactly 1.0 therefore rests on one service.
-  6. [Data Availability] token 4.0
+  5. [Data Availability] token 4.0
      Code is released under the MIT licence; data and figures are released under CC BY 4.0.
-  7. [Table 5.docx] token 0.05
+  6. [Table 5.docx] token 0.05
      Family sizes and how many tests survive BH-FDR at q=0.05

@@ -1,0 +1,78 @@
+\section{Introduction}
+\label{sec:intro}
+
+\IEEEPARstart{A}{} microservice application is assembled from many small services that talk to
+each other over the network and can be built, deployed and scaled one at a time
+\cite{dragoni2017,jamshidi2018}. Teams adopt the style for that independence, and pay for it
+in operations. A systematic review of grey literature records the pains practitioners report
+alongside the gains \cite{soldani2018}, and performance engineering for these systems has its
+own list of open research problems \cite{heinrich2017}. Failure is near the top of that list.
+A study of hundreds of cloud service outages draws lessons about why such systems stop
+working \cite{gunawi2016}, and an industrial survey of microservice systems reports that
+faults are slow to diagnose \cite{zhou2021}.
+
+Operators would like to know in advance which services deserve hardening first. Injecting
+faults into every service answers that directly, but each answer costs a run per service and
+per fault type. A cheaper answer can be read from the dependency graph. Graph measures have
+long served as indicators of importance \cite{freeman1978}, and network measures computed on
+software dependency graphs have predicted which components accumulate defects
+\cite{zimmermann2008}. Applied to a service graph, the familiar reading is that a service
+calling many others is a hub, and a hub is dangerous. This project started from that reading.
+Its original metric, hybrid criticality, scales out-degree centrality by fan-out, the number
+of services a service calls directly, on the argument that a service with many callees cuts
+many links when it fails.
+
+There is a simple argument in the other direction. When a service fails, the services left
+waiting are the ones that call it; its callees simply receive less traffic. On that argument
+the number of services that degrade should follow a service's transitive callers, its
+ancestors in the graph, and a fan-out ranking should go most wrong on exactly the services it
+rates highest. The composition service of the Social Network benchmark shows the clash in one
+place. It calls \val{composepost_out_degree} services directly, and the fan-out metric ranks
+it first %[id:composepost_rank_hybrid]
+of the \val{composepost_set_size} services analysed. It has a single caller,
+%[id:composepost_ancestor_count]
+so a ranking by callers puts it last. %[id:composepost_rank_ancestor_count]
+
+This paper tests the caller-based prediction against measurement, with the fan-out metric
+kept as a comparator, in a preregistered \cite{nosek2018} fault-injection campaign on two
+applications of the DeathStarBench suite \cite{gan2019}. The caller-based hypothesis was
+formed after a pilot study and locked, together with every analysis choice, before any
+campaign data existed. All \val{campaign_runs_total} planned runs completed. Each analysable
+service received a process kill and an injected network delay, \val{campaign_reps_per_cell}
+times each. Dependency graphs were rebuilt from traces, latency was measured on the spans
+each service emits itself, and every degraded service was classified by its graph relation
+to the faulted one, so that degraded callers and degraded callees were counted separately.
+
+The preregistered hypothesis was not confirmed. On Social Network under kill faults, the
+caller count and the number of degraded callers correlated at $\rho = \val{primary_rho}$, but
+none of the \val{conf_family_size} tests in the confirmatory family survived correction for
+multiple testing, and a replication under latency faults gave the same answer.
+%[id:conf_family_significant] %[id:repl_family_significant]
+A large part of that correlation is definitional, because the outcome counts a subset of the
+predictor and most services degraded every caller they had. The fan-out metric fared no
+better: its correlation with degraded callers was negative for both applications and both
+fault types, %[id:h1b_all_negative]
+and in no case distinguishable from zero. %[id:h1b_any_distinguishable]
+The plainest result needs no test. Degradation reached callers and almost never callees: no
+descendant of the faulted service degraded in \val{descendant_affected_runs_zero} of
+\val{campaign_runs_total} runs.
+
+The paper makes four contributions:
+\begin{itemize}
+\item A preregistered test of whether caller count, or a fan-out-weighted centrality metric,
+tracks measured failure impact in two benchmark applications, reported with its null result
+and with the ceiling that the design placed on any correlation.
+\item Evidence from \val{campaign_runs_total} runs under two fault types that degradation
+travels to the callers of a failed service and almost never to its callees.
+\item A measurement pitfall in trace-based latency attribution, in which a request's
+end-to-end latency is charged to every service on its path, together with its effect in a
+pilot and the per-service attribution that removes it.
+\item An artifact in which a script regenerates every number in the paper from the logged
+campaign data.
+\end{itemize}
+
+Section~\ref{sec:related} reviews related work and Section~\ref{sec:problem} states the problem
+and the hypotheses. Section~\ref{sec:method} describes the testbed and the method,
+Section~\ref{sec:results} reports the results and Section~\ref{sec:discussion} interprets them.
+Section~\ref{sec:threats} discusses threats to validity and Section~\ref{sec:conclusion}
+concludes.

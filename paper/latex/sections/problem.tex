@@ -1,0 +1,69 @@
+\section{Problem Statement and Hypotheses}
+\label{sec:problem}
+
+\subsection{Call Graph, Faults and Outcome}
+
+Let $G=(V,E)$ be the directed call graph of an application. $V$ is the set of services, and an
+edge $(u,v)\in E$ means that $u$ calls $v$ under the traced workload. Writing
+$u \rightsquigarrow v$ for a directed path from $u$ to $v$, the ancestors of a service are the
+services from which it can be reached and its descendants are the services it can reach:
+\begin{align}
+\mathrm{anc}(v) &= \{u \in V : u \rightsquigarrow v,\ u \neq v\},\\
+\mathrm{desc}(v) &= \{u \in V : v \rightsquigarrow u,\ u \neq v\}.
+\end{align}
+
+A fault $f \in \{\text{kill}, \text{latency}\}$ applied to service $v$ either terminates its
+process or delays its network traffic (Section~\ref{sec:protocol}). In repetition $r$ the
+degraded set $D_r(v,f)$ holds the services other than $v$ whose own latency or error rate
+crosses the degradation rule of Section~\ref{sec:outcomes} during the fault window. The
+degraded set splits into three disjoint parts by graph relation to the faulted service:
+\begin{align}
+D_r^{A} &= D_r \cap \mathrm{anc}(v), \qquad D_r^{D} = D_r \cap \mathrm{desc}(v),\\
+D_r^{U} &= D_r \setminus \bigl(\mathrm{anc}(v) \cup \mathrm{desc}(v)\bigr).
+\end{align}
+The primary outcome of a service is the median over its repetitions of the number of degraded
+ancestors,
+\begin{equation}
+Y(v,f) = \operatorname{median}_r \, \lvert D_r^{A}(v,f) \rvert,
+\end{equation}
+called the number of degraded callers below. The counts of degraded descendants and of
+degraded unrelated services are recorded separately and never added to $Y$, because a combined
+count would hide the direction in which a failure travels.
+
+\subsection{Predictors}
+
+The primary predictor is the caller count, the number of transitive callers
+$X(v) = \lvert\mathrm{anc}(v)\rvert$. The comparator of interest is the hybrid criticality
+metric of the original proposal,
+\begin{align}
+\HC(v) &= w_{\mathrm{in}} C_{\mathrm{in}}(v) + w_{\mathrm{out}} C_{\mathrm{out}}(v)\,\varphi(v)
+          + w_{\mathrm{btw}} C_{\mathrm{btw}}(v),\\
+\varphi(v) &= d^{+}(v) \big/ \max_{u} d^{+}(u),
+\end{align}
+where $C_{\mathrm{in}}$ and $C_{\mathrm{out}}$ are in-degree and out-degree centrality,
+$C_{\mathrm{btw}}$ is betweenness with directed normalisation, $d^{+}$ is out-degree, and
+the weights are $w_{\mathrm{in}} = \val{hybrid_w_in}$, $w_{\mathrm{out}} = \val{hybrid_w_out}$
+and $w_{\mathrm{btw}} = \val{hybrid_w_btw}$ (Section~\ref{sec:predictors}). The factor
+$\varphi$ grows linearly with out-degree, so the metric rewards services that call many others.
+Ten further graph measures are kept as comparators. Each test pairs one predictor with one
+outcome across the services of one application, with the gateway left out
+(Section~\ref{sec:analysis-set}).
+
+\subsection{Hypotheses}
+
+The hypotheses are those of the locked preregistration, where the second carries the label H1b
+because the name H2 there belongs to an untested structural observation. H1, the primary
+hypothesis, states that the caller count predicts $Y$ while out-degree, descendant count and
+the hybrid metric do not. It is tested as a positive Spearman rank correlation:
+\begin{equation}
+\text{H1:}\quad \rho(X, Y) > 0.
+\end{equation}
+H2 is directional. It states that the fan-out premise points the wrong way, so that the hybrid
+metric is not positively associated with the outcome:
+\begin{equation}
+\text{H2:}\quad \rho(\HC, Y) \leq 0.
+\end{equation}
+The null hypothesis of each test is that predictor and outcome have no monotone association.
+Every p-value is two-sided, comes from a permutation test and is corrected with the
+Benjamini-Hochberg procedure within its family (Section~\ref{sec:stats}). Kill faults form the
+confirmatory family, and latency faults repeat every test as a separate replication family.

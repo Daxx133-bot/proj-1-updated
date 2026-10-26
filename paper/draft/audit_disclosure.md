@@ -11,7 +11,7 @@ found that some reported results had not come from measurement. Impact values an
 result produced that way is the best of many tries reported as one test.
 
 We withdrew those results in full. The affected scripts and outputs were moved, not deleted,
-into a quarantine directory that now holds 13 %[id:quarantine_items] numbered items, each with
+into a quarantine directory that now holds 14 %[id:quarantine_items] numbered items, each with
 a note of what was removed and why. We then rebuilt the pipeline from measurement through to analysis, and everything reported
 here comes from a new campaign. Two
 rules follow from that history. Each reported number comes from a script that reads logged data, and any value we cannot trace to a script and an input file is marked as missing. The

@@ -1,6 +1,6 @@
 %% paper/numbers.tex -- AUTO-GENERATED from paper/numbers.csv. DO NOT EDIT.
 %% Regenerate: python paper/build_numbers.py && python paper/emit_macros.py
-% Generated at repository commit 36e0d51. 601 macros.
+% Generated at repository commit cb6eef1. 606 macros.
 
 % Total fault-injection runs in the final campaign (analysis/final/run_level_data.csv)
 \newcommand{\NumCampaignRunsTotal}{180}
@@ -380,6 +380,10 @@
 \newcommand{\NumPowerSnCeilingMatches}{yes}
 % Social Network: exact p at the ceiling (analysis/final/power_table.csv)
 \newcommand{\NumPowerSnCeilingP}{0.0002}
+% Social Network: best attainable rho for an outcome with the same ties as ancestor_count (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnTiedRho}{1.000}
+% Social Network: p at that tie-matching ceiling (analysis/final/power_table.csv)
+\newcommand{\NumPowerSnTiedP}{0.0001}
 % Social Network: asymptotic p at the ceiling (NOT for inference) (analysis/final/power_table.csv)
 \newcommand{\NumPowerSnCeilingPAsymptotic}{0.0000}
 % Hotel Reservation: services in the analysis set (analysis/final/power_table.csv)
@@ -400,6 +404,10 @@
 \newcommand{\NumPowerHrCeilingMatches}{yes}
 % Hotel Reservation: exact p at the ceiling (analysis/final/power_table.csv)
 \newcommand{\NumPowerHrCeilingP}{0.0952}
+% Hotel Reservation: best attainable rho for an outcome with the same ties as ancestor_count (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrTiedRho}{1.000}
+% Hotel Reservation: p at that tie-matching ceiling (analysis/final/power_table.csv)
+\newcommand{\NumPowerHrTiedP}{0.0476}
 % Hotel Reservation: asymptotic p at the ceiling (NOT for inference) (analysis/final/power_table.csv)
 \newcommand{\NumPowerHrCeilingPAsymptotic}{0.0343}
 % Preregistration section 7.2's stated Hotel Reservation ceiling p (the asymptotic value) (analysis/final/power_table.csv)
@@ -453,7 +461,7 @@
 % Deviations found before any campaign data existed (analysis/final/deviations.csv)
 \newcommand{\NumDeviationsPrecampaign}{1}
 % Numbered items in the quarantine log (_quarantine/QUARANTINE_LOG.md)
-\newcommand{\NumQuarantineItems}{13}
+\newcommand{\NumQuarantineItems}{14}
 % Median ancestor_affected_count identical between kill and latency in every architecture (analysis/final/service_level_data.csv)
 \newcommand{\NumReplicationPrimaryIdentical}{yes}
 % Spearman rho between kill and latency median T_rec across socialnetwork services (analysis/final/service_level_data.csv)
@@ -520,6 +528,8 @@
 \newcommand{\NumProtocolLoadUsers}{25}
 % Cooldown after each run (tools/run_campaign.py)
 \newcommand{\NumProtocolCooldownS}{20}
+% Recovery tolerance: every indicator back within this share of its baseline (tools/run_pilot.py)
+\newcommand{\NumProtocolRecoveryTolerancePct}{10}
 % Baseline measurement window, as actually recorded in every run (data/campaign/runs/*.json)
 \newcommand{\NumProtocolBaselineWindowS}{60}
 % Distinct baseline window lengths across the campaign (data/campaign/runs/*.json)

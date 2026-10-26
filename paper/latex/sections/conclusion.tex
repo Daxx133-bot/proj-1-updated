@@ -1,0 +1,29 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+A preregistered fault-injection campaign of \val{campaign_runs_total} balanced runs on two
+benchmark applications asked whether a service's position in its dependency graph indicates how
+much damage its failure does. The design crossed every analysable service with two fault types
+and \val{campaign_reps_per_cell} repetitions, and the analysis was locked before the first run.
+
+The correlational hypothesis did not survive. The number of transitive callers correlated
+strongly with the number of degraded callers on Social Network, but after correction no test
+survived in either family, the \val{conf_family_size} confirmatory and the
+\val{repl_family_size} replication tests alike. %[id:conf_family_significant] %[id:repl_family_significant]
+The fan-out-weighted metric this project began with correlated negatively in every cell
+%[id:h1b_all_negative]
+and could not be separated from zero in any, %[id:h1b_any_distinguishable]
+and a post hoc sweep over \val{ws_triplets} weightings found none with a significant
+association with degraded callers. %[id:ws_sn_kill_anc_triplets_significant_bh] %[id:ws_hr_kill_anc_triplets_significant_bh]
+
+What held is structural. Failures reached callers and almost never callees: no descendant
+degraded in \val{descendant_affected_runs_zero} of \val{campaign_runs_total} runs, and the
+service-level median was zero in every condition. %[id:descendant_affected_count_constant_at]
+That result needs no inference, and it held in both applications and under both fault types.
+
+For practitioners, the evidence points towards ranking services by their callers and away from
+ranking them by fan-out, with the caveat that the study's own test of the caller ranking did not
+reach significance. For researchers, it shows two steps that are easy to skip: attributing
+latency to each service's own spans, and measuring how far an outcome merely restates a
+structural predictor before reporting a correlation between them. Every number in this paper can
+be regenerated from the logged campaign data.
